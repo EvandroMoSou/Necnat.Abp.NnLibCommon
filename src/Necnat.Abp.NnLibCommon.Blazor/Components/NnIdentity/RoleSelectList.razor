@@ -1,0 +1,32 @@
+﻿@using Blazorise.Components
+@using Necnat.Abp.NnLibCommon.Domains.NnIdentity
+@using Necnat.Abp.NnLibCommon.Localization
+@using Volo.Abp.Identity
+@inherits SelectListComponent<INnIdentityRoleAppService, IdentityRoleDto, Guid, NnIdentityRoleResultRequestDto>
+
+@if (IsLoading)
+{
+    <div class="animated-background loading-input-height"></div>
+}
+else
+{
+    <SelectList TItem="IdentityRoleDto"
+                TValue="Guid?"
+                Data="@Data"
+                TextField="@((item)=>item.Name)"
+                ValueField="@((item)=>item.Id)"
+                SelectedValue="@_internalSelectedValue"
+                SelectedValueChanged="@OnSelectedValueChangedAsync"
+                DefaultItemText="@L["Select..."]"
+                DefaultItemValue="Guid.Empty" />
+}
+
+@namespace Necnat.Abp.NnLibCommon.Blazor.Components.NnIdentity
+@code {
+
+    public RoleSelectList()
+    {
+        LocalizationResource = typeof(NnLibCommonResource);
+    }
+
+}

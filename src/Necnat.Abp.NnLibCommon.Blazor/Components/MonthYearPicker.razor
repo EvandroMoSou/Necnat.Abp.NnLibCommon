@@ -1,0 +1,53 @@
+@using Blazorise
+@using Necnat.Abp.NnLibCommon.Extensions
+
+<InputMask Alias="datetime" InputFormat="mm/yyyy" OutputFormat="mmyyyy" Value="@stringValue" ValueChanged="@OnValueChangedAsync" />
+
+@namespace Necnat.Abp.NnLibCommon.Blazor.Components
+@code {
+
+    protected string stringValue = string.Empty;
+
+    [Parameter]
+    public DateTime? Value { get; set; }
+
+    [Parameter]
+    public EventCallback<DateTime?> ValueChanged { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await SetValueAsync();
+        await base.OnInitializedAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await SetValueAsync();
+        base.OnAfterRender(firstRender);
+    }
+
+    protected async Task SetValueAsync()
+    {
+        if (Value == null)
+        {
+            stringValue = DateTime.Today.Month.ToString().PadLeft(2, '0') + DateTime.Today.Year.ToString().PadLeft(4, '0');
+            Value = DateTime.Today.FirstDayOfMonth();
+            await ValueChanged.InvokeAsync(Value);
+        }
+        else
+            stringValue = Value.Value.Month.ToString().PadLeft(2, '0') + Value.Value.Year.ToString().PadLeft(4, '0');
+    }
+
+    public async Task OnValueChangedAsync(string newStringValue)
+    {
+        stringValue = newStringValue.Replace("/", "");
+
+        if (stringValue.Length != 6)
+            Value = null;
+        else
+            Value = new DateTime(int.Parse(stringValue.Substring(2)), int.Parse(stringValue.Substring(0, 2)), 1);
+
+        await ValueChanged.InvokeAsync(Value);
+        await InvokeAsync(StateHasChanged);
+    }
+}

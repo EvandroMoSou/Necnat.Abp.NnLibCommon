@@ -1,0 +1,16 @@
+<div class="spinner-div-container">
+    <div class="d-flex justify-content-center spinner-container">
+        <div class="@(Class == null ? "spinner" : "spinner " + Class)">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div>
+
+@namespace Necnat.Abp.NnLibCommon.Blazor.Components
+@code {
+
+    [Parameter]
+    public string? Class { get; set; }
+
+}

@@ -1,0 +1,45 @@
+@using Blazorise
+
+<Check TValue="bool?" Class="@(Class == null ? "tri-state-check" : "tri-state-check " + Class)" Checked="@Checked" CheckedChanged="@OnCheckedChangedAsync" Indeterminate="indeterminate" />
+
+@namespace Necnat.Abp.NnLibCommon.Blazor.Components
+@code {
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public bool? Checked { get; set; }
+
+    [Parameter]
+    public EventCallback<bool?> CheckedChanged { get; set; }
+
+    bool? indeterminate;
+
+    protected override void OnInitialized()
+    {
+        indeterminate = Checked == null;
+    }
+
+    async Task OnCheckedChangedAsync(bool? value)
+    {
+        if (Checked == true)
+        {
+            Checked = false;
+            indeterminate = false;
+        }
+        else if (Checked == false)
+        {
+            Checked = null;
+            indeterminate = true;
+        }
+        else if (Checked == null)
+        {
+            Checked = true;
+            indeterminate = false;
+        }
+
+        await CheckedChanged.InvokeAsync(Checked);
+    }
+
+}

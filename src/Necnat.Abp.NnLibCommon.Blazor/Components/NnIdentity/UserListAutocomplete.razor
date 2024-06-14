@@ -1,0 +1,65 @@
+﻿@using Blazorise.Components
+@using Necnat.Abp.NnLibCommon.Domains.NnIdentity
+@using Necnat.Abp.NnLibCommon.Localization
+@using Volo.Abp.BlazoriseUI.Components
+@using Volo.Abp.Identity
+@inherits ListAutocompleteComponent<INnIdentityUserAppService, IdentityUserDto, Guid, NnIdentityUserResultRequestDto>
+
+<Fields>
+    <Field ColumnSize="ColumnSize.Is10">
+        <Autocomplete @ref="_autocomplete" TItem="IdentityUserDto"
+                      TValue="IdentityUserDto"
+                      Data="@_readData"
+                      ReadData="@OnHandleReadDataAsync"
+                      TextField="@((item) => $"[{item.UserName}] {item.Name}")"
+                      ValueField="@((item) => item)"
+                      @bind-SelectedValue="@_selectedValue"
+                      Placeholder="@(string.Format(L["Enter at least {0} characters to start the search..."], SearchValueMinLength))"
+                      Disabled="@Disabled"
+                      Validator="Validator!"
+                      Filter="AutocompleteFilter.Contains">
+            <NotFoundContent>@string.Format(L["Sorry... {0} was not found!"], context)</NotFoundContent>
+        </Autocomplete>
+    </Field>
+    <Field ColumnSize="ColumnSize.Is2">
+        <Button Class="w-100" Color="Color.Primary" Clicked="AddAsync" Disabled="@(_selectedValue == null)"><i class="fas fa-plus"></i></Button>
+    </Field>
+</Fields>
+
+<DataGrid TItem="IdentityUserDto"
+          Data="SelectedValueList"
+          ShowPager="true"
+          PageSize="PageSize">
+    <DataGridColumns>
+        <DataGridEntityActionsColumn TItem="IdentityUserDto">
+            <DisplayTemplate>
+                <EntityActions TItem="IdentityUserDto">
+                    <EntityAction TItem="IdentityUserDto"
+                                  Text="@L["Delete"]"
+                                  Clicked="async () => await RemoveAsync(context)" />
+                </EntityActions>
+            </DisplayTemplate>
+        </DataGridEntityActionsColumn>
+        <DataGridColumn TItem="IdentityUserDto"
+                        Field="@nameof(IdentityUserDto.UserName)"
+                        Caption="@L["UserName"]"></DataGridColumn>
+        <DataGridColumn TItem="IdentityUserDto"
+                        Field="@nameof(IdentityUserDto.Name)"
+                        Caption="@L["Name"]"></DataGridColumn>
+    </DataGridColumns>
+</DataGrid>
+
+@namespace Necnat.Abp.NnLibCommon.Blazor.Components.NnIdentity
+@code {
+
+    public UserListAutocomplete()
+    {
+        LocalizationResource = typeof(NnLibCommonResource);
+    }
+
+    public override NnIdentityUserResultRequestDto GetSearchInput(string searchValue)
+    {
+        return new NnIdentityUserResultRequestDto { MaxResultCount = 5, NameOrUserNameContains = searchValue };
+    }
+
+}
