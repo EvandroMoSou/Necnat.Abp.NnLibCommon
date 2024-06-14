@@ -3,19 +3,19 @@ using Localization.Resources.AbpUi;
 using Microsoft.Extensions.Localization;
 using System;
 using System.Threading.Tasks;
-using Volo.Abp.AspNetCore.Components.Notifications;
+using Volo.Abp.AspNetCore.Components.Messages;
 using Volo.Abp.DependencyInjection;
 
 namespace Necnat.Abp.NnLibCommon.Blazor.Components.Notifications
 {
     [Dependency(ReplaceServices = true)]
-    [ExposeServices(typeof(IUiNotificationService))]
-    public class SweetAlertUiNotificationService : IUiNotificationService, IScopedDependency
+    [ExposeServices(typeof(IUiMessageService))]
+    public class SweetAlertUiMessageService : IUiMessageService, IScopedDependency
     {
         protected readonly IStringLocalizer<AbpUiResource> _localizer;
         protected readonly SweetAlertService _swal;
 
-        public SweetAlertUiNotificationService(
+        public SweetAlertUiMessageService(
             IStringLocalizer<AbpUiResource> stringLocalizer,
             SweetAlertService swal)
         {
@@ -23,7 +23,22 @@ namespace Necnat.Abp.NnLibCommon.Blazor.Components.Notifications
             _swal = swal;
         }
 
-        public async Task Error(string message, string? title = null, Action<UiNotificationOptions>? options = null)
+        public async Task<bool> Confirm(string message, string? title = null, Action<UiMessageOptions>? options = null)
+        {
+            var sweetAlertOptions = new SweetAlertOptions();
+            sweetAlertOptions.Title = title == null ? title : _localizer[title];
+            sweetAlertOptions.Text = message == null ? message : _localizer[message];
+            sweetAlertOptions.Icon = SweetAlertIcon.Warning;
+            sweetAlertOptions.ReverseButtons = true;
+            sweetAlertOptions.ShowCancelButton = true;
+            sweetAlertOptions.ConfirmButtonText = _localizer["Ok"];
+            sweetAlertOptions.CancelButtonText = _localizer["Cancel"];
+
+            var sweetAlertResult = await _swal!.FireAsync(sweetAlertOptions);
+            return sweetAlertResult.IsConfirmed;
+        }
+
+        public async Task Error(string message, string? title = null, Action<UiMessageOptions>? options = null)
         {
             await _swal!.FireAsync(
                 title == null ? title : _localizer[title],
@@ -31,7 +46,7 @@ namespace Necnat.Abp.NnLibCommon.Blazor.Components.Notifications
                 SweetAlertIcon.Error);
         }
 
-        public async Task Info(string message, string? title = null, Action<UiNotificationOptions>? options = null)
+        public async Task Info(string message, string? title = null, Action<UiMessageOptions>? options = null)
         {
             await _swal!.FireAsync(
                 title == null ? title : _localizer[title],
@@ -39,7 +54,7 @@ namespace Necnat.Abp.NnLibCommon.Blazor.Components.Notifications
                 SweetAlertIcon.Info);
         }
 
-        public async Task Success(string message, string? title = null, Action<UiNotificationOptions>? options = null)
+        public async Task Success(string message, string? title = null, Action<UiMessageOptions>? options = null)
         {
             await _swal!.FireAsync(
                 title == null ? title : _localizer[title],
@@ -47,7 +62,7 @@ namespace Necnat.Abp.NnLibCommon.Blazor.Components.Notifications
                 SweetAlertIcon.Success);
         }
 
-        public async Task Warn(string message, string? title = null, Action<UiNotificationOptions>? options = null)
+        public async Task Warn(string message, string? title = null, Action<UiMessageOptions>? options = null)
         {
             await _swal!.FireAsync(
                 title == null ? title : _localizer[title],
