@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.Json;
 
-namespace Necnat.Abp.NnLibCommon.Helpers
+namespace Necnat.Abp.NnLibCommon.Utils
 {
     public static class ConsoleEx
     {
