@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using CurrieTechnologies.Razor.SweetAlert2;
+using Microsoft.Extensions.DependencyInjection;
 using Necnat.Abp.NnLibCommon.Blazor.Menus;
 using Volo.Abp.AspNetCore.Components.Web.Theming;
 using Volo.Abp.AspNetCore.Components.Web.Theming.Routing;
@@ -33,5 +34,7 @@ public class NnLibCommonBlazorModule : AbpModule
         {
             options.AdditionalAssemblies.Add(typeof(NnLibCommonBlazorModule).Assembly);
         });
+
+        context.Services.AddSweetAlert2();
     }
 }
