@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Necnat.Abp.NnLibCommon</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Necnat.Abp.NnLibCommon.Application\Necnat.Abp.NnLibCommon.Application.csproj" />
+    <ProjectReference Include="..\Necnat.Abp.NnLibCommon.Domain.Tests\Necnat.Abp.NnLibCommon.Domain.Tests.csproj" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+  </ItemGroup>
+
+</Project>

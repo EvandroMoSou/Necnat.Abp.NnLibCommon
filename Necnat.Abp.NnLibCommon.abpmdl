@@ -1,0 +1,111 @@
+{
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {},
+      "host": {}
+    }
+  },
+  "packages": {
+    "Necnat.Abp.NnLibCommon.Domain.Shared": {
+      "path": "src/Necnat.Abp.NnLibCommon.Domain.Shared/Necnat.Abp.NnLibCommon.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "Necnat.Abp.NnLibCommon.Domain": {
+      "path": "src/Necnat.Abp.NnLibCommon.Domain/Necnat.Abp.NnLibCommon.Domain.abppkg",
+      "folder": "src"
+    },
+    "Necnat.Abp.NnLibCommon.Application.Contracts": {
+      "path": "src/Necnat.Abp.NnLibCommon.Application.Contracts/Necnat.Abp.NnLibCommon.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "Necnat.Abp.NnLibCommon.Application": {
+      "path": "src/Necnat.Abp.NnLibCommon.Application/Necnat.Abp.NnLibCommon.Application.abppkg",
+      "folder": "src"
+    },
+    "Necnat.Abp.NnLibCommon.EntityFrameworkCore": {
+      "path": "src/Necnat.Abp.NnLibCommon.EntityFrameworkCore/Necnat.Abp.NnLibCommon.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "Necnat.Abp.NnLibCommon.MongoDB": {
+      "path": "src/Necnat.Abp.NnLibCommon.MongoDB/Necnat.Abp.NnLibCommon.MongoDB.abppkg",
+      "folder": "src"
+    },
+    "Necnat.Abp.NnLibCommon.HttpApi": {
+      "path": "src/Necnat.Abp.NnLibCommon.HttpApi/Necnat.Abp.NnLibCommon.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "Necnat.Abp.NnLibCommon.HttpApi.Client": {
+      "path": "src/Necnat.Abp.NnLibCommon.HttpApi.Client/Necnat.Abp.NnLibCommon.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "Necnat.Abp.NnLibCommon.TestBase": {
+      "path": "test/Necnat.Abp.NnLibCommon.TestBase/Necnat.Abp.NnLibCommon.TestBase.abppkg",
+      "folder": "test"
+    },
+    "Necnat.Abp.NnLibCommon.EntityFrameworkCore.Tests": {
+      "path": "test/Necnat.Abp.NnLibCommon.EntityFrameworkCore.Tests/Necnat.Abp.NnLibCommon.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "Necnat.Abp.NnLibCommon.MongoDB.Tests": {
+      "path": "test/Necnat.Abp.NnLibCommon.MongoDB.Tests/Necnat.Abp.NnLibCommon.MongoDB.Tests.abppkg",
+      "folder": "test"
+    },
+    "Necnat.Abp.NnLibCommon.Domain.Tests": {
+      "path": "test/Necnat.Abp.NnLibCommon.Domain.Tests/Necnat.Abp.NnLibCommon.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "Necnat.Abp.NnLibCommon.Application.Tests": {
+      "path": "test/Necnat.Abp.NnLibCommon.Application.Tests/Necnat.Abp.NnLibCommon.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "Necnat.Abp.NnLibCommon.HttpApi.Host": {
+      "path": "host/Necnat.Abp.NnLibCommon.HttpApi.Host/Necnat.Abp.NnLibCommon.HttpApi.Host.abppkg",
+      "folder": "host"
+    },
+    "Necnat.Abp.NnLibCommon.Web": {
+      "path": "src/Necnat.Abp.NnLibCommon.Web/Necnat.Abp.NnLibCommon.Web.abppkg",
+      "folder": "src"
+    },
+    "Necnat.Abp.NnLibCommon.HttpApi.Client.ConsoleTestApp": {
+      "path": "test/Necnat.Abp.NnLibCommon.HttpApi.Client.ConsoleTestApp/Necnat.Abp.NnLibCommon.HttpApi.Client.ConsoleTestApp.abppkg",
+      "folder": "test"
+    },
+    "Necnat.Abp.NnLibCommon.Web.Host": {
+      "path": "host/Necnat.Abp.NnLibCommon.Web.Host/Necnat.Abp.NnLibCommon.Web.Host.abppkg",
+      "folder": "host"
+    },
+    "Necnat.Abp.NnLibCommon.AuthServer": {
+      "path": "host/Necnat.Abp.NnLibCommon.AuthServer/Necnat.Abp.NnLibCommon.AuthServer.abppkg",
+      "folder": "host"
+    },
+    "Necnat.Abp.NnLibCommon.Host.Shared": {
+      "path": "host/Necnat.Abp.NnLibCommon.Host.Shared/Necnat.Abp.NnLibCommon.Host.Shared.abppkg",
+      "folder": "host"
+    },
+    "Necnat.Abp.NnLibCommon.Web.Unified": {
+      "path": "host/Necnat.Abp.NnLibCommon.Web.Unified/Necnat.Abp.NnLibCommon.Web.Unified.abppkg",
+      "folder": "host"
+    },
+    "Necnat.Abp.NnLibCommon.Blazor": {
+      "path": "src/Necnat.Abp.NnLibCommon.Blazor/Necnat.Abp.NnLibCommon.Blazor.abppkg",
+      "folder": "src"
+    },
+    "Necnat.Abp.NnLibCommon.Blazor.Host": {
+      "path": "host/Necnat.Abp.NnLibCommon.Blazor.Host/Necnat.Abp.NnLibCommon.Blazor.Host.abppkg",
+      "folder": "host"
+    },
+    "Necnat.Abp.NnLibCommon.Blazor.Server": {
+      "path": "src/Necnat.Abp.NnLibCommon.Blazor.Server/Necnat.Abp.NnLibCommon.Blazor.Server.abppkg",
+      "folder": "src"
+    },
+    "Necnat.Abp.NnLibCommon.Blazor.WebAssembly": {
+      "path": "src/Necnat.Abp.NnLibCommon.Blazor.WebAssembly/Necnat.Abp.NnLibCommon.Blazor.WebAssembly.abppkg",
+      "folder": "src"
+    },
+    "Necnat.Abp.NnLibCommon.Blazor.Server.Host": {
+      "path": "host/Necnat.Abp.NnLibCommon.Blazor.Server.Host/Necnat.Abp.NnLibCommon.Blazor.Server.Host.abppkg",
+      "folder": "host"
+    }
+  }
+}

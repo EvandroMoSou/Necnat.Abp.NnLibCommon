@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.prod.json",
+  "compilerOptions": {
+    "paths": {
+      "@necnat.Abp/nn-lib-common": [
+        "projects/nn-lib-common/src/public-api.ts"
+      ],
+      "@necnat.Abp/nn-lib-common/config": [
+        "projects/nn-lib-common/config/src/public-api.ts"
+      ],
+      "@proxy": ["projects/nn-lib-common/src/lib/proxy/index.ts"],
+      "@proxy/*": ["projects/nn-lib-common/src/lib/proxy/*"]
+    }
+  }
+}
