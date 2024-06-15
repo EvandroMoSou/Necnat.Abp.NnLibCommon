@@ -14,7 +14,7 @@
                       TextField="@((item) => $"[{item.UserName}] {item.Name}")"
                       ValueField="@((item) => item)"
                       @bind-SelectedValue="@_selectedValue"
-                      Placeholder="@(string.Format(L["Enter at least {0} characters to start the search..."], SearchValueMinLength))"
+                      Placeholder="@(string.Format(L["Enter at least {0} character(s) to start the search..."], SearchValueMinLength))"
                       Disabled="@Disabled"
                       Validator="Validator!"
                       Filter="AutocompleteFilter.Contains">
@@ -42,10 +42,10 @@
         </DataGridEntityActionsColumn>
         <DataGridColumn TItem="IdentityUserDto"
                         Field="@nameof(IdentityUserDto.UserName)"
-                        Caption="@L["UserName"]"></DataGridColumn>
+                        Caption="@L[NndentityUserConsts.UserNameDisplay]"></DataGridColumn>
         <DataGridColumn TItem="IdentityUserDto"
                         Field="@nameof(IdentityUserDto.Name)"
-                        Caption="@L["Name"]"></DataGridColumn>
+                        Caption="@L[NndentityUserConsts.NameDisplay]"></DataGridColumn>
     </DataGridColumns>
 </DataGrid>
 

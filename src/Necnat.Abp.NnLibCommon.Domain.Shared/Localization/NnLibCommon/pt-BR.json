@@ -43,7 +43,7 @@
     "Invalid Object!": "Objeto Inválido!",
     "There are still fields that need your attention.": "Ainda existem campos que precisam de sua atenção.",
     "Select...": "Selecione...",
-    "Enter at least {0} letter(s) to start the search...": "Digite ao menos {0} letra(s) para iniciar a busca...",
+    "Enter at least {0} character(s) to start the search...": "Digite ao menos {0} caractere(s) para iniciar a busca...",
     "Sorry... {0} was not found!": "Desculpe... {0} não foi encontrado!",
     "Add": "Adicionar",
     "All": "Todos",
@@ -51,6 +51,9 @@
     "Multiple": "Multiplo",
 
     "User": "Usuário",
-    "Users": "Usuários"
+    "Users": "Usuários",
+
+    "Username": "Nome de Usuário",
+    "Name": "Nome"
   }
 }

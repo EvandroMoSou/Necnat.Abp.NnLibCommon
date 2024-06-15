@@ -8,7 +8,7 @@
     <RootNamespace>Necnat.Abp.NnLibCommon</RootNamespace>
     <UserSecretsId>2abe88dc-28fd-4e41-ba46-02c7c56d2cc3</UserSecretsId>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>0.1.6</Version>
+    <Version>0.1.7</Version>
   </PropertyGroup>
 
   <ItemGroup>

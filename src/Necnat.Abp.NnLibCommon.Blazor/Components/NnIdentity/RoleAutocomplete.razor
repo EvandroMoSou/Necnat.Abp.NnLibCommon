@@ -18,7 +18,7 @@ else
                   ValueField="@((item) => item)"
                   SelectedValue="@SelectedValue"
                   SelectedValueChanged="@SelectedValueChanged"
-                  Placeholder="@string.Format(L["Enter at least {0} letter(s) to start the search..."], SearchValueMinLength)"
+                  Placeholder="@string.Format(L["Enter at least {0} character(s) to start the search..."], SearchValueMinLength)"
                   Disabled="@Disabled"
                   Validator="Validator!"
                   Filter="AutocompleteFilter.Contains">
