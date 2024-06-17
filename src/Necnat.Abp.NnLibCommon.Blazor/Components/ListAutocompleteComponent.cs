@@ -1,6 +1,7 @@
 ﻿using Blazorise;
 using Blazorise.Components;
 using Microsoft.AspNetCore.Components;
+using Necnat.Abp.NnLibCommon.Blazor.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -38,10 +39,10 @@ namespace Necnat.Abp.NnLibCommon.Blazor.Components
         public EventCallback<ObservableCollection<TEntityDto>?> SelectedValueListChanged { get; set; }
 
         [Parameter]
-        public Func<TEntityDto, Task<TKey>>? AddMethod { get; set; }
+        public EventCallback<EventCallbackReturnParameter<TEntityDto, TKey>> AddMethod { get; set; }
 
         [Parameter]
-        public Func<TKey, Task>? RemoveMethod { get; set; }
+        public EventCallback<TKey> RemoveMethod { get; set; }
 
         public bool IsLoading;
         public bool IsLoadingAutomatic = true;
@@ -60,8 +61,8 @@ namespace Necnat.Abp.NnLibCommon.Blazor.Components
         {
             if (_selectedValue != null)
             {
-                if (AddMethod != null)
-                    _selectedValue.Id = await AddMethod.Invoke(_selectedValue);
+                if (AddMethod.HasDelegate)
+                    _selectedValue.Id = await AddMethod.InvokeReturnAsync(_selectedValue);
 
                 SelectedValueList!.Add(_selectedValue);
                 await SelectedValueListChanged.InvokeAsync(SelectedValueList);
@@ -73,8 +74,8 @@ namespace Necnat.Abp.NnLibCommon.Blazor.Components
 
         public virtual async Task RemoveAsync(TEntityDto dto)
         {
-            if (RemoveMethod != null)
-                await RemoveMethod.Invoke(dto.Id);
+            if (RemoveMethod.HasDelegate)
+                await RemoveMethod.InvokeAsync(dto.Id);
 
             SelectedValueList!.Remove(dto);
             await SelectedValueListChanged.InvokeAsync(SelectedValueList);
