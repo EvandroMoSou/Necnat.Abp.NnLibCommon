@@ -39,10 +39,10 @@ namespace Necnat.Abp.NnLibCommon.Blazor.Components
         public EventCallback<ObservableCollection<TEntityDto>?> SelectedValueListChanged { get; set; }
 
         [Parameter]
-        public EventCallback<EventCallbackReturnParameter<TEntityDto, TKey>> AddMethod { get; set; }
+        public Func<TEntityDto, Task<TKey>>? AddMethod { get; set; }
 
         [Parameter]
-        public EventCallback<TKey> RemoveMethod { get; set; }
+        public Func<TKey, Task>? RemoveMethod { get; set; }
 
         public bool IsLoading;
         public bool IsLoadingAutomatic = true;
@@ -61,24 +61,30 @@ namespace Necnat.Abp.NnLibCommon.Blazor.Components
         {
             if (_selectedValue != null)
             {
-                if (AddMethod.HasDelegate)
-                    _selectedValue.Id = await AddMethod.InvokeReturnAsync(_selectedValue);
+                if (AddMethod != null)
+                    _selectedValue.Id = await AddMethod.Invoke(_selectedValue);
 
-                SelectedValueList!.Add(_selectedValue);
-                await SelectedValueListChanged.InvokeAsync(SelectedValueList);
+                await InvokeAsync(async () =>
+                {
+                    SelectedValueList!.Add(_selectedValue);
+                    await SelectedValueListChanged.InvokeAsync(SelectedValueList);
 
-                _selectedValue = default;
-                await _autocomplete!.Clear();
+                    _selectedValue = default;
+                    await _autocomplete!.Clear();
+                });
             }
         }
 
         public virtual async Task RemoveAsync(TEntityDto dto)
         {
-            if (RemoveMethod.HasDelegate)
-                await RemoveMethod.InvokeAsync(dto.Id);
+            if (RemoveMethod != null)
+                await RemoveMethod.Invoke(dto.Id);
 
-            SelectedValueList!.Remove(dto);
-            await SelectedValueListChanged.InvokeAsync(SelectedValueList);
+            await InvokeAsync(async () =>
+            {
+                SelectedValueList!.Remove(dto);
+                await SelectedValueListChanged.InvokeAsync(SelectedValueList);
+            });
         }
 
         #region Autocomplete
