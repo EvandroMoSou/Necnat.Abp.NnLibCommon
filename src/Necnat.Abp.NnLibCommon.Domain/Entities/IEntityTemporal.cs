@@ -5,7 +5,7 @@ namespace Necnat.Abp.NnLibCommon.Entities
 {
     public interface IEntityTemporal<TKey> : IEntity<TKey>
     {
-        DateTime PeriodStart { get; set; }
-        DateTime? PeriodEnd { get; set; }
+        public DateTime PeriodStart { get; set; }
+        public DateTime? PeriodEnd { get; set; }
     }
 }
