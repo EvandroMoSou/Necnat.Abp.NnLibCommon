@@ -23,14 +23,14 @@ namespace Necnat.Abp.NnLibCommon.Repositories
         public async Task<TEntity?> FindByIdAsync(DateTime period, TKey id)
         {
             var dbSet = await GetDbSetAsync();
-            var temporal = await dbSet.Where(x => x.Id!.Equals(id) && x.PeriodStart <= period && (x.PeriodEnd == null || x.PeriodEnd > period)).FirstOrDefaultAsync();
+            var temporal = await dbSet.Where(x => x.Id!.Equals(id) && x.PeriodStart <= period && (x.PeriodEnd == null || x.PeriodEnd > period)).OrderBy(x => x.PeriodEnd).FirstOrDefaultAsync();
             return MapToEntity(temporal);
         }
 
         public async Task<List<TEntity>> GetListByIdListAsync(DateTime period, List<TKey> idList)
         {
             var dbSet = await GetDbSetAsync();
-            var temporalList = await dbSet.Where(x => idList.Contains(x.Id) && x.PeriodStart <= period && (x.PeriodEnd == null || x.PeriodEnd > period)).ToListAsync();
+            var temporalList = await dbSet.Where(x => idList.Contains(x.Id) && x.PeriodStart <= period && (x.PeriodEnd == null || x.PeriodEnd > period)).OrderBy(x => x.PeriodEnd).ToListAsync();
             return MapToEntity(temporalList);
         }
 
