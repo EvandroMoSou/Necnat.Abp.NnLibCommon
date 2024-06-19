@@ -1,5 +1,6 @@
 ﻿using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.Extensions.DependencyInjection;
+using Necnat.Abp.NnLibCommon.Blazor.Helpers;
 using Necnat.Abp.NnLibCommon.Blazor.Menus;
 using Volo.Abp.AspNetCore.Components.Web.Theming;
 using Volo.Abp.AspNetCore.Components.Web.Theming.Routing;
@@ -36,5 +37,6 @@ public class NnLibCommonBlazorModule : AbpModule
         });
 
         context.Services.AddSweetAlert2();
+        context.Services.AddTransient<IPageHistoryState, PageHistoryState>();
     }
 }

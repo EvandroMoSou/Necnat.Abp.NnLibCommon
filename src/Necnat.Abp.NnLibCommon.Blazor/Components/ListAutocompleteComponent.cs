@@ -18,7 +18,7 @@ namespace Necnat.Abp.NnLibCommon.Blazor.Components
         where TKey : struct
         where TSearchInput : PagedAndSortedResultRequestDto, new()
     {
-        [Inject] protected TAppService? AppService { get; set; }
+        [Inject] protected TAppService AppService { get; set; } = default!;
 
         [Parameter]
         public bool Disabled { get; set; }
@@ -108,7 +108,7 @@ namespace Necnat.Abp.NnLibCommon.Blazor.Components
                     {
                         var searchInput = GetSearchInput(autocompleteReadDataEventArgs.SearchValue);
                         searchInput.MaxResultCount = Qty;
-                        var pagedResultDto = await AppService!.GetListAsync(searchInput);
+                        var pagedResultDto = await AppService.GetListAsync(searchInput);
                         _readData = pagedResultDto.Items;
                     }
                     else

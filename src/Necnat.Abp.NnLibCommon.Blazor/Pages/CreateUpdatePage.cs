@@ -92,7 +92,7 @@
 
 //            if (EntityId != null && !EntityId.Equals(default(TKey)))
 //            {
-//                var dto = await AppService!.GetAsync(EntityId);
+//                var dto = await AppService.GetAsync(EntityId);
 //                Entity = MapToCreateInput(dto);
 //            }
 //            else
@@ -166,7 +166,7 @@
 //                await OnCreatingEntityAsync();
 
 //                await CheckCreatePolicyAsync();
-//                await AppService!.CreateAsync(Entity!);
+//                await AppService.CreateAsync(Entity!);
 
 //                await OnCreatedEntityAsync();
 //            }
@@ -204,7 +204,7 @@
 //                await OnUpdatingEntityAsync();
 
 //                await CheckUpdatePolicyAsync();
-//                await AppService!.UpdateAsync(EntityId!, Entity!);
+//                await AppService.UpdateAsync(EntityId!, Entity!);
 
 //                await OnUpdatedEntityAsync();
 //            }

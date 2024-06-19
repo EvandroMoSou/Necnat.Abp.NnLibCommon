@@ -15,11 +15,11 @@ namespace Necnat.Abp.NnLibCommon.Blazor.Components
         where TKey : struct
         where TSearchInput : OptionalPagedAndSortedResultRequestDto, new()
     {
-        [Inject] protected TAppService? AppService { get; set; }
+        [Inject] protected TAppService AppService { get; set; } = default!;
 
         protected override async Task GetEntitiesAsync()
         {
-            var pagedResultDto = await AppService!.GetListAsync(new TSearchInput { IsPaged = false });
+            var pagedResultDto = await AppService.GetListAsync(new TSearchInput { IsPaged = false });
             Data = pagedResultDto.Items.ToList();
 
             await base.GetEntitiesAsync();

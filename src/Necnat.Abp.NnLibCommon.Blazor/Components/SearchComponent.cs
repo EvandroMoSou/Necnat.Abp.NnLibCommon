@@ -123,7 +123,7 @@
 //                await InvokeAsync(StateHasChanged);
 
 //                await UpdateGetListInputAsync();
-//                var result = await AppService!.SearchAsync(SearchInput);
+//                var result = await AppService.SearchAsync(SearchInput);
 //                Entities = result.Items;
 //                TotalCount = (int?)result.TotalCount;
 

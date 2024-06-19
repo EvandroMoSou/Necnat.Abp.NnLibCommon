@@ -193,7 +193,7 @@
 //            {
 //                await CheckDeletePolicyAsync();
 //                await OnDeletingEntityAsync();
-//                await AppService!.DeleteAsync(entity.Id);
+//                await AppService.DeleteAsync(entity.Id);
 //                await OnDeletedEntityAsync();
 //            }
 //            catch (Exception ex)

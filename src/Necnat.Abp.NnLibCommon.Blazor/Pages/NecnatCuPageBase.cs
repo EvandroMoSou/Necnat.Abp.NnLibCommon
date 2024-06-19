@@ -2,7 +2,9 @@
 using Localization.Resources.AbpUi;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Localization;
+using Necnat.Abp.NnLibCommon.Blazor.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -55,49 +57,21 @@ public abstract class NecnatCuPageBase<
         TEntityDto,
         TKey,
         TGetListInput,
-        TCreateInput>
-    : NecnatCuPageBase<
-        TAppService,
-        TEntityDto,
-        TKey,
-        TGetListInput,
-        TCreateInput,
-        TCreateInput>
-    where TAppService : ICrudAppService<
-        TEntityDto,
-        TKey,
-        TGetListInput,
-        TCreateInput>
-    where TEntityDto : IEntityDto<TKey>
-    where TCreateInput : class, new()
-    where TGetListInput : new()
-{
-}
-
-public abstract class NecnatCuPageBase<
-        TAppService,
-        TEntityDto,
-        TKey,
-        TGetListInput,
-        TCreateInput,
-        TUpdateInput>
+        TCreateUpdateInput>
     : NecnatCuPageBase<
         TAppService,
         TEntityDto,
         TEntityDto,
         TKey,
         TGetListInput,
-        TCreateInput,
-        TUpdateInput>
+        TCreateUpdateInput>
     where TAppService : ICrudAppService<
         TEntityDto,
         TKey,
         TGetListInput,
-        TCreateInput,
-        TUpdateInput>
+        TCreateUpdateInput>
     where TEntityDto : IEntityDto<TKey>
-    where TCreateInput : class, new()
-    where TUpdateInput : class, new()
+    where TCreateUpdateInput : class, new()
     where TGetListInput : new()
 {
 }
@@ -108,30 +82,26 @@ public abstract class NecnatCuPageBase<
         TGetListOutputDto,
         TKey,
         TGetListInput,
-        TCreateInput,
-        TUpdateInput>
+        TCreateUpdateInput>
     : NecnatCuPageBase<
         TAppService,
         TGetOutputDto,
         TGetListOutputDto,
         TKey,
         TGetListInput,
-        TCreateInput,
-        TUpdateInput,
+        TCreateUpdateInput,
         TGetListOutputDto,
-        TCreateInput,
-        TUpdateInput>
+        TCreateUpdateInput>
     where TAppService : ICrudAppService<
         TGetOutputDto,
         TGetListOutputDto,
         TKey,
         TGetListInput,
-        TCreateInput,
-        TUpdateInput>
+        TCreateUpdateInput,
+        TCreateUpdateInput>
     where TGetOutputDto : IEntityDto<TKey>
     where TGetListOutputDto : IEntityDto<TKey>
-    where TCreateInput : class, new()
-    where TUpdateInput : class, new()
+    where TCreateUpdateInput : class, new()
     where TGetListInput : new()
 {
 }
@@ -142,35 +112,32 @@ public abstract class NecnatCuPageBase<
         TGetListOutputDto,
         TKey,
         TGetListInput,
-        TCreateInput,
-        TUpdateInput,
+        TCreateUpdateInput,
         TListViewModel,
-        TCreateViewModel,
-        TUpdateViewModel>
+        TCreateUpdateViewModel>
     : AbpComponentBase
     where TAppService : ICrudAppService<
         TGetOutputDto,
         TGetListOutputDto,
         TKey,
         TGetListInput,
-        TCreateInput,
-        TUpdateInput>
+        TCreateUpdateInput,
+        TCreateUpdateInput>
     where TGetOutputDto : IEntityDto<TKey>
     where TGetListOutputDto : IEntityDto<TKey>
-    where TCreateInput : class
-    where TUpdateInput : class
+    where TCreateUpdateInput : class
     where TGetListInput : new()
     where TListViewModel : IEntityDto<TKey>
-    where TCreateViewModel : class, new()
-    where TUpdateViewModel : class, new()
+    where TCreateUpdateViewModel : class, new()
 {
-    [Inject] protected TAppService AppService { get; set; } = default!;
-    [Inject] protected IStringLocalizer<AbpUiResource> UiLocalizer { get; set; } = default!;
     [Inject] public IAbpEnumLocalizer AbpEnumLocalizer { get; set; } = default!;
+    [Inject] protected TAppService AppService { get; set; } = default!;
+    [Inject] protected NavigationManager NavigationManager { get; set; } = default!;
+    [Inject] protected IPageHistoryState PageHistoryState { get; set; } = default!;
+    [Inject] protected IStringLocalizer<AbpUiResource> UiLocalizer { get; set; } = default!;
 
-    protected TCreateViewModel NewEntity;
-    protected TKey EditingEntityId = default!;
-    protected TUpdateViewModel EditingEntity;
+    protected TKey EntityId = default!;
+    protected TCreateUpdateViewModel Entity;
     protected Validations? CreateValidationsRef;
     protected Validations? EditValidationsRef;
     protected List<BreadcrumbItem> BreadcrumbItems = new List<BreadcrumbItem>(2);
@@ -183,14 +150,32 @@ public abstract class NecnatCuPageBase<
 
     protected NecnatCuPageBase()
     {
-        NewEntity = new TCreateViewModel();
-        EditingEntity = new TUpdateViewModel();
+        Entity = new TCreateUpdateViewModel();
     }
 
     protected async override Task OnInitializedAsync()
     {
         await TrySetPermissionsAsync();
-        await TrySetEntityActionsAsync();
+
+        var uri = NavigationManager!.ToAbsoluteUri(NavigationManager.Uri);
+        if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("id", out var id))
+        {
+            if (typeof(TKey) == typeof(Guid))
+                EntityId = (TKey)Convert.ChangeType(new Guid(id.ToString()!), typeof(TKey));
+            else
+                EntityId = (TKey)Convert.ChangeType(id.ToString(), typeof(TKey));
+        }
+
+        if (EntityId != null && !EntityId.Equals(default(TKey)))
+        {
+            var dto = await AppService.GetAsync(EntityId);
+            Entity = MapToEntity(dto);
+        }
+        else
+        {
+            Entity = InitializeCreateUpdateViewModel();
+        }
+
         await InvokeAsync(StateHasChanged);
     }
 
@@ -227,33 +212,33 @@ public abstract class NecnatCuPageBase<
         }
     }
 
-   
-    protected virtual TUpdateViewModel MapToEditingEntity(TGetOutputDto entityDto)
+    protected virtual TCreateUpdateViewModel InitializeCreateUpdateViewModel()
     {
-        return ObjectMapper.Map<TGetOutputDto, TUpdateViewModel>(entityDto);
+        return new TCreateUpdateViewModel();
     }
 
-    protected virtual TCreateInput MapToCreateInput(TCreateViewModel createViewModel)
+    protected virtual TCreateUpdateViewModel MapToEntity(TGetOutputDto entityDto)
     {
-        if (typeof(TCreateInput) == typeof(TCreateViewModel))
+        return ObjectMapper.Map<TGetOutputDto, TCreateUpdateViewModel>(entityDto);
+    }
+
+    protected virtual TCreateUpdateInput MapToCreateUpdateInput(TCreateUpdateViewModel viewModel)
+    {
+        if (typeof(TCreateUpdateInput) == typeof(TCreateUpdateViewModel))
         {
-            return createViewModel.As<TCreateInput>();
+            return viewModel.As<TCreateUpdateInput>();
         }
 
-        return ObjectMapper.Map<TCreateViewModel, TCreateInput>(createViewModel);
+        return ObjectMapper.Map<TCreateUpdateViewModel, TCreateUpdateInput>(viewModel);
     }
 
-    protected virtual TUpdateInput MapToUpdateInput(TUpdateViewModel updateViewModel)
+    protected void GoBackPage()
     {
-        if (typeof(TUpdateInput) == typeof(TUpdateViewModel))
-        {
-            return updateViewModel.As<TUpdateInput>();
-        }
-
-        return ObjectMapper.Map<TUpdateViewModel, TUpdateInput>(updateViewModel);
+        if (PageHistoryState.CanGoBack())
+            NavigationManager.NavigateTo(PageHistoryState.GetGoBackPage()?.Uri ?? "/");
     }
 
-    protected virtual async Task CreateEntityAsync()
+    protected virtual async Task SaveEntityAsync()
     {
         try
         {
@@ -264,13 +249,21 @@ public abstract class NecnatCuPageBase<
             }
             if (validate)
             {
-                await OnCreatingEntityAsync();
+                await OnSavingEntityAsync();
 
-                await CheckCreatePolicyAsync();
-                var createInput = MapToCreateInput(NewEntity);
-                await AppService.CreateAsync(createInput);
+                if (EntityId == null || EntityId.Equals(default))
+                    await CheckCreatePolicyAsync();
+                else
+                    await CheckUpdatePolicyAsync();
 
-                await OnCreatedEntityAsync();
+                var createInput = MapToCreateUpdateInput(Entity);
+
+                if (EntityId == null || EntityId.Equals(default))
+                    await AppService.CreateAsync(createInput);
+                else
+                    await AppService.UpdateAsync(EntityId, createInput);
+
+                await OnSavedEntityAsync();
             }
         }
         catch (Exception ex)
@@ -279,48 +272,12 @@ public abstract class NecnatCuPageBase<
         }
     }
 
-    protected virtual Task OnCreatingEntityAsync()
+    protected virtual Task OnSavingEntityAsync()
     {
         return Task.CompletedTask;
     }
 
-    protected virtual async Task OnCreatedEntityAsync()
-    {
-        await Notify.Success(L["SavedSuccessfully"]);
-    }
-
-    protected virtual async Task UpdateEntityAsync()
-    {
-        try
-        {
-            var validate = true;
-            if (EditValidationsRef != null)
-            {
-                validate = await EditValidationsRef.ValidateAll();
-            }
-            if (validate)
-            {
-                await OnUpdatingEntityAsync();
-
-                await CheckUpdatePolicyAsync();
-                var updateInput = MapToUpdateInput(EditingEntity);
-                await AppService.UpdateAsync(EditingEntityId, updateInput);
-
-                await OnUpdatedEntityAsync();
-            }
-        }
-        catch (Exception ex)
-        {
-            await HandleErrorAsync(ex);
-        }
-    }
-
-    protected virtual Task OnUpdatingEntityAsync()
-    {
-        return Task.CompletedTask;
-    }
-
-    protected virtual async Task OnUpdatedEntityAsync()
+    protected virtual async Task OnSavedEntityAsync()
     {
         await Notify.Success(L["SavedSuccessfully"]);
     }
@@ -353,21 +310,6 @@ public abstract class NecnatCuPageBase<
     }
 
     protected virtual ValueTask SetBreadcrumbItemsAsync()
-    {
-        return ValueTask.CompletedTask;
-    }
-
-    private async ValueTask TrySetEntityActionsAsync()
-    {
-        if (IsDisposed)
-        {
-            return;
-        }
-
-        await SetEntityActionsAsync();
-    }
-
-    protected virtual ValueTask SetEntityActionsAsync()
     {
         return ValueTask.CompletedTask;
     }
