@@ -9,7 +9,7 @@ using Volo.Abp.AspNetCore.Components;
 
 namespace Necnat.Abp.NnLibCommon.Blazor.Components
 {
-    public abstract class SelectListCmptBase<TAppService, TEntityDto, TKey, TSearchInput> : SelectListComponent<TEntityDto, TKey>
+    public abstract class SelectListCmptBase<TAppService, TEntityDto, TKey, TSearchInput> : SelectListCmptBase<TEntityDto, TKey>
         where TAppService : ICrudAppService<TEntityDto, TKey, TSearchInput>
         where TEntityDto : IEntityDto<TKey>
         where TKey : struct
@@ -26,7 +26,7 @@ namespace Necnat.Abp.NnLibCommon.Blazor.Components
         }
     }
 
-    public abstract class SelectListComponent<TEntityDto, TKey> : AbpComponentBase
+    public abstract class SelectListCmptBase<TEntityDto, TKey> : AbpComponentBase
         where TEntityDto : IEntityDto<TKey>
         where TKey : struct
     {

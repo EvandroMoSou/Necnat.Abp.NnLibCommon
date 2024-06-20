@@ -1,0 +1,29 @@
+﻿@using Blazorise
+@using Necnat.Abp.NnLibCommon.Enums
+
+<Select TValue="int?" SelectedValue="@_internalSelectedValue" SelectedValueChanged="@OnSelectedValueChanged">
+    <SelectItem Value="@(default(int?))">__</SelectItem>
+    @foreach (HttpRequestMethod enumValue in Enum.GetValues(typeof(HttpRequestMethod)))
+    {
+        <SelectItem Value="@((int)enumValue)">@enumValue.ToString()</SelectItem>
+    }
+</Select>
+
+@namespace Necnat.Abp.NnLibCommon.Blazor.Components
+@code {
+
+    [Parameter]
+    public HttpRequestMethod? SelectedValue { get; set; }
+
+    [Parameter]
+    public EventCallback<HttpRequestMethod?> SelectedValueChanged { get; set; }
+
+    int? _internalSelectedValue;
+    async Task OnSelectedValueChanged(int? value)
+    {
+        _internalSelectedValue = value;
+
+        SelectedValue = value == null ? null : (HttpRequestMethod)value;
+        await SelectedValueChanged.InvokeAsync(SelectedValue);
+    }
+}
