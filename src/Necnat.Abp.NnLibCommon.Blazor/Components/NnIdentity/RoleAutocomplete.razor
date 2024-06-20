@@ -2,7 +2,7 @@
 @using Necnat.Abp.NnLibCommon.Domains.NnIdentity
 @using Necnat.Abp.NnLibCommon.Localization
 @using Volo.Abp.Identity
-@inherits AutocompleteComponent<INnIdentityRoleAppService, IdentityRoleDto, Guid, NnIdentityRoleResultRequestDto>
+@inherits AutocompleteCmptBase<INnIdentityRoleAppService, IdentityRoleDto, Guid, NnIdentityRoleResultRequestDto>
 
 @if (IsLoading)
 {

@@ -2,7 +2,7 @@
 @using Necnat.Abp.NnLibCommon.Domains.NnIdentity
 @using Necnat.Abp.NnLibCommon.Localization
 @using Volo.Abp.Identity
-@inherits AutocompleteComponent<INnIdentityUserAppService, IdentityUserDto, Guid, NnIdentityUserResultRequestDto>
+@inherits AutocompleteCmptBase<INnIdentityUserAppService, IdentityUserDto, Guid, NnIdentityUserResultRequestDto>
 
 @if (IsLoading)
 {

@@ -11,7 +11,7 @@ using Volo.Abp.AspNetCore.Components;
 
 namespace Necnat.Abp.NnLibCommon.Blazor.Components
 {
-    public abstract class AutocompleteComponent<TAppService, TEntityDto, TKey, TSearchInput> : AbpComponentBase
+    public abstract class AutocompleteCmptBase<TAppService, TEntityDto, TKey, TSearchInput> : AbpComponentBase
         where TAppService : ICrudAppService<TEntityDto, TKey, TSearchInput>
         where TEntityDto : IEntityDto<TKey>
         where TKey : struct

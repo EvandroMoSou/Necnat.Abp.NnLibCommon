@@ -139,7 +139,7 @@ public abstract class NecnatRdPageBase<
         TListViewModel,
         TCreateViewModel,
         TUpdateViewModel>
-    : NecnatReadPage<
+    : NecnatReadPageBase<
         TAppService,
         TGetOutputDto,
         TGetListOutputDto,

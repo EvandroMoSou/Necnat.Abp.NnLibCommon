@@ -23,11 +23,11 @@ using Volo.Abp.ObjectExtending.Modularity;
 
 namespace Necnat.Abp.NnLibCommon.Blazor.Pages;
 
-public abstract class NecnatReadPage<
+public abstract class NecnatReadPageBase<
         TAppService,
         TEntityDto,
         TKey>
-    : NecnatReadPage<
+    : NecnatReadPageBase<
         TAppService,
         TEntityDto,
         TKey,
@@ -39,12 +39,12 @@ public abstract class NecnatReadPage<
 {
 }
 
-public abstract class NecnatReadPage<
+public abstract class NecnatReadPageBase<
         TAppService,
         TEntityDto,
         TKey,
         TGetListInput>
-    : NecnatReadPage<
+    : NecnatReadPageBase<
         TAppService,
         TEntityDto,
         TKey,
@@ -59,13 +59,13 @@ public abstract class NecnatReadPage<
 {
 }
 
-public abstract class NecnatReadPage<
+public abstract class NecnatReadPageBase<
         TAppService,
         TEntityDto,
         TKey,
         TGetListInput,
         TCreateInput>
-    : NecnatReadPage<
+    : NecnatReadPageBase<
         TAppService,
         TEntityDto,
         TKey,
@@ -83,14 +83,14 @@ public abstract class NecnatReadPage<
 {
 }
 
-public abstract class NecnatReadPage<
+public abstract class NecnatReadPageBase<
         TAppService,
         TEntityDto,
         TKey,
         TGetListInput,
         TCreateInput,
         TUpdateInput>
-    : NecnatReadPage<
+    : NecnatReadPageBase<
         TAppService,
         TEntityDto,
         TEntityDto,
@@ -111,7 +111,7 @@ public abstract class NecnatReadPage<
 {
 }
 
-public abstract class NecnatReadPage<
+public abstract class NecnatReadPageBase<
         TAppService,
         TGetOutputDto,
         TGetListOutputDto,
@@ -119,7 +119,7 @@ public abstract class NecnatReadPage<
         TGetListInput,
         TCreateInput,
         TUpdateInput>
-    : NecnatReadPage<
+    : NecnatReadPageBase<
         TAppService,
         TGetOutputDto,
         TGetListOutputDto,
@@ -145,7 +145,7 @@ public abstract class NecnatReadPage<
 {
 }
 
-public abstract class NecnatReadPage<
+public abstract class NecnatReadPageBase<
         TAppService,
         TGetOutputDto,
         TGetListOutputDto,
@@ -201,7 +201,7 @@ public abstract class NecnatReadPage<
     public bool HasCreatePermission { get; set; }
     public bool HasUpdatePermission { get; set; }
 
-    protected NecnatReadPage()
+    protected NecnatReadPageBase()
     {
         TableColumns = new TableColumnDictionary();
         EntityActions = new EntityActionDictionary();
