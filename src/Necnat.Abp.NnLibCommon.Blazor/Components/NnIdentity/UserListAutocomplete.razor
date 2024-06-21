@@ -9,25 +9,24 @@
     <Field ColumnSize="ColumnSize.Is10">
         <Autocomplete @ref="_autocomplete" TItem="IdentityUserDto"
                       TValue="IdentityUserDto"
-                      Data="@_readData"
+                      Data="@Data"
                       ReadData="@OnHandleReadDataAsync"
                       TextField="@((item) => $"[{item.UserName}] {item.Name}")"
                       ValueField="@((item) => item)"
-                      @bind-SelectedValue="@_selectedValue"
+                      @bind-SelectedValue="@_internalSelectedValue"
                       Placeholder="@(string.Format(L["Enter at least {0} character(s) to start the search..."], SearchValueMinLength))"
                       Disabled="@Disabled"
-                      Validator="Validator!"
                       Filter="AutocompleteFilter.Contains">
             <NotFoundContent>@string.Format(L["Sorry... {0} was not found!"], context)</NotFoundContent>
         </Autocomplete>
     </Field>
     <Field ColumnSize="ColumnSize.Is2">
-        <Button Class="w-100" Color="Color.Primary" Clicked="AddAsync" Disabled="@(_selectedValue == null)"><i class="fas fa-plus"></i></Button>
+        <Button Class="w-100" Color="Color.Primary" Clicked="AddAsync" Disabled="@(_internalSelectedValue == null)"><i class="fas fa-plus"></i></Button>
     </Field>
 </Fields>
 
 <DataGrid TItem="IdentityUserDto"
-          Data="SelectedValueList"
+          Data="_internalSelectedValueList"
           ShowPager="true"
           PageSize="PageSize">
     <DataGridColumns>

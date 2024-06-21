@@ -13,6 +13,7 @@ using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Repositories;
 
 namespace Necnat.Abp.NnLibCommon.Services;
+
 public abstract class NecnatAppService<TEntity, TEntityDto, TKey, TRepository>
     : NecnatAppService<TEntity, TEntityDto, TKey, OptionalPagedAndSortedResultRequestDto, TRepository>
     where TEntity : class, IEntity<TKey>

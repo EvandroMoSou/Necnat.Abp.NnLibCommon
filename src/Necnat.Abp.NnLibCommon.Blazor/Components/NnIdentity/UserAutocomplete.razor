@@ -4,7 +4,7 @@
 @using Volo.Abp.Identity
 @inherits AutocompleteCmptBase<INnIdentityUserAppService, IdentityUserDto, Guid, NnIdentityUserResultRequestDto>
 
-@if (IsLoading)
+@if (_isLoading)
 {
     <div class="animated-background loading-input-height"></div>
 }
@@ -12,15 +12,15 @@ else
 {
     <Autocomplete TItem="IdentityUserDto"
                   TValue="IdentityUserDto"
-                  Data="@_readData"
+                  Data="@Data"
                   ReadData="@OnHandleReadData"
                   TextField="@((item) => $"[{item.UserName}] {item.Name}")"
                   ValueField="@((item) => item)"
-                  SelectedValue="@SelectedValue"
-                  SelectedValueChanged="@SelectedValueChanged"
+                  SelectedValue="@_internalSelectedValue"
+                  SelectedValueChanged="@OnSelectedValueChangedAsync"
                   Placeholder="@string.Format(L["Enter at least {0} letter(s) to start the search..."], SearchValueMinLength)"
                   Disabled="@Disabled"
-                  Validator="Validator!"
+                  Validator="Validator"
                   Filter="AutocompleteFilter.Contains">
         <NotFoundContent>@string.Format(L["Sorry... {0} was not found!"], context)</NotFoundContent>
     </Autocomplete>

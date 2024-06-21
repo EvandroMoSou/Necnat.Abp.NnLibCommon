@@ -2,23 +2,23 @@
 @using Necnat.Abp.NnLibCommon.Domains.NnIdentity
 @using Necnat.Abp.NnLibCommon.Localization
 @using Volo.Abp.Identity
-@inherits SelectListCmptBase<INnIdentityRoleAppService, IdentityRoleDto, Guid, NnIdentityRoleResultRequestDto>
+@inherits SelectCmptBase<INnIdentityRoleAppService, IdentityRoleDto, Guid, NnIdentityRoleResultRequestDto>
 
-@if (IsLoading)
+@if (_isLoading)
 {
     <div class="animated-background loading-input-height"></div>
 }
 else
 {
     <SelectList TItem="IdentityRoleDto"
-                TValue="Guid?"
+                TValue="IdentityRoleDto"
                 Data="@Data"
-                TextField="@((item)=>item.Name)"
-                ValueField="@((item)=>item.Id)"
+                TextField="@((item) => item.Name)"
+                ValueField="@((item) => item)"
                 SelectedValue="@_internalSelectedValue"
                 SelectedValueChanged="@OnSelectedValueChangedAsync"
                 DefaultItemText="@L["Select..."]"
-                DefaultItemValue="Guid.Empty" />
+                DefaultItemValue="null" />
 }
 
 @namespace Necnat.Abp.NnLibCommon.Blazor.Components.NnIdentity

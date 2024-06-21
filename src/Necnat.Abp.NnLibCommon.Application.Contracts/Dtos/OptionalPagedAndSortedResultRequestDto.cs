@@ -2,7 +2,7 @@
 
 namespace Necnat.Abp.NnLibCommon.Dtos
 {
-    public class OptionalPagedAndSortedResultRequestDto : PagedAndSortedResultRequestDto
+    public class OptionalPagedAndSortedResultRequestDto : PagedAndSortedResultRequestDto, IOptionalResultRequestDto
     {
         public bool IsPaged { get; set; } = true;
     }

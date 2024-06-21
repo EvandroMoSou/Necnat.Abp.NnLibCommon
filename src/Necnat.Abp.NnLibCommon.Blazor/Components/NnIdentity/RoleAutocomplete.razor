@@ -4,7 +4,7 @@
 @using Volo.Abp.Identity
 @inherits AutocompleteCmptBase<INnIdentityRoleAppService, IdentityRoleDto, Guid, NnIdentityRoleResultRequestDto>
 
-@if (IsLoading)
+@if (_isLoading)
 {
     <div class="animated-background loading-input-height"></div>
 }
@@ -12,12 +12,12 @@ else
 {
     <Autocomplete TItem="IdentityRoleDto"
                   TValue="IdentityRoleDto"
-                  Data="@_readData"
+                  Data="@Data"
                   ReadData="@OnHandleReadData"
                   TextField="@((item) => item.Name)"
                   ValueField="@((item) => item)"
-                  SelectedValue="@SelectedValue"
-                  SelectedValueChanged="@SelectedValueChanged"
+                  SelectedValue="@_internalSelectedValue"
+                  SelectedValueChanged="@OnSelectedValueChangedAsync"
                   Placeholder="@string.Format(L["Enter at least {0} character(s) to start the search..."], SearchValueMinLength)"
                   Disabled="@Disabled"
                   Validator="Validator!"
