@@ -3,7 +3,7 @@
 @using Necnat.Abp.NnLibCommon.Localization
 @using Volo.Abp.BlazoriseUI.Components
 @using Volo.Abp.Identity
-@inherits ListAutocompleteCmptBase<INnIdentityUserAppService, IdentityUserDto, Guid, NnIdentityUserResultRequestDto>
+@inherits ObservableAutocompleteCmptBase<INnIdentityUserAppService, IdentityUserDto, Guid, NnIdentityUserResultRequestDto>
 
 <Fields>
     <Field ColumnSize="ColumnSize.Is10">
@@ -26,7 +26,7 @@
 </Fields>
 
 <DataGrid TItem="IdentityUserDto"
-          Data="_internalSelectedValueList"
+          Data="SelectedEntityDtoList"
           ShowPager="true"
           PageSize="PageSize">
     <DataGridColumns>
@@ -51,7 +51,7 @@
 @namespace Necnat.Abp.NnLibCommon.Blazor.Components.NnIdentity
 @code {
 
-    public UserListAutocomplete()
+    public UserObservableAutocomplete()
     {
         LocalizationResource = typeof(NnLibCommonResource);
     }

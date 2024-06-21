@@ -9,7 +9,7 @@ using Volo.Abp.Application.Services;
 
 namespace Necnat.Abp.NnLibCommon.Blazor.Components
 {
-    public abstract class ListAutocompleteCmptBase<TAppService, TEntityDto, TKey, TSearchInput> : SelectedEntityDtoListCmptBase<TAppService, TEntityDto, TKey, TSearchInput>
+    public abstract class ObservableAutocompleteCmptBase<TAppService, TEntityDto, TKey, TSearchInput> : SelectedEntityDtoObservableCmptBase<TAppService, TEntityDto, TKey, TSearchInput>
         where TAppService : ICrudAppService<TEntityDto, TKey, TSearchInput>
         where TEntityDto : IEntityDto<TKey>
         where TKey : struct

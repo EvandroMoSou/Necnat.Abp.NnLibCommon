@@ -11,7 +11,7 @@ using Volo.Abp.AspNetCore.Components;
 
 namespace Necnat.Abp.NnLibCommon.Blazor.Components
 {
-    public abstract class SelectedEntityDtoListCmptBase<TAppService, TEntityDto, TKey, TSearchInput> : SelectedEntityDtoListCmptBase<TEntityDto, TKey>
+    public abstract class SelectedEntityDtoObservableCmptBase<TAppService, TEntityDto, TKey, TSearchInput> : SelectedEntityDtoObservableCmptBase<TEntityDto, TKey>
         where TAppService : ICrudAppService<TEntityDto, TKey, TSearchInput>
         where TEntityDto : IEntityDto<TKey>
         where TKey : struct
@@ -26,28 +26,26 @@ namespace Necnat.Abp.NnLibCommon.Blazor.Components
                 if (Data == null)
                     Data = (await AppService.GetListAsync(new TSearchInput { IdList = SelectedKeyList, IsPaged = false })).Items.ToList();
 
-                SelectedEntityDtoList = Data.Where(x => SelectedKeyList.Contains(x.Id)).ToList();
+                SelectedEntityDtoList = new ObservableCollection<TEntityDto>(Data.Where(x => SelectedKeyList.Contains(x.Id)).ToList());
                 await SelectedEntityDtoListChanged.InvokeAsync(SelectedEntityDtoList);
             }
 
             if (SelectedEntityDtoList != null)
             {
                 if (Data == null)
-                    Data = SelectedEntityDtoList;
-
-                _internalSelectedValueList = new ObservableCollection<TEntityDto>(SelectedEntityDtoList);
+                    Data = SelectedEntityDtoList.ToList();
 
                 SelectedKeyList = SelectedEntityDtoList.Select(x => x.Id).ToList();
                 await SelectedKeyListChanged.InvokeAsync(SelectedKeyList);
             }
             else
-                _internalSelectedValueList = new ObservableCollection<TEntityDto>();
+                SelectedEntityDtoList = new ObservableCollection<TEntityDto>();
 
             _isLoading = false;
         }
     }
 
-    public abstract class SelectedEntityDtoListCmptBase<TEntityDto, TKey> : AbpComponentBase
+    public abstract class SelectedEntityDtoObservableCmptBase<TEntityDto, TKey> : AbpComponentBase
         where TEntityDto : IEntityDto<TKey>
         where TKey : struct
     {
@@ -70,10 +68,10 @@ namespace Necnat.Abp.NnLibCommon.Blazor.Components
         public EventCallback<List<TKey>?> SelectedKeyListChanged { get; set; }
 
         [Parameter]
-        public List<TEntityDto>? SelectedEntityDtoList { get; set; }
+        public ObservableCollection<TEntityDto>? SelectedEntityDtoList { get; set; }
 
         [Parameter]
-        public EventCallback<List<TEntityDto>?> SelectedEntityDtoListChanged { get; set; }
+        public EventCallback<ObservableCollection<TEntityDto>?> SelectedEntityDtoListChanged { get; set; }
 
         [Parameter]
         public Func<TEntityDto, Task<TKey>>? AddMethod { get; set; }
@@ -82,31 +80,33 @@ namespace Necnat.Abp.NnLibCommon.Blazor.Components
         public Func<TKey, Task>? RemoveMethod { get; set; }
 
         protected TEntityDto? _internalSelectedValue;
-        public ObservableCollection<TEntityDto>? _internalSelectedValueList;
         protected bool _isLoading = true;
 
         protected override async Task OnInitializedAsync()
         {
             if (SelectedKeyList != null && Data != null)
             {
-                SelectedEntityDtoList = Data.Where(x => SelectedKeyList.Contains(x.Id)).ToList();
+                SelectedEntityDtoList = new ObservableCollection<TEntityDto>(Data.Where(x => SelectedKeyList.Contains(x.Id)).ToList());
                 await SelectedEntityDtoListChanged.InvokeAsync(SelectedEntityDtoList);
             }
 
             if (SelectedEntityDtoList != null)
             {
                 if (Data == null)
-                    Data = SelectedEntityDtoList;
-
-                _internalSelectedValueList = new ObservableCollection<TEntityDto>(SelectedEntityDtoList);
+                    Data = SelectedEntityDtoList.ToList();
 
                 SelectedKeyList = SelectedEntityDtoList.Select(x => x.Id).ToList();
                 await SelectedKeyListChanged.InvokeAsync(SelectedKeyList);
             }
             else
-                _internalSelectedValueList = new ObservableCollection<TEntityDto>();
+                SelectedEntityDtoList = new ObservableCollection<TEntityDto>();
 
             _isLoading = false;
+        }
+
+        public virtual async Task ReinitializeAsync()
+        {
+            await OnInitializedAsync();
         }
 
         public virtual async Task AddAsync()
@@ -118,12 +118,10 @@ namespace Necnat.Abp.NnLibCommon.Blazor.Components
 
                 await InvokeAsync(async () =>
                 {
-                    _internalSelectedValueList!.Add(_internalSelectedValue);
+                    SelectedEntityDtoList!.Add(_internalSelectedValue);
 
-                    SelectedKeyList = _internalSelectedValueList.Select(x => x.Id).ToList();
+                    SelectedKeyList = SelectedEntityDtoList.Select(x => x.Id).ToList();
                     await SelectedKeyListChanged.InvokeAsync(SelectedKeyList);
-
-                    SelectedEntityDtoList = _internalSelectedValueList.ToList();
                     await SelectedEntityDtoListChanged.InvokeAsync(SelectedEntityDtoList);
 
                     await OnAfterAddAsync();
@@ -138,12 +136,10 @@ namespace Necnat.Abp.NnLibCommon.Blazor.Components
 
             await InvokeAsync(async () =>
             {
-                _internalSelectedValueList!.Remove(dto);
+                SelectedEntityDtoList!.Remove(dto);
 
-                SelectedKeyList = _internalSelectedValueList.Select(x => x.Id).ToList();
+                SelectedKeyList = SelectedEntityDtoList.Select(x => x.Id).ToList();
                 await SelectedKeyListChanged.InvokeAsync(SelectedKeyList);
-
-                SelectedEntityDtoList = _internalSelectedValueList.ToList();
                 await SelectedEntityDtoListChanged.InvokeAsync(SelectedEntityDtoList);
 
                 await OnAfterRemoveAsync();
