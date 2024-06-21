@@ -66,25 +66,25 @@ namespace Necnat.Abp.NnLibCommon.Blazor.Components
         [Parameter]
         public EventCallback<TEntityDto?> SelectedEntityDtoChanged { get; set; }
 
-        protected TEntityDto? _internalSelectedValue;
-        protected async Task OnSelectedValueChangedAsync(TEntityDto? value)
+        protected TKey _internalSelectedValue;
+        protected async Task OnSelectedValueChangedAsync(TKey value)
         {
             _internalSelectedValue = value;
 
-            if (_internalSelectedValue == null)
+            if (_internalSelectedValue.Equals(default(TKey)))
             {
                 SelectedKey = null;
                 SelectedEntityDto = default;
             }
             else
             {
-                SelectedKey = _internalSelectedValue.Id;
+                SelectedKey = _internalSelectedValue;
                 if (Data != null)
-                    SelectedEntityDto = Data.Where(x => x.Id.Equals(_internalSelectedValue.Id)).FirstOrDefault();
+                    SelectedEntityDto = Data.Where(x => x.Id.Equals(_internalSelectedValue)).FirstOrDefault();
             }
 
-            await SelectedKeyChanged.InvokeAsync(SelectedKey);
-            await SelectedEntityDtoChanged.InvokeAsync(SelectedEntityDto);
+            await InvokeAsync(async () => { await SelectedKeyChanged.InvokeAsync(SelectedKey); });
+            await InvokeAsync(async () => { await SelectedEntityDtoChanged.InvokeAsync(SelectedEntityDto); });
         }
 
         protected bool _isLoading = true;
@@ -92,9 +92,9 @@ namespace Necnat.Abp.NnLibCommon.Blazor.Components
         protected override async Task OnInitializedAsync()
         {
             if (SelectedKey != null)
-                await OnSelectedValueChangedAsync(new TEntityDto { Id = (TKey)SelectedKey });
+                await OnSelectedValueChangedAsync((TKey)SelectedKey);
             else if (SelectedEntityDto != null)
-                await OnSelectedValueChangedAsync(SelectedEntityDto);
+                await OnSelectedValueChangedAsync(SelectedEntityDto.Id);
 
             _isLoading = false;
         }

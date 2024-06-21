@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Necnat.Abp.NnLibCommon.Blazor.Components
 {
@@ -21,7 +22,9 @@ namespace Necnat.Abp.NnLibCommon.Blazor.Components
                 Data = (await AppService.GetListAsync(new TSearchInput { IsPaged = false })).Items.ToList();
 
             if (IsAutoSelectFirst && Data != null && Data.Count > 0)
-                await OnSelectedValueChangedAsync(Data.First());
+                await OnSelectedValueChangedAsync(Data.First().Id);
+
+            _isLoading = false;
         }
     }
 
@@ -36,7 +39,9 @@ namespace Necnat.Abp.NnLibCommon.Blazor.Components
         protected override async Task OnInitializedAsync()
         {
             if (IsAutoSelectFirst && Data != null && Data.Count > 0)
-                await OnSelectedValueChangedAsync(Data.First());
+                await OnSelectedValueChangedAsync(Data.First().Id);
+
+            _isLoading = false;
         }
     }
 }

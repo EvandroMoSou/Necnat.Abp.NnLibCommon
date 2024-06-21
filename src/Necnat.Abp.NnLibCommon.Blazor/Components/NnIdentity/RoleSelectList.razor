@@ -11,14 +11,14 @@
 else
 {
     <SelectList TItem="IdentityRoleDto"
-                TValue="IdentityRoleDto"
+                TValue="Guid"
                 Data="@Data"
                 TextField="@((item) => item.Name)"
-                ValueField="@((item) => item)"
+                ValueField="@((item) => item.Id)"
                 SelectedValue="@_internalSelectedValue"
                 SelectedValueChanged="@OnSelectedValueChangedAsync"
                 DefaultItemText="@L["Select..."]"
-                DefaultItemValue="null" />
+                DefaultItemValue="default(Guid)" />
 }
 
 @namespace Necnat.Abp.NnLibCommon.Blazor.Components.NnIdentity

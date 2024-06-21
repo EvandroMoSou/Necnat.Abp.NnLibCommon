@@ -11,11 +11,11 @@
 else
 {
     <Autocomplete TItem="IdentityRoleDto"
-                  TValue="IdentityRoleDto"
+                  TValue="Guid"
                   Data="@Data"
                   ReadData="@OnHandleReadData"
                   TextField="@((item) => item.Name)"
-                  ValueField="@((item) => item)"
+                  ValueField="@((item) => item.Id)"
                   SelectedValue="@_internalSelectedValue"
                   SelectedValueChanged="@OnSelectedValueChangedAsync"
                   Placeholder="@string.Format(L["Enter at least {0} character(s) to start the search..."], SearchValueMinLength)"
