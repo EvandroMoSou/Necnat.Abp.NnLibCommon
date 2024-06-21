@@ -19,7 +19,7 @@ namespace Necnat.Abp.NnLibCommon.Blazor.Components
     {
         [Inject] protected TAppService AppService { get; set; } = default!;
 
-        protected override async Task OnParametersSetAsync()
+        protected override async Task OnInitializedAsync()
         {
             if (SelectedKeyList != null)
             {
@@ -39,7 +39,6 @@ namespace Necnat.Abp.NnLibCommon.Blazor.Components
                 await SelectedKeyListChanged.InvokeAsync(SelectedKeyList);
             }
 
-            await base.OnParametersSetAsync();
             _isLoading = false;
         }
     }
@@ -79,10 +78,10 @@ namespace Necnat.Abp.NnLibCommon.Blazor.Components
         public Func<TKey, Task>? RemoveMethod { get; set; }
 
         protected TEntityDto? _internalSelectedValue;
-        public ObservableCollection<TEntityDto>? _internalSelectedValueList;
+        public ObservableCollection<TEntityDto>? _internalSelectedValueList = new ObservableCollection<TEntityDto>();
         protected bool _isLoading = true;
 
-        protected override async Task OnParametersSetAsync()
+        protected override async Task OnInitializedAsync()
         {
             if (SelectedKeyList != null && Data != null)
             {
@@ -101,7 +100,6 @@ namespace Necnat.Abp.NnLibCommon.Blazor.Components
                 await SelectedKeyListChanged.InvokeAsync(SelectedKeyList);
             }
 
-            await base.OnParametersSetAsync();
             _isLoading = false;
         }
 

@@ -15,10 +15,8 @@ namespace Necnat.Abp.NnLibCommon.Blazor.Components
     {
         [Inject] protected TAppService AppService { get; set; } = default!;
 
-        protected override async Task OnParametersSetAsync()
+        protected override async Task OnInitializedAsync()
         {
-            await base.OnParametersSetAsync();
-
             if (Data == null)
                 Data = (await AppService.GetListAsync(new TSearchInput { IsPaged = false })).Items.ToList();
 
@@ -35,10 +33,8 @@ namespace Necnat.Abp.NnLibCommon.Blazor.Components
         [Parameter]
         public bool IsAutoSelectFirst { get; set; } = false;
 
-        protected override async Task OnParametersSetAsync()
+        protected override async Task OnInitializedAsync()
         {
-            await base.OnParametersSetAsync();
-
             if (IsAutoSelectFirst && Data != null && Data.Count > 0)
                 await OnSelectedValueChangedAsync(Data.First());
         }

@@ -17,7 +17,7 @@ namespace Necnat.Abp.NnLibCommon.Blazor.Components
     {
         [Inject] protected TAppService AppService { get; set; } = default!;
 
-        protected override async Task OnParametersSetAsync()
+        protected override async Task OnInitializedAsync()
         {
             if (SelectedKey != null)
             {
@@ -37,7 +37,6 @@ namespace Necnat.Abp.NnLibCommon.Blazor.Components
                 await SelectedKeyChanged.InvokeAsync(SelectedKey);
             }
 
-            await base.OnParametersSetAsync();
             _isLoading = false;
         }
     }
@@ -90,14 +89,13 @@ namespace Necnat.Abp.NnLibCommon.Blazor.Components
 
         protected bool _isLoading = true;
 
-        protected override async Task OnParametersSetAsync()
+        protected override async Task OnInitializedAsync()
         {
             if (SelectedKey != null)
                 await OnSelectedValueChangedAsync(new TEntityDto { Id = (TKey)SelectedKey });
             else if (SelectedEntityDto != null)
                 await OnSelectedValueChangedAsync(SelectedEntityDto);
 
-            await base.OnParametersSetAsync();
             _isLoading = false;
         }
 
