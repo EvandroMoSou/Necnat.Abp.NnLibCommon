@@ -25,6 +25,9 @@ namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
         {
             var q = await ReadOnlyRepository.GetQueryableAsync();
 
+            if (input.IdList != null)
+                q = q.Where(x => input.IdList.Contains(x.Id));
+
             if (!string.IsNullOrWhiteSpace(input.NameContains))
                 q = q.Where(x => x.Name.Contains(input.NameContains));
 

@@ -13,7 +13,7 @@ namespace Necnat.Abp.NnLibCommon.Blazor.Components
         where TAppService : ICrudAppService<TEntityDto, TKey, TSearchInput>
         where TEntityDto : IEntityDto<TKey>
         where TKey : struct
-        where TSearchInput : PagedAndSortedResultRequestDto, IIdListResultRequestDto<TKey>, new()
+        where TSearchInput : PagedAndSortedResultRequestDto, IIdListResultRequestDto<TKey>, IOptionalResultRequestDto, new()
     {
         [Parameter]
         public int PageSize { get; set; } = 5;

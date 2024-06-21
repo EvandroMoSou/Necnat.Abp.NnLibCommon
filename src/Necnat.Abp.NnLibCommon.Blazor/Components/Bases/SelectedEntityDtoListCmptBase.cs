@@ -15,7 +15,7 @@ namespace Necnat.Abp.NnLibCommon.Blazor.Components
         where TAppService : ICrudAppService<TEntityDto, TKey, TSearchInput>
         where TEntityDto : IEntityDto<TKey>
         where TKey : struct
-        where TSearchInput : PagedAndSortedResultRequestDto, IIdListResultRequestDto<TKey>, new()
+        where TSearchInput : PagedAndSortedResultRequestDto, IIdListResultRequestDto<TKey>, IOptionalResultRequestDto, new()
     {
         [Inject] protected TAppService AppService { get; set; } = default!;
 
@@ -24,7 +24,7 @@ namespace Necnat.Abp.NnLibCommon.Blazor.Components
             if (SelectedKeyList != null)
             {
                 if (Data == null)
-                    Data = (await AppService.GetListAsync(new TSearchInput { IdList = SelectedKeyList })).Items.ToList();
+                    Data = (await AppService.GetListAsync(new TSearchInput { IdList = SelectedKeyList, IsPaged = false })).Items.ToList();
 
                 SelectedEntityDtoList = Data.Where(x => SelectedKeyList.Contains(x.Id)).ToList();
                 await SelectedEntityDtoListChanged.InvokeAsync(SelectedEntityDtoList);
@@ -56,6 +56,9 @@ namespace Necnat.Abp.NnLibCommon.Blazor.Components
 
         [Parameter]
         public Action<bool>? DisabledChanged { get; set; }
+
+        [Parameter]
+        public int PageSize { get; set; } = 5;
 
         [Parameter]
         public List<TKey>? SelectedKeyList { get; set; }
