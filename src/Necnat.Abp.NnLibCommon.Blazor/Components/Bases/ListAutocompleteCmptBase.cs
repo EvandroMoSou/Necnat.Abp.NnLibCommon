@@ -15,9 +15,6 @@ namespace Necnat.Abp.NnLibCommon.Blazor.Components
         where TKey : struct
         where TSearchInput : PagedAndSortedResultRequestDto, IIdListResultRequestDto<TKey>, IOptionalResultRequestDto, new()
     {
-        [Parameter]
-        public int PageSize { get; set; } = 5;
-
         #region Autocomplete
 
         protected Autocomplete<TEntityDto, TEntityDto>? _autocomplete;
