@@ -40,6 +40,12 @@ namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
             return q;
         }
 
+        public async Task<IdentityUserDto> GetMyAsync(Guid id)
+        {
+            ThrowIfIsNotMy(id);
+            return await base.GetAsync(id);
+        }
+
         [RemoteService(false)]
         public override Task<IdentityUserDto> CreateAsync(IdentityUserDto input)
         {

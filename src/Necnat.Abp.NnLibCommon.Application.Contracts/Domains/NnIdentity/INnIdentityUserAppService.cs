@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Identity;
 
@@ -10,6 +11,6 @@ namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
             Guid,
             NnIdentityUserResultRequestDto>
     {
-
+        Task<IdentityUserDto> GetMyAsync(Guid id);
     }
 }

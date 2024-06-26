@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Localization;
 using Necnat.Abp.NnLibCommon.Dtos;
 using Necnat.Abp.NnLibCommon.Localization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,7 @@ using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.Users;
 
 namespace Necnat.Abp.NnLibCommon.Services;
 
@@ -93,14 +95,17 @@ public abstract class NecnatAppService<TEntity, TGetOutputDto, TGetListOutputDto
     where TRepository : IRepository<TEntity, TKey>
 {
     protected readonly IStringLocalizer<NnLibCommonResource> _necnatLocalizer;
+    protected readonly ICurrentUser _currentUser;
 
     protected new TRepository Repository { get; }
 
     protected NecnatAppService(
         IStringLocalizer<NnLibCommonResource> necnatLocalizer,
+        ICurrentUser currentUser,
         TRepository repository) : base(repository)
     {
         _necnatLocalizer = necnatLocalizer;
+        _currentUser = currentUser;
 
         Repository = repository;
     }
@@ -268,6 +273,15 @@ public abstract class NecnatAppService<TEntity, TGetOutputDto, TGetListOutputDto
                 throw new UserFriendlyException(sb.ToString());
             }
         }
+    }
+
+    public void ThrowIfIsNotMy(Guid? id)
+    {
+        if(id == null)
+            throw new UserFriendlyException("Personal API.");
+
+        if (_currentUser.Id != id.Value )
+            throw new UserFriendlyException("Personal API.");
     }
 
     protected override IQueryable<TEntity> ApplyPaging(IQueryable<TEntity> query, TGetListInput input)
