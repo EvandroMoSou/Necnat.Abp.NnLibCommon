@@ -23,8 +23,9 @@ public abstract class NecnatAppService<TEntity, TEntityDto, TKey, TRepository>
     where TRepository : IRepository<TEntity, TKey>
 {
     protected NecnatAppService(
+        ICurrentUser currentUser,
         IStringLocalizer<NnLibCommonResource> necnatLocalizer,
-        TRepository repository) : base(necnatLocalizer, repository)
+        TRepository repository) : base(currentUser, necnatLocalizer, repository)
     {
 
     }
@@ -38,8 +39,9 @@ public abstract class NecnatAppService<TEntity, TEntityDto, TKey, TGetListInput,
     where TRepository : IRepository<TEntity, TKey>
 {
     protected NecnatAppService(
+        ICurrentUser currentUser,
         IStringLocalizer<NnLibCommonResource> necnatLocalizer,
-        TRepository repository) : base(necnatLocalizer, repository)
+        TRepository repository) : base(currentUser, necnatLocalizer, repository)
     {
 
     }
@@ -53,8 +55,9 @@ public abstract class NecnatAppService<TEntity, TEntityDto, TKey, TGetListInput,
     where TRepository : IRepository<TEntity, TKey>
 {
     protected NecnatAppService(
+        ICurrentUser currentUser,
         IStringLocalizer<NnLibCommonResource> necnatLocalizer,
-        TRepository repository) : base(necnatLocalizer, repository)
+        TRepository repository) : base(currentUser, necnatLocalizer, repository)
     {
 
     }
@@ -69,8 +72,9 @@ public abstract class NecnatAppService<TEntity, TEntityDto, TKey, TGetListInput,
     where TRepository : IRepository<TEntity, TKey>
 {
     protected NecnatAppService(
+        ICurrentUser currentUser,
         IStringLocalizer<NnLibCommonResource> necnatLocalizer,
-        TRepository repository) : base(necnatLocalizer, repository)
+        TRepository repository) : base(currentUser, necnatLocalizer, repository)
     {
 
     }
@@ -94,14 +98,14 @@ public abstract class NecnatAppService<TEntity, TGetOutputDto, TGetListOutputDto
     where TGetListInput : OptionalPagedAndSortedResultRequestDto
     where TRepository : IRepository<TEntity, TKey>
 {
-    protected readonly IStringLocalizer<NnLibCommonResource> _necnatLocalizer;
     protected readonly ICurrentUser _currentUser;
+    protected readonly IStringLocalizer<NnLibCommonResource> _necnatLocalizer;
 
     protected new TRepository Repository { get; }
 
     protected NecnatAppService(
-        IStringLocalizer<NnLibCommonResource> necnatLocalizer,
         ICurrentUser currentUser,
+        IStringLocalizer<NnLibCommonResource> necnatLocalizer,
         TRepository repository) : base(repository)
     {
         _necnatLocalizer = necnatLocalizer;

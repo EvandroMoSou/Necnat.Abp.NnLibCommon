@@ -7,14 +7,14 @@ namespace Necnat.Abp.NnLibCommon.Utils
 {
     public static class JsonUtil
     {
-        public static T Clone<T>(T obj)
+        public static T Clone<T>(T source)
         {
-            return JsonSerializer.Deserialize<T>(JsonSerializer.Serialize(obj))!;
+            return JsonSerializer.Deserialize<T>(JsonSerializer.Serialize(source))!;
         }
 
-        public static TTo CloneTo<T, TTo>(T obj)
+        public static TTo CloneTo<T, TTo>(T source)
         {
-            return JsonSerializer.Deserialize<TTo>(JsonSerializer.Serialize(obj))!;
+            return JsonSerializer.Deserialize<TTo>(JsonSerializer.Serialize(source))!;
         }
 
         public static List<T> RemakeList<T>(List<T> recordList, List<T> remakeList)

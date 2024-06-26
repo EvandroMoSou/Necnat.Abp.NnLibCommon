@@ -8,7 +8,7 @@
     <RootNamespace>Necnat.Abp.NnLibCommon</RootNamespace>
     <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>0.1.15</Version>
+    <Version>0.1.23</Version>
   </PropertyGroup>
 
   <ItemGroup>

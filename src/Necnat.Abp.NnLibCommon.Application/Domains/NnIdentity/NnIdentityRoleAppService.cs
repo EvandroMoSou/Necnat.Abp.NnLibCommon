@@ -6,13 +6,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Identity;
+using Volo.Abp.Users;
 
 namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
 {
     public class NnIdentityRoleAppService : NecnatAppService<IdentityRole, IdentityRoleDto, Guid, NnIdentityRoleResultRequestDto, INnIdentityRoleRepository>, INnIdentityRoleAppService
     {
-        public NnIdentityRoleAppService(IStringLocalizer<NnLibCommonResource> necnatLocalizer,
-            INnIdentityRoleRepository repository) : base(necnatLocalizer, repository)
+        public NnIdentityRoleAppService(
+            ICurrentUser currentUser,
+            IStringLocalizer<NnLibCommonResource> necnatLocalizer,
+            INnIdentityRoleRepository repository) : base(currentUser, necnatLocalizer, repository)
         {
             GetPolicyName = IdentityPermissions.Roles.Default;
             GetListPolicyName = IdentityPermissions.Roles.Default;

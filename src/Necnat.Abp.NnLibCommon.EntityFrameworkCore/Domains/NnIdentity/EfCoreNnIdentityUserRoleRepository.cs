@@ -3,6 +3,7 @@ using Necnat.Abp.NnLibCommon.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
@@ -21,6 +22,12 @@ namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
         {
             var dbSet = await GetDbSetAsync();
             return await dbSet.Where(x => x.UserId == userId).ToListAsync();
+        }
+
+        public async Task UpdateUserIdAsync(Guid oldUserId, Guid userId)
+        {
+            var dbSet = await GetDbSetAsync();
+            await dbSet.Where(x => x.UserId == oldUserId).ExecuteUpdateAsync(s => s.SetProperty(e => e.UserId, userId));
         }
     }
 }

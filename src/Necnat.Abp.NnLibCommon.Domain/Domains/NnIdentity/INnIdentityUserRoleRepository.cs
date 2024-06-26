@@ -9,5 +9,6 @@ namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
     public interface INnIdentityUserRoleRepository : IRepository<IdentityUserRole>
     {
         Task<List<IdentityUserRole>> GetListByUserIdAsync(Guid userId);
+        Task UpdateUserIdAsync(Guid oldUserId, Guid userId);
     }
 }
