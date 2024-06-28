@@ -265,7 +265,7 @@ public abstract class NecnatAppService<TEntity, TGetOutputDto, TGetListOutputDto
 
     #endregion
 
-    public static void ThrowIfIsNotNull(List<string>? errors)
+    protected void ThrowIfIsNotNull(List<string>? errors)
     {
         if (errors != null && errors.Count > 0)
         {
@@ -279,7 +279,7 @@ public abstract class NecnatAppService<TEntity, TGetOutputDto, TGetListOutputDto
         }
     }
 
-    public void ThrowIfIsNotMy(Guid? id)
+    protected void ThrowIfIsNotMy(Guid? id)
     {
         if(id == null)
             throw new UserFriendlyException("Personal API.");

@@ -6,9 +6,9 @@ using Volo.Abp.Identity;
 
 namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
 {
-    public class EfCoreNnIdentityUserRepository : EfCoreRepository<NnLibCommonDbContext, IdentityUser, Guid>, INnIdentityUserRepository
+    public class EfCoreNnIdentityUserRepository : EfCoreRepository<INnLibCommonDbContext, IdentityUser, Guid>, INnIdentityUserRepository
     {
-        public EfCoreNnIdentityUserRepository(IDbContextProvider<NnLibCommonDbContext> dbContextProvider) : base(dbContextProvider)
+        public EfCoreNnIdentityUserRepository(IDbContextProvider<INnLibCommonDbContext> dbContextProvider) : base(dbContextProvider)
         {
 
         }

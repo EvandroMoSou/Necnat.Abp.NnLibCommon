@@ -9,6 +9,6 @@ namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
     public interface INnIdentityRoleRepository : IRepository<IdentityRole, Guid>
     {
         Task<IdentityRole?> FindByNameAsync(string name);
-        Task<List<Guid>> GetListIdByNameAsync(List<string> lName);
+        Task<List<Guid>> GetListIdByNameAsync(List<string> nameList);
     }
 }
