@@ -26,5 +26,10 @@ namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
         {
             return await (await GetDbSetAsync()).Where(x => lName.Contains(x.Name)).Select(x => x.Id).ToListAsync();
         }
+
+        public async Task<string?> FindNameByIdAsync(Guid id)
+        {
+            return await(await GetDbSetAsync()).Where(x => x.Id == id).Select(x => x.Name).FirstOrDefaultAsync();
+        }
     }
 }

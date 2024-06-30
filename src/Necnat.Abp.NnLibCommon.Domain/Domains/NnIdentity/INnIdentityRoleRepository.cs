@@ -10,5 +10,6 @@ namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
     {
         Task<IdentityRole?> FindByNameAsync(string name);
         Task<List<Guid>> GetListIdByNameAsync(List<string> nameList);
+        Task<string?> FindNameByIdAsync(Guid id);        
     }
 }
