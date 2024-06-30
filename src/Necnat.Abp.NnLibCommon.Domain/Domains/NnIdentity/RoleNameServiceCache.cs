@@ -6,12 +6,12 @@ using Volo.Abp.DependencyInjection;
 
 namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
 {
-    public class RoleNameService : IRoleNameService, ITransientDependency
+    public class RoleNameServiceCache : IRoleNameService, ITransientDependency
     {
         readonly INnIdentityRoleRepository _nnIdentityRoleRepository;
         readonly IDistributedCache<RoleNameCacheItem> _roleNameCache;
 
-        public RoleNameService(
+        public RoleNameServiceCache(
             INnIdentityRoleRepository nnIdentityRoleRepository,
             IDistributedCache<RoleNameCacheItem> roleNameCache)
         {
