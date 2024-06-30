@@ -6,9 +6,8 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Volo.Abp.Account;
 using Necnat.Abp.NnLibCommon.Blazor.WebAssembly;
-using Volo.Abp.AspNetCore.Components.Web.BasicTheme.Themes.Basic;
+using Volo.Abp.Account;
 using Volo.Abp.AspNetCore.Components.Web.Theming.Routing;
 using Volo.Abp.AspNetCore.Components.WebAssembly.BasicTheme;
 using Volo.Abp.Autofac.WebAssembly;
@@ -19,7 +18,7 @@ using Volo.Abp.SettingManagement.Blazor.WebAssembly;
 using Volo.Abp.TenantManagement.Blazor.WebAssembly;
 using Volo.Abp.UI.Navigation;
 
-namespace Necnat.Abp.NnLibCommon.Blazor.Host;
+namespace Necnat.Abp.NnLibCommon.Blazor.Host.Client;
 
 [DependsOn(
     typeof(AbpAutofacWebAssemblyModule),
@@ -30,7 +29,7 @@ namespace Necnat.Abp.NnLibCommon.Blazor.Host;
     typeof(AbpSettingManagementBlazorWebAssemblyModule),
     typeof(NnLibCommonBlazorWebAssemblyModule)
 )]
-public class NnLibCommonBlazorHostModule : AbpModule
+public class NnLibCommonBlazorHostClientModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
@@ -41,7 +40,6 @@ public class NnLibCommonBlazorHostModule : AbpModule
         ConfigureHttpClient(context, environment);
         ConfigureBlazorise(context);
         ConfigureRouter(context);
-        ConfigureUI(builder);
         ConfigureMenu(context);
         ConfigureAutoMapper(context);
     }
@@ -50,7 +48,7 @@ public class NnLibCommonBlazorHostModule : AbpModule
     {
         Configure<AbpRouterOptions>(options =>
         {
-            options.AppAssembly = typeof(NnLibCommonBlazorHostModule).Assembly;
+            options.AppAssembly = typeof(NnLibCommonBlazorHostClientModule).Assembly;
         });
     }
 
@@ -78,12 +76,6 @@ public class NnLibCommonBlazorHostModule : AbpModule
         });
     }
 
-    private static void ConfigureUI(WebAssemblyHostBuilder builder)
-    {
-        builder.RootComponents.Add<App>("#ApplicationContainer");
-        builder.RootComponents.Add<HeadOutlet>("head::after");
-    }
-
     private static void ConfigureHttpClient(ServiceConfigurationContext context, IWebAssemblyHostEnvironment environment)
     {
         context.Services.AddTransient(sp => new HttpClient
@@ -96,7 +88,7 @@ public class NnLibCommonBlazorHostModule : AbpModule
     {
         Configure<AbpAutoMapperOptions>(options =>
         {
-            options.AddMaps<NnLibCommonBlazorHostModule>();
+            options.AddMaps<NnLibCommonBlazorHostClientModule>();
         });
     }
 }

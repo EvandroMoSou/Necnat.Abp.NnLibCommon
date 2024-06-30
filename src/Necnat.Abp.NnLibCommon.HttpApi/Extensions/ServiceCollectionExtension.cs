@@ -9,7 +9,7 @@ namespace Necnat.Abp.NnLibCommon.Extensions
     public static class ServiceCollectionExtension
     {
 
-        public static IServiceCollection ConfigureUtcWithDateTimeOffset(this IServiceCollection serviceCollection)
+        public static IServiceCollection ConfigureDateTimeOffset(this IServiceCollection serviceCollection)
         {
             serviceCollection = serviceCollection.Configure<AbpClockOptions>(options =>
             {

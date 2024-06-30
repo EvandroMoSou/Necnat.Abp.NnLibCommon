@@ -10,7 +10,7 @@ export const environment = {
     logoUrl: '',
   },
   oAuthConfig: {
-    issuer: 'https://localhost:44364/',
+    issuer: 'https://localhost:44327/',
     redirectUri: baseUrl,
     clientId: 'NnLibCommon_App',
     responseType: 'code',
@@ -19,11 +19,11 @@ export const environment = {
   },
   apis: {
     default: {
-      url: 'https://localhost:44364',
+      url: 'https://localhost:44327',
       rootNamespace: 'Necnat.Abp.NnLibCommon',
     },
     NnLibCommon: {
-      url: 'https://localhost:44342',
+      url: 'https://localhost:44315',
       rootNamespace: 'Necnat.Abp.NnLibCommon',
     },
   },

@@ -10,10 +10,10 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.4" />
     <ProjectReference Include="..\..\src\Necnat.Abp.NnLibCommon.EntityFrameworkCore\Necnat.Abp.NnLibCommon.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\Necnat.Abp.NnLibCommon.Application.Tests\Necnat.Abp.NnLibCommon.Application.Tests.csproj" />
-    <PackageReference Include="Volo.Abp.EntityFrameworkCore.Sqlite" Version="8.1.4" />
+    <PackageReference Include="Volo.Abp.EntityFrameworkCore.Sqlite" Version="8.2.0" />
 
   </ItemGroup>
 

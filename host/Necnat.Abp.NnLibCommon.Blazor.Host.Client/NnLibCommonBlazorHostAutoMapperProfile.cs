@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace Necnat.Abp.NnLibCommon.Blazor.Host;
+namespace Necnat.Abp.NnLibCommon.Blazor.Host.Client;
 
 public class NnLibCommonBlazorHostAutoMapperProfile : Profile
 {

@@ -12,7 +12,7 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Necnat.Abp.NnLibCommon.Migrations
 {
     [DbContext(typeof(NnLibCommonHttpApiHostMigrationsDbContext))]
-    [Migration("20240125061400_Initial")]
+    [Migration("20240312033807_Initial")]
     partial class Initial
     {
         /// <inheritdoc />

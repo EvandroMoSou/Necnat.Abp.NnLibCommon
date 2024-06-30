@@ -8,21 +8,30 @@
     <base href="/" />
 
     <!--ABP:Styles-->
-    <link href="global.css?_v=638539208646110101" rel="stylesheet"/>
+    <link href="global.css?_v=638553622886316378" rel="stylesheet"/>
     <link href="main.css" rel="stylesheet"/>
     <!--/ABP:Styles-->
+    <link href="Necnat.Abp.NnLibCommon.Blazor.Host.Client.styles.css" rel="stylesheet"/>
+
+    <HeadOutlet @rendermode="new InteractiveWebAssemblyRenderMode(prerender: false)" />
 </head>
 
 <body class="abp-application-layout bg-light">
+
+    <script src="_framework/blazor.web.js"></script>
+
     <div id="ApplicationContainer">
         <div class="spinner">
             <div class="double-bounce1"></div>
             <div class="double-bounce2"></div>
         </div>
+
+        <Routes @rendermode="new InteractiveWebAssemblyRenderMode(prerender: false)"/>
     </div>
 
     <!--ABP:Scripts-->
-    <script src="global.js?_v=638539208647854074"></script>
+    <script src="global.js?_v=638553622888007758"></script>
     <!--/ABP:Scripts-->
+
 </body>
 </html>

@@ -1,6 +1,6 @@
 ﻿using Volo.Abp.Bundling;
 
-namespace Necnat.Abp.NnLibCommon.Blazor.Host;
+namespace Necnat.Abp.NnLibCommon.Blazor.Host.Client;
 
 public class NnLibCommonBlazorHostBundleContributor : IBundleContributor
 {

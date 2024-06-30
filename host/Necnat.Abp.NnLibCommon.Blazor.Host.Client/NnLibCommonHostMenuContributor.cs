@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using Volo.Abp.Account.Localization;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.UI.Navigation;
-using Volo.Abp.Account.Localization;
-namespace Necnat.Abp.NnLibCommon.Blazor.Host;
+
+namespace Necnat.Abp.NnLibCommon.Blazor.Host.Client;
 
 public class NnLibCommonHostMenuContributor : IMenuContributor
 {
