@@ -7,6 +7,8 @@
     <Nullable>enable</Nullable>
     <RootNamespace>Necnat.Abp.NnLibCommon</RootNamespace>
     <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Version>0.2.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
