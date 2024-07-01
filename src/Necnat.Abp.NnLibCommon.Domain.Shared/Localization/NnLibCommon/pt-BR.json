@@ -4,6 +4,10 @@
     "MyAccount": "Minha conta",
     "SamplePageMessage": "Uma página de amostra para o módulo NnLibCommon",
 
+    "Menu:NnLibCommon": "Necnat",
+    "Menu:NnLibCommon:Configuration": "Configuração",
+    "Menu:NnLibCommon:Configuration:NecnatEndpoint": "Endpoint",
+
     "The field {0} cannot be greater than {1}.": "O campo {0} não pode ser maior que o {1}.",
     "The field {0} contains duplicate values.": "O campo {0} contém valores duplicados.",
     "The field {0} must be greater than zero.": "O campo {0} deve ser maior que zero.",

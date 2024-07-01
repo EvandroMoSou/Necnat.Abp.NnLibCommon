@@ -7,4 +7,6 @@ public class NnLibCommonMenus
     //Add your menu items here...
     //public const string Home = Prefix + ".MyNewMenuItem";
 
+    public const string Configuration = Prefix + ".Configuration";
+    public const string Configuration_NecnatEndpoint = Configuration + ".NecnatEndpoint";
 }

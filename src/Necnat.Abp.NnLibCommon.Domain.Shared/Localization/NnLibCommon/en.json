@@ -1,7 +1,11 @@
 {
   "culture": "en",
   "texts": {
-    "MyAccount":  "My account",
-    "SamplePageMessage": "A sample page for the NnLibCommon module"
+    "MyAccount": "My account",
+    "SamplePageMessage": "A sample page for the NnLibCommon module",
+
+    "Menu:NnLibCommon": "Necnat",
+    "Menu:NnLibCommon:Configuration": "Configuration",
+    "Menu:NnLibCommon:Configuration:NecnatEndpoint": "Endpoint"
   }
 }
