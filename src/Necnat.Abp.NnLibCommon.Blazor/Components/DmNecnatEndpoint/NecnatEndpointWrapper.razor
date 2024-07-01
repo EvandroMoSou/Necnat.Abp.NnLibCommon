@@ -1,0 +1,122 @@
+﻿@using Microsoft.Extensions.Localization;
+@using System.Collections.ObjectModel
+@using Necnat.Abp.NnLibCommon.Blazor.Extensions
+@using Necnat.Abp.NnLibCommon.Domains
+@using Necnat.Abp.NnLibCommon.Localization
+@using Volo.Abp.AspNetCore.Components
+@using Volo.Abp.Identity
+@inherits AbpComponentBase
+
+<Fields>
+    <Validation Validator="@ValidateDisplayName">
+        <Field ColumnSize="ColumnSize.Is10">
+            <FieldLabel>@L[NecnatEndpointConsts.DisplayNameDisplay]</FieldLabel>
+            <TextEdit @bind-Text="@Entity!.DisplayName">
+                <Feedback>
+                    <ValidationError />
+                </Feedback>
+            </TextEdit>
+        </Field>
+    </Validation>
+    <Validation Validator="@ValidateIsActive">
+        <Field ColumnSize="ColumnSize.Is2">
+            <FieldLabel>@L[NecnatEndpointConsts.IsActiveDisplay]</FieldLabel>
+            <Check TValue="bool?" @bind-Checked="@Entity!.IsActive">
+                <Feedback>
+                    <ValidationError />
+                </Feedback>
+            </Check>
+        </Field>
+    </Validation>
+</Fields>
+<Fields>
+    <Validation Validator="@ValidateEndpoint">
+        <Field ColumnSize="ColumnSize.Is12">
+            <FieldLabel>@L[NecnatEndpointConsts.EndpointDisplay]</FieldLabel>
+            <TextEdit @bind-Text="@Entity!.Endpoint">
+                <Feedback>
+                    <ValidationError />
+                </Feedback>
+            </TextEdit>
+        </Field>
+    </Validation>
+</Fields>
+<Fields>
+    <Validation Validator="@ValidateIsAuthz">
+        <Field ColumnSize="ColumnSize.Is4">
+            <FieldLabel>@L[NecnatEndpointConsts.IsAuthzDisplay]</FieldLabel>
+            <Check TValue="bool?" @bind-Checked="@Entity!.IsAuthz">
+                <Feedback>
+                    <ValidationError />
+                </Feedback>
+            </Check>
+        </Field>
+    </Validation>
+    <Validation Validator="@ValidateIsBilling">
+        <Field ColumnSize="ColumnSize.Is4">
+            <FieldLabel>@L[NecnatEndpointConsts.IsBillingDisplay]</FieldLabel>
+            <Check TValue="bool?" @bind-Checked="@Entity!.IsBilling">
+                <Feedback>
+                    <ValidationError />
+                </Feedback>
+            </Check>
+        </Field>
+    </Validation>
+    <Validation Validator="@ValidateIsUser">
+        <Field ColumnSize="ColumnSize.Is4">
+            <FieldLabel>@L[NecnatEndpointConsts.IsUserDisplay]</FieldLabel>
+            <Check TValue="bool?" @bind-Checked="@Entity!.IsUser">
+                <Feedback>
+                    <ValidationError />
+                </Feedback>
+            </Check>
+        </Field>
+    </Validation>
+</Fields>
+
+
+@namespace Necnat.Abp.NnLibCommon.Blazor.Components
+@code {
+
+    [Parameter]
+    public NecnatEndpointDto? Entity { get; set; }
+
+    [Parameter]
+    public EventCallback<NecnatEndpointDto?> EntityChanged { get; set; }
+
+    public NecnatEndpointWrapper()
+    {
+        LocalizationResource = typeof(NnLibCommonResource);
+    }
+
+    void ValidateDisplayName(ValidatorEventArgs e)
+    {
+        e.WithError(NecnatEndpointValidator.ValidateDisplayName((string?)e.Value, L));
+    }
+
+    void ValidateEndpoint(ValidatorEventArgs e)
+    {
+        e.WithError(NecnatEndpointValidator.ValidateEndpoint((string?)e.Value, L));
+    }
+
+    void ValidateIsActive(ValidatorEventArgs e)
+    {
+        e.WithError(NecnatEndpointValidator.ValidateIsActive((bool?)e.Value, L));
+    }
+
+    void ValidateIsAuthz(ValidatorEventArgs e)
+    {
+        e.WithError(NecnatEndpointValidator.ValidateIsAuthz((bool?)e.Value, L));
+    }
+
+    void ValidateIsBilling(ValidatorEventArgs e)
+    {
+        e.WithError(NecnatEndpointValidator.ValidateIsBilling((bool?)e.Value, L));
+    }
+
+    void ValidateIsUser(ValidatorEventArgs e)
+    {
+        e.WithError(NecnatEndpointValidator.ValidateIsUser((bool?)e.Value, L));
+    }
+
+}

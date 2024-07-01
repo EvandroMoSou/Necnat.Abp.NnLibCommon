@@ -1,0 +1,173 @@
+﻿@page "/NnLibCommon/Configuration/NecnatEndpoints"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.Extensions.Localization
+@using System.Collections.ObjectModel
+@using Necnat.Abp.NnLibCommon.Blazor.Components
+@using Necnat.Abp.NnLibCommon.Domains
+@using Necnat.Abp.NnLibCommon.Localization
+@using Necnat.Abp.NnLibCommon.Permissions
+@using Volo.Abp
+@using Volo.Abp.Application.Dtos
+@using Volo.Abp.AspNetCore.Components.Web
+@using Volo.Abp.BlazoriseUI.Components
+@using Volo.Abp.Identity
+@attribute [Authorize(NnLibCommonPermissions.PrmNecnatEndpoint.Default)]
+@inherits AbpCrudPageBase<INecnatEndpointAppService, NecnatEndpointDto, Guid, NecnatEndpointResultRequestDto>
+@inject IStringLocalizer<NnLibCommonResource> NL
+@inject INecnatEndpointAppService AppService
+
+<Card>
+    <CardHeader>
+        <Row Class="justify-content-between">
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <h2>@L["Endpoints"]</h2>
+            </Column>
+            <Column ColumnSize="ColumnSize.IsAuto">
+                @if (HasCreatePermission)
+                {
+                    <Button Color="Color.Primary"
+                            Clicked="OpenCreateModalAsync">
+                        @NL["New"]
+                    </Button>
+                }
+            </Column>
+        </Row>
+    </CardHeader>
+    <CardBody>
+        <DataGrid TItem="NecnatEndpointDto"
+                  Data="Entities"
+                  ReadData="OnDataGridReadAsync"
+                  CurrentPage="CurrentPage"
+                  TotalItems="TotalCount"
+                  ShowPager="true"
+                  PageSize="PageSize">
+            <DataGridColumns>
+                <DataGridEntityActionsColumn TItem="NecnatEndpointDto" @ref="@EntityActionsColumn">
+                    <DisplayTemplate>
+                        <EntityActions TItem="NecnatEndpointDto" EntityActionsColumn="@EntityActionsColumn">
+                            <EntityAction TItem="NecnatEndpointDto"
+                                          Text="@NL["Edit"]"
+                                          Visible=HasUpdatePermission
+                                          Clicked="() => OpenEditModalAsync(context)" />
+                            <EntityAction TItem="NecnatEndpointDto"
+                                          Text="@NL["Delete"]"
+                                          Visible=HasDeletePermission
+                                          Clicked="() => DeleteEntityAsync(context)"
+                                          ConfirmationMessage="()=>GetDeleteConfirmationMessage(context)" />
+                        </EntityActions>
+                    </DisplayTemplate>
+                </DataGridEntityActionsColumn>
+                <DataGridColumn TItem="NecnatEndpointDto"
+                                Field="@nameof(NecnatEndpointDto.DisplayName)"
+                                Caption="@L[NecnatEndpointConsts.DisplayNameDisplay]"></DataGridColumn>
+                <DataGridColumn TItem="NecnatEndpointDto"
+                                Field="@nameof(NecnatEndpointDto.Endpoint)"
+                                Caption="@L[NecnatEndpointConsts.EndpointDisplay]"></DataGridColumn>
+                <DataGridCheckColumn TItem="NecnatEndpointDto"
+                                     Field="@nameof(NecnatEndpointDto.IsActive)"
+                                     Caption="@L[NecnatEndpointConsts.IsActiveDisplay]"></DataGridCheckColumn>
+            </DataGridColumns>
+        </DataGrid>
+    </CardBody>
+</Card>
+
+<Modal @ref="@CreateModal">
+    <ModalContent Centered Size="ModalSize.Large">
+        <Form>
+            <ModalHeader>
+                <ModalTitle>@NL["New"] @L["Endpoint"]</ModalTitle>
+                <CloseButton Clicked="CloseCreateModalAsync" />
+            </ModalHeader>
+            <ModalBody>
+                <Validations @ref="@CreateValidationsRef" Model="@NewEntity" ValidateOnLoad="true">
+                    <NecnatEndpointWrapper @bind-Entity="NewEntity" />
+                </Validations>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary"
+                        Clicked="CloseCreateModalAsync">
+                    @NL["Cancel"]
+                </Button>
+                <Button Color="Color.Primary"
+                        Type="@ButtonType.Submit"
+                        PreventDefaultOnSubmit="true"
+                        Clicked="CreateEntityAsync">
+                    @NL["Save"]
+                </Button>
+            </ModalFooter>
+        </Form>
+    </ModalContent>
+</Modal>
+
+<Modal @ref="@EditModal">
+    <ModalContent Centered Size="ModalSize.Large">
+        <Form>
+            <ModalHeader>
+                <ModalTitle>@L["Endpoint"] - @EditingEntity.DisplayName</ModalTitle>
+                <CloseButton Clicked="CloseEditModalAsync" />
+            </ModalHeader>
+            <ModalBody>
+                <Validations @ref="@EditValidationsRef" Model="@EditingEntity" ValidateOnLoad="false">
+                    <NecnatEndpointWrapper @bind-Entity="EditingEntity" />
+                </Validations>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary"
+                        Clicked="CloseEditModalAsync">
+                    @NL["Cancel"]
+                </Button>
+                <Button Color="Color.Primary"
+                        Type="@ButtonType.Submit"
+                        PreventDefaultOnSubmit="true"
+                        Clicked="UpdateEntityAsync">
+                    @NL["Save"]
+                </Button>
+            </ModalFooter>
+        </Form>
+    </ModalContent>
+</Modal>
+
+@namespace Necnat.Abp.NnLibCommon.Blazor.Pages
+@code
+{
+    public NecnatEndpointCrud() // Constructor
+    {
+        LocalizationResource = typeof(NnLibCommonResource);
+
+        CreatePolicyName = NnLibCommonPermissions.PrmNecnatEndpoint.Create;
+        UpdatePolicyName = NnLibCommonPermissions.PrmNecnatEndpoint.Update;
+        DeletePolicyName = NnLibCommonPermissions.PrmNecnatEndpoint.Delete;
+    }
+
+    protected override async Task OpenCreateModalAsync()
+    {
+        try
+        {
+            if (CreateValidationsRef != null)
+            {
+                await CreateValidationsRef.ClearAll();
+            }
+
+            await CheckCreatePolicyAsync();
+
+            NewEntity = new NecnatEndpointDto();
+            NewEntity.IsActive = true;
+
+            // Mapper will not notify Blazor that binded values are changed
+            // so we need to notify it manually by calling StateHasChanged
+            await InvokeAsync(async () =>
+            {
+                StateHasChanged();
+                if (CreateModal != null)
+                {
+                    await CreateModal.Show();
+                }
+
+            });
+        }
+        catch (Exception ex)
+        {
+            await HandleErrorAsync(ex);
+        }
+    }
+}

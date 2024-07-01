@@ -1,0 +1,57 @@
+﻿@using Blazorise.Components
+@using Necnat.Abp.NnLibCommon.Domains
+@using Necnat.Abp.NnLibCommon.Localization
+@using Volo.Abp.Identity
+@inherits SelectCmptBase<INecnatEndpointAppService, NecnatEndpointDto, Guid, NecnatEndpointResultRequestDto>
+
+@if (_isLoading)
+{
+    <div class="animated-background loading-input-height"></div>
+}
+else
+{
+    <SelectList TItem="NecnatEndpointDto"
+                TValue="Guid"
+                Data="@Data"
+                TextField="@((item) => item.DisplayName)"
+                ValueField="@((item) => item.Id)"
+                SelectedValue="@_internalSelectedValue"
+                SelectedValueChanged="@OnSelectedValueChangedAsync"
+                DefaultItemText="@L["Select..."]"
+                DefaultItemValue="default(Guid)" />
+}
+
+@namespace Necnat.Abp.NnLibCommon.Blazor.Components.NnIdentity
+@code {
+
+    [Parameter]
+    public bool? IsAuthz { get; set; }
+
+    [Parameter]
+    public bool? IsBilling { get; set; }
+
+    [Parameter]
+    public bool? IsUser { get; set; }
+
+    public NecnatEndpointSelectList()
+    {
+        LocalizationResource = typeof(NnLibCommonResource);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Data == null)
+            Data = (await AppService.GetListAsync(new NecnatEndpointResultRequestDto
+                {
+                    IsAuthz = IsAuthz,
+                    IsBilling = IsBilling,
+                    IsUser = IsUser,
+                    IsPaged = false
+                })).Items.ToList();
+
+        if (IsAutoSelectFirst && Data != null && Data.Count > 0)
+            await OnSelectedValueChangedAsync(Data.First().Id);
+
+        _isLoading = false;
+    }
+}

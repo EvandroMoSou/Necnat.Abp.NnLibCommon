@@ -2,7 +2,7 @@
 
 public static class NnLibCommonDbProperties
 {
-    public static string DbTablePrefix { get; set; } = "Nn";
+    public static string DbTablePrefix { get; set; } = "Ncnt";
 
     public static string? DbSchema { get; set; } = null;
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Necnat.Abp.NnLibCommon.Domains;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Identity;
@@ -22,6 +23,9 @@ public class NnLibCommonDbContext : AbpDbContext<NnLibCommonDbContext>, INnLibCo
     public DbSet<IdentityLinkUser> LinkUsers { get; set; }
     public DbSet<IdentityUserDelegation> UserDelegations { get; set; }
     public DbSet<IdentityUserRole> UserRoles { get; set; }
+
+    //Necnat
+    public DbSet<NecnatEndpoint> NecnatEndpoint { get; set; }
 
     public NnLibCommonDbContext(DbContextOptions<NnLibCommonDbContext> options)
         : base(options)

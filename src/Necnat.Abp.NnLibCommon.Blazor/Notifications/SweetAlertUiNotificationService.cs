@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Volo.Abp.AspNetCore.Components.Notifications;
 using Volo.Abp.DependencyInjection;
 
-namespace Necnat.Abp.NnLibCommon.Blazor.Components.Notifications
+namespace Necnat.Abp.NnLibCommon.Blazor.Notifications
 {
     [Dependency(ReplaceServices = true)]
     [ExposeServices(typeof(IUiNotificationService))]

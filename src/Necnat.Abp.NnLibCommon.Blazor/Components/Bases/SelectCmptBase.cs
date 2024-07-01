@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Necnat.Abp.NnLibCommon.Blazor.Components
 {

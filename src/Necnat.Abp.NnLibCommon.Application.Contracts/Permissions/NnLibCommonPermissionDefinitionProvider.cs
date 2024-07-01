@@ -9,6 +9,11 @@ public class NnLibCommonPermissionDefinitionProvider : PermissionDefinitionProvi
     public override void Define(IPermissionDefinitionContext context)
     {
         var myGroup = context.AddGroup(NnLibCommonPermissions.GroupName, L("Permission:NnLibCommon"));
+
+        var pgNecnatEndpoint = myGroup.AddPermission(NnLibCommonPermissions.PrmNecnatEndpoint.Default, L("Permission:NecnatEndpoint:Default"));
+        pgNecnatEndpoint.AddChild(NnLibCommonPermissions.PrmNecnatEndpoint.Create, L("Permission:NecnatEndpoint:Create"));
+        pgNecnatEndpoint.AddChild(NnLibCommonPermissions.PrmNecnatEndpoint.Update, L("Permission:NecnatEndpoint:Update"));
+        pgNecnatEndpoint.AddChild(NnLibCommonPermissions.PrmNecnatEndpoint.Delete, L("Permission:NecnatEndpoint:Delete"));
     }
 
     private static LocalizableString L(string name)

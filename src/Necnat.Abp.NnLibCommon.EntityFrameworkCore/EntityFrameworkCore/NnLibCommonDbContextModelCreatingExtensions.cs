@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Necnat.Abp.NnLibCommon.Domains;
 using Volo.Abp;
+using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace Necnat.Abp.NnLibCommon.EntityFrameworkCore;
 
@@ -29,5 +31,18 @@ public static class NnLibCommonDbContextModelCreatingExtensions
             b.HasIndex(q => q.CreationTime);
         });
         */
+
+        builder.Entity<NecnatEndpoint>(b =>
+        {
+            b.ToTable(NnLibCommonDbProperties.DbTablePrefix + "NecnatEndpoint",
+                NnLibCommonDbProperties.DbSchema);
+            b.ConfigureByConvention(); //auto configure for the base class props
+            b.Property(x => x.DisplayName).HasMaxLength(NecnatEndpointConsts.MaxDisplayNameLength);
+            b.Property(x => x.Endpoint).IsRequired().HasMaxLength(NecnatEndpointConsts.MaxEndpointLength);
+            b.Property(x => x.IsActive).IsRequired();
+            b.Property(x => x.IsAuthz).IsRequired();
+            b.Property(x => x.IsBilling).IsRequired();
+            b.Property(x => x.IsUser).IsRequired();
+        });
     }
 }

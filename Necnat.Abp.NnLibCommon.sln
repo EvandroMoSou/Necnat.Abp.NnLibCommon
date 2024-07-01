@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29001.49
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Necnat.Abp.NnLibCommon.Domain.Shared", "src\Necnat.Abp.NnLibCommon.Domain.Shared\Necnat.Abp.NnLibCommon.Domain.Shared.csproj", "{D64C1577-4929-4B60-939E-96DE1534891A}"
 EndProject
@@ -49,17 +49,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Necnat.Abp.NnLibCommon.Host
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Necnat.Abp.NnLibCommon.Web.Unified", "host\Necnat.Abp.NnLibCommon.Web.Unified\Necnat.Abp.NnLibCommon.Web.Unified.csproj", "{3D872C41-E226-45C8-89C1-9D3DBD7C73F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Necnat.Abp.NnLibCommon.Blazor", "src\Necnat.Abp.NnLibCommon.Blazor\Necnat.Abp.NnLibCommon.Blazor.csproj", "{827FCC18-A22B-4175-82CD-1233F6DEE8FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Necnat.Abp.NnLibCommon.Blazor", "src\Necnat.Abp.NnLibCommon.Blazor\Necnat.Abp.NnLibCommon.Blazor.csproj", "{827FCC18-A22B-4175-82CD-1233F6DEE8FB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Necnat.Abp.NnLibCommon.Blazor.Host.Client", "host\Necnat.Abp.NnLibCommon.Blazor.Host.Client\Necnat.Abp.NnLibCommon.Blazor.Host.Client.csproj", "{D7E0F672-F5E2-4338-AFF4-4E5091C55A62}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Necnat.Abp.NnLibCommon.Blazor.Server", "src\Necnat.Abp.NnLibCommon.Blazor.Server\Necnat.Abp.NnLibCommon.Blazor.Server.csproj", "{299BE52E-823F-408E-9C6D-7E2F81BA34FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Necnat.Abp.NnLibCommon.Blazor.Server", "src\Necnat.Abp.NnLibCommon.Blazor.Server\Necnat.Abp.NnLibCommon.Blazor.Server.csproj", "{299BE52E-823F-408E-9C6D-7E2F81BA34FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Necnat.Abp.NnLibCommon.Blazor.WebAssembly", "src\Necnat.Abp.NnLibCommon.Blazor.WebAssembly\Necnat.Abp.NnLibCommon.Blazor.WebAssembly.csproj", "{F0EE5760-262D-456A-AA7C-E84F484A05F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Necnat.Abp.NnLibCommon.Blazor.WebAssembly", "src\Necnat.Abp.NnLibCommon.Blazor.WebAssembly\Necnat.Abp.NnLibCommon.Blazor.WebAssembly.csproj", "{F0EE5760-262D-456A-AA7C-E84F484A05F6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Necnat.Abp.NnLibCommon.Blazor.Server.Host", "host\Necnat.Abp.NnLibCommon.Blazor.Server.Host\Necnat.Abp.NnLibCommon.Blazor.Server.Host.csproj", "{FEA752A1-5B4E-49E9-B1F3-DDC25E41BB52}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Necnat.Abp.NnLibCommon.Installer", "src\Necnat.Abp.NnLibCommon.Installer\Necnat.Abp.NnLibCommon.Installer.csproj", "{BE39FD00-745B-4049-8161-FC129817CBE4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Necnat.Abp.NnLibCommon.Installer", "src\Necnat.Abp.NnLibCommon.Installer\Necnat.Abp.NnLibCommon.Installer.csproj", "{BE39FD00-745B-4049-8161-FC129817CBE4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Necnat.Abp.NnLibCommon.Blazor.Host", "host\Necnat.Abp.NnLibCommon.Blazor.Host\Necnat.Abp.NnLibCommon.Blazor.Host.csproj", "{C33FD057-839D-4F92-BA81-DD40B03FB75D}"
 EndProject
