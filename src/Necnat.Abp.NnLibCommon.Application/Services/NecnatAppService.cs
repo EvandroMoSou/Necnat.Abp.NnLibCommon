@@ -50,8 +50,8 @@ public abstract class NecnatAppService<TEntity, TEntityDto, TKey, TGetListInput,
 public abstract class NecnatAppService<TEntity, TEntityDto, TKey, TGetListInput, TCreateInput, TRepository>
     : NecnatAppService<TEntity, TEntityDto, TKey, TGetListInput, TCreateInput, TCreateInput, TRepository>
     where TEntity : class, IEntity<TKey>
-    where TCreateInput : class, IEntityDto<TKey>
     where TGetListInput : OptionalPagedAndSortedResultRequestDto
+    where TCreateInput : class, IEntityDto<TKey>
     where TRepository : IRepository<TEntity, TKey>
 {
     protected NecnatAppService(
@@ -66,9 +66,9 @@ public abstract class NecnatAppService<TEntity, TEntityDto, TKey, TGetListInput,
 public abstract class NecnatAppService<TEntity, TEntityDto, TKey, TGetListInput, TCreateInput, TUpdateInput, TRepository>
     : NecnatAppService<TEntity, TEntityDto, TEntityDto, TKey, TGetListInput, TCreateInput, TUpdateInput, TRepository>
     where TEntity : class, IEntity<TKey>
-    where TCreateInput : class, IEntityDto<TKey>
-    where TUpdateInput : class, IEntityDto<TKey>
     where TGetListInput : OptionalPagedAndSortedResultRequestDto
+    where TCreateInput : class, IEntityDto<TKey>
+    where TUpdateInput : class, IEntityDto<TKey>    
     where TRepository : IRepository<TEntity, TKey>
 {
     protected NecnatAppService(
@@ -93,9 +93,9 @@ public abstract class NecnatAppService<TEntity, TEntityDto, TKey, TGetListInput,
 public abstract class NecnatAppService<TEntity, TGetOutputDto, TGetListOutputDto, TKey, TGetListInput, TCreateInput, TUpdateInput, TRepository>
     : CrudAppService<TEntity, TGetOutputDto, TGetListOutputDto, TKey, TGetListInput, TCreateInput, TUpdateInput>
     where TEntity : class, IEntity<TKey>
+    where TGetListInput : OptionalPagedAndSortedResultRequestDto
     where TCreateInput : class, IEntityDto<TKey>
     where TUpdateInput : class, IEntityDto<TKey>
-    where TGetListInput : OptionalPagedAndSortedResultRequestDto
     where TRepository : IRepository<TEntity, TKey>
 {
     protected readonly ICurrentUser _currentUser;
@@ -113,6 +113,25 @@ public abstract class NecnatAppService<TEntity, TGetOutputDto, TGetListOutputDto
 
         Repository = repository;
     }
+
+    #region Get
+
+    public override async Task<TGetOutputDto> GetAsync(TKey id)
+    {
+        await CheckGetPolicyAsync();
+
+        var entity = await GetEntityByIdAsync(id);
+        entity = await AfterGetAsync(entity);
+
+        return await MapToGetOutputDtoAsync(entity);
+    }
+
+    protected virtual Task<TEntity> AfterGetAsync(TEntity entity)
+    {
+        return Task.FromResult(entity);
+    }
+
+    #endregion
 
     #region GetList
 
@@ -151,14 +170,14 @@ public abstract class NecnatAppService<TEntity, TGetOutputDto, TGetListOutputDto
         return Task.FromResult(input);
     }
 
-    protected virtual Task<List<TEntity>> AfterGetListAsync(List<TEntity> input)
+    protected virtual Task<List<TEntity>> AfterGetListAsync(List<TEntity> entityList)
     {
-        return Task.FromResult(input);
+        return Task.FromResult(entityList);
     }
 
-    protected virtual Task<List<TGetListOutputDto>> AfterGetListAsync(List<TGetListOutputDto> input)
+    protected virtual Task<List<TGetListOutputDto>> AfterGetListAsync(List<TGetListOutputDto> entityDtoList)
     {
-        return Task.FromResult(input);
+        return Task.FromResult(entityDtoList);
     }
 
     #endregion
@@ -250,17 +269,11 @@ public abstract class NecnatAppService<TEntity, TGetOutputDto, TGetListOutputDto
         entity = await CheckDeleteDbEntityAsync(entity);
 
         await Repository.DeleteAsync(entity);
-        await CheckDeleteDeletedAsync(entity);
     }
 
     protected virtual Task<TEntity> CheckDeleteDbEntityAsync(TEntity dbEntity)
     {
         return Task.FromResult(dbEntity);
-    }
-
-    protected virtual Task CheckDeleteDeletedAsync(TEntity deletedEntity)
-    {
-        return Task.CompletedTask;
     }
 
     #endregion
