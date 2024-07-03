@@ -2,6 +2,7 @@
 {
     public static class NecnatEndpointConsts
     {
+        public const int MaxPermissionsGroupNameLength = 64;
         public const int MaxDisplayNameLength = 128;
         public const int MaxEndpointLength = 512;
 

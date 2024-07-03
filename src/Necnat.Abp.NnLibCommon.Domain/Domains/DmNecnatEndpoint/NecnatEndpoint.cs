@@ -8,6 +8,7 @@ namespace Necnat.Abp.NnLibCommon.Domains
     {
         public string DisplayName { get; set; } = string.Empty;
         public string Endpoint { get; set; } = string.Empty;
+        public string PermissionsGroupName { get; set; } = string.Empty;
         public bool IsActive { get; set; }
         public bool IsAuthz { get; set; }
         public bool IsBilling { get; set; }
