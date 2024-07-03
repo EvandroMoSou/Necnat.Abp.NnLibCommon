@@ -1,9 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Necnat.Abp.NnLibCommon.Domains
 {
     public interface INecnatEndpointStore
     {
-        Task<string> GetEndpointByPermissionsGroupNameAsync(string permissionsGroupName);
+        Task<List<NecnatEndpoint>> GetListAsync();
     }
 }

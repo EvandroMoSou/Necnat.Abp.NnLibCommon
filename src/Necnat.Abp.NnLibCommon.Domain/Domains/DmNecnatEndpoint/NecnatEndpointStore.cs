@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Volo.Abp.Caching;
 using Volo.Abp.DependencyInjection;
@@ -8,6 +9,8 @@ namespace Necnat.Abp.NnLibCommon.Domains
 {
     public class NecnatEndpointStore : INecnatEndpointStore, ITransientDependency
     {
+        protected const string _key = "0a4662bc-812b-4b1b-9c77-fb3af66720db";
+
         protected readonly INecnatEndpointRepository _repository;
         protected readonly IDistributedCache<NecnatEndpointCacheItem> _cache;
 
@@ -19,24 +22,24 @@ namespace Necnat.Abp.NnLibCommon.Domains
             _cache = cache;
         }
 
-        public virtual async Task<string> GetEndpointByPermissionsGroupNameAsync(string permissionsGroupName)
+        public virtual async Task<List<NecnatEndpoint>> GetListAsync()
         {
-            return (await GetCacheItemAsync(permissionsGroupName)).Endpoint;
+            return (await GetCacheItemAsync()).NecnatEndpointList;
         }
 
-        protected virtual async Task<NecnatEndpointCacheItem> GetCacheItemAsync(string permissionsGroupName)
+        protected virtual async Task<NecnatEndpointCacheItem> GetCacheItemAsync()
         {
             return (await _cache.GetOrAddAsync(
-                NecnatEndpointCacheItem.CalculateCacheKey(permissionsGroupName),
-                async () => await GetFromDatabaseAsync(permissionsGroupName),
+                _key,
+                async () => await GetFromDatabaseAsync(),
                 () => new DistributedCacheEntryOptions { AbsoluteExpiration = DateTimeOffset.Now.AddHours(1) }
             ))!;
         }
 
-        private async Task<NecnatEndpointCacheItem> GetFromDatabaseAsync(string permissionsGroupName)
+        private async Task<NecnatEndpointCacheItem> GetFromDatabaseAsync()
         {
-            var e = await _repository.GetByPermissionsGroupNameAsync(permissionsGroupName);
-            return new NecnatEndpointCacheItem(e.Endpoint);
+            var e = await _repository.GetListAsync();
+            return new NecnatEndpointCacheItem(e);
         }
     }
 }
