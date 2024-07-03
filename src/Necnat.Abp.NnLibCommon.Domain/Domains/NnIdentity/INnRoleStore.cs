@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 
 namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
 {
-    public interface IRoleNameService
+    public interface INnRoleStore
     {
-        Task<string> GetByIdAsync(Guid id);
+        Task<string> GetNameByIdAsync(Guid id);
     }
 }
