@@ -28,25 +28,6 @@ namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
             _rolePermissionListCache = rolePermissionListCache;
         }
 
-        public async Task<List<string>> GetPermissionListByIdAsync(Guid id)
-        {
-            return (await GetPermissionListCacheItemAsync(id)).PermissionList;
-        }
-
-        public async Task<RolePermissionListCacheItem> GetPermissionListCacheItemAsync(Guid id)
-        {
-            return (await _rolePermissionListCache.GetOrAddAsync(
-                id.ToString(), //Cache key
-                async () => await GetPermissionListFromDatabaseAsync(id),
-                () => new DistributedCacheEntryOptions { AbsoluteExpiration = DateTimeOffset.Now.AddHours(6) }
-            ))!;
-        }
-
-        private async Task<RolePermissionListCacheItem> GetPermissionListFromDatabaseAsync(Guid id)
-        {
-            return new RolePermissionListCacheItem { PermissionList = (await _permissionGrantRepository.GetListAsync("R", await GetNameByIdAsync(id))).Select(x => x.Name).ToList() };
-        }
-
         public async Task<string> GetNameByIdAsync(Guid id)
         {
             return (await GetRoleNameCacheItemAsync(id)).RoleName;
@@ -64,6 +45,25 @@ namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
         private async Task<RoleNameCacheItem> GetRoleNameFromDatabaseAsync(Guid id)
         {
             return new RoleNameCacheItem { RoleName = await _nnIdentityRoleRepository.FindNameByIdAsync(id) };
+        }
+
+        public async Task<List<string>> GetPermissionListByIdAsync(Guid id)
+        {
+            return (await GetPermissionListCacheItemAsync(id)).PermissionList;
+        }
+
+        public async Task<RolePermissionListCacheItem> GetPermissionListCacheItemAsync(Guid id)
+        {
+            return (await _rolePermissionListCache.GetOrAddAsync(
+                id.ToString(), //Cache key
+                async () => await GetPermissionListFromDatabaseAsync(id),
+                () => new DistributedCacheEntryOptions { AbsoluteExpiration = DateTimeOffset.Now.AddHours(6) }
+            ))!;
+        }
+
+        private async Task<RolePermissionListCacheItem> GetPermissionListFromDatabaseAsync(Guid id)
+        {
+            return new RolePermissionListCacheItem { PermissionList = (await _permissionGrantRepository.GetListAsync("R", await GetNameByIdAsync(id))).Select(x => x.Name).ToList() };
         }
     }
 }
