@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Volo.Abp.Caching;
 using Volo.Abp.DependencyInjection;
@@ -28,12 +29,12 @@ namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
             _rolePermissionListCache = rolePermissionListCache;
         }
 
-        public async Task<string> GetNameByIdAsync(Guid id)
+        public virtual async Task<string> GetNameByIdAsync(Guid id)
         {
             return (await GetRoleNameCacheItemAsync(id)).RoleName;
         }
 
-        public async Task<RoleNameCacheItem> GetRoleNameCacheItemAsync(Guid id)
+        protected virtual async Task<RoleNameCacheItem> GetRoleNameCacheItemAsync(Guid id)
         {
             return (await _roleNameCache.GetOrAddAsync(
                 id.ToString(), //Cache key
@@ -42,17 +43,17 @@ namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
             ))!;
         }
 
-        private async Task<RoleNameCacheItem> GetRoleNameFromDatabaseAsync(Guid id)
+        protected virtual async Task<RoleNameCacheItem> GetRoleNameFromDatabaseAsync(Guid id)
         {
             return new RoleNameCacheItem { RoleName = await _nnIdentityRoleRepository.FindNameByIdAsync(id) };
         }
 
-        public async Task<List<string>> GetPermissionListByIdAsync(Guid id)
+        public virtual async Task<List<string>> GetPermissionListByIdAsync(Guid id)
         {
             return (await GetPermissionListCacheItemAsync(id)).PermissionList;
         }
 
-        public async Task<RolePermissionListCacheItem> GetPermissionListCacheItemAsync(Guid id)
+        protected virtual async Task<RolePermissionListCacheItem> GetPermissionListCacheItemAsync(Guid id)
         {
             return (await _rolePermissionListCache.GetOrAddAsync(
                 id.ToString(), //Cache key
@@ -61,9 +62,25 @@ namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
             ))!;
         }
 
-        private async Task<RolePermissionListCacheItem> GetPermissionListFromDatabaseAsync(Guid id)
+        protected virtual async Task<RolePermissionListCacheItem> GetPermissionListFromDatabaseAsync(Guid id)
         {
             return new RolePermissionListCacheItem { PermissionList = (await _permissionGrantRepository.GetListAsync("R", await GetNameByIdAsync(id))).Select(x => x.Name).ToList() };
+        }
+
+        public virtual async Task<bool> HasPermissionNameAsync(Guid id, string permissionName)
+        {
+            return (await GetPermissionListByIdAsync(id)).Contains(permissionName);
+        }
+
+        public virtual async Task<List<Guid>> FilterByPermissionNameAsync(List<Guid> idList, string permissionName)
+        {
+            var filteredList = new List<Guid>();
+
+            foreach (var iId in idList)
+                if((await GetPermissionListByIdAsync(iId)).Contains(permissionName))
+                    filteredList.Add(iId);
+
+            return filteredList;
         }
     }
 }

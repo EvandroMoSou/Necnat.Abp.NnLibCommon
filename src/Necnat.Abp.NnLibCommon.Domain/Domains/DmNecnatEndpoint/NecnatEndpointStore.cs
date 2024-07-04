@@ -36,7 +36,7 @@ namespace Necnat.Abp.NnLibCommon.Domains
             ))!;
         }
 
-        private async Task<NecnatEndpointCacheItem> GetFromDatabaseAsync()
+        protected virtual async Task<NecnatEndpointCacheItem> GetFromDatabaseAsync()
         {
             var e = await _repository.GetListAsync();
             return new NecnatEndpointCacheItem(e);
