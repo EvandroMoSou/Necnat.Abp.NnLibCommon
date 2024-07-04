@@ -8,5 +8,7 @@ namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
     {
         Task<string> GetNameByIdAsync(Guid id);
         Task<List<string>> GetPermissionListByIdAsync(Guid id);
+        Task<bool> HasPermissionNameAsync(Guid id, string permissionName);
+        Task<List<Guid>> FilterByPermissionNameAsync(List<Guid> idList, string permissionName);
     }
 }
