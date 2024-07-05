@@ -43,7 +43,7 @@ namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
             return q;
         }
 
-        public async Task<IdentityUserDto> GetMyAsync(Guid id)
+        public virtual async Task<IdentityUserDto> GetMyAsync(Guid id)
         {
             ThrowIfIsNotMy(id);
             return await base.GetAsync(id);
