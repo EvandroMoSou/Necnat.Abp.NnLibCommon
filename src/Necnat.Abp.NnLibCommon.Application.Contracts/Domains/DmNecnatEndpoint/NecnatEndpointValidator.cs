@@ -14,9 +14,12 @@ namespace Necnat.Abp.NnLibCommon.Domains
             lError.AddIfNotIsNullOrWhiteSpace(ValidateDisplayName(dto.DisplayName, stringLocalizer));
             lError.AddIfNotIsNullOrWhiteSpace(ValidateEndpoint(dto.Endpoint, stringLocalizer));
             lError.AddIfNotIsNullOrWhiteSpace(ValidateIsActive(dto.IsActive, stringLocalizer));
-            lError.AddIfNotIsNullOrWhiteSpace(ValidateIsAuthorization(dto.IsAuthorization, stringLocalizer));
             lError.AddIfNotIsNullOrWhiteSpace(ValidateIsAuthServer(dto.IsAuthServer, stringLocalizer));
             lError.AddIfNotIsNullOrWhiteSpace(ValidateIsBilling(dto.IsBilling, stringLocalizer));
+            lError.AddIfNotIsNullOrWhiteSpace(ValidateIsAuthorization(dto.IsAuthorization, stringLocalizer));
+            lError.AddIfNotIsNullOrWhiteSpace(ValidatePermissionsGroupName(dto.PermissionsGroupName, dto.IsAuthorization, stringLocalizer));
+            lError.AddIfNotIsNullOrWhiteSpace(ValidateIsHierarchyComponent(dto.IsAuthorization, stringLocalizer));
+            lError.AddIfNotIsNullOrWhiteSpace(ValidateHierarchyComponentTypeId(dto.HierarchyComponentTypeId, dto.IsHierarchyComponent, stringLocalizer));
 
             if (lError.Count > 0)
                 return lError;
@@ -54,14 +57,6 @@ namespace Necnat.Abp.NnLibCommon.Domains
             return null;
         }
 
-        public static string? ValidateIsAuthorization(bool? value, IStringLocalizer stringLocalizer)
-        {
-            if (value == null)
-                return string.Format(stringLocalizer[ValidationMessages.Required], NecnatEndpointConsts.IsAuthorizationDisplay);
-
-            return null;
-        }
-
         public static string? ValidateIsAuthServer(bool? value, IStringLocalizer stringLocalizer)
         {
             if (value == null)
@@ -74,6 +69,41 @@ namespace Necnat.Abp.NnLibCommon.Domains
         {
             if (value == null)
                 return string.Format(stringLocalizer[ValidationMessages.Required], NecnatEndpointConsts.IsBillingDisplay);
+
+            return null;
+        }
+
+        public static string? ValidateIsAuthorization(bool? value, IStringLocalizer stringLocalizer)
+        {
+            if (value == null)
+                return string.Format(stringLocalizer[ValidationMessages.Required], NecnatEndpointConsts.IsAuthorizationDisplay);
+
+            return null;
+        }
+
+        public static string? ValidatePermissionsGroupName(string? value, bool? isAuthorization, IStringLocalizer stringLocalizer)
+        {
+            if (string.IsNullOrWhiteSpace(value) && isAuthorization == true)
+                return string.Format(stringLocalizer[ValidationMessages.Required], NecnatEndpointConsts.PermissionsGroupNameDisplay);
+
+            if (value!.Length > NecnatEndpointConsts.MaxPermissionsGroupNameLength)
+                return string.Format(stringLocalizer[ValidationMessages.MaxLength], NecnatEndpointConsts.PermissionsGroupNameDisplay, NecnatEndpointConsts.MaxPermissionsGroupNameLength);
+
+            return null;
+        }
+
+        public static string? ValidateIsHierarchyComponent(bool? value, IStringLocalizer stringLocalizer)
+        {
+            if (value == null)
+                return string.Format(stringLocalizer[ValidationMessages.Required], NecnatEndpointConsts.IsHierarchyComponentDisplay);
+
+            return null;
+        }
+
+        public static string? ValidateHierarchyComponentTypeId(short? value, bool? isHierarchyComponent, IStringLocalizer stringLocalizer)
+        {
+            if ((value == null || value == 0) && isHierarchyComponent == true)
+                return string.Format(stringLocalizer[ValidationMessages.Required], NecnatEndpointConsts.HierarchyComponentTypeIdDisplay);
 
             return null;
         }

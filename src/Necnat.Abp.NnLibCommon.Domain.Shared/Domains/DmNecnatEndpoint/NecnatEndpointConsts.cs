@@ -9,8 +9,15 @@
         public const string DisplayNameDisplay = "Display Name";
         public const string EndpointDisplay = "Endpoint";
         public const string IsActiveDisplay = "Active";
+
         public const string IsAuthorizationDisplay = "Authorization";
+        public const string PermissionsGroupNameDisplay = "Permissions Group Name";
+
         public const string IsAuthServerDisplay = "Auth Server";
+
         public const string IsBillingDisplay = "Billing";
+
+        public const string IsHierarchyComponentDisplay = "Hierarchy Component";
+        public const string HierarchyComponentTypeIdDisplay = "Hierarchy Component Type Id";
     }
 }

@@ -42,16 +42,6 @@
     </Validation>
 </Fields>
 <Fields>
-    <Validation Validator="@ValidateIsAuthorization">
-        <Field ColumnSize="ColumnSize.Is4">
-            <FieldLabel>@L[NecnatEndpointConsts.IsAuthorizationDisplay]</FieldLabel>
-            <Check TValue="bool?" @bind-Checked="@Entity!.IsAuthorization">
-                <Feedback>
-                    <ValidationError />
-                </Feedback>
-            </Check>
-        </Field>
-    </Validation>
     <Validation Validator="@ValidateIsAuthServer">
         <Field ColumnSize="ColumnSize.Is4">
             <FieldLabel>@L[NecnatEndpointConsts.IsAuthServerDisplay]</FieldLabel>
@@ -73,7 +63,50 @@
         </Field>
     </Validation>
 </Fields>
-
+<Fields>
+    <Validation Validator="@ValidateIsAuthorization">
+        <Field ColumnSize="ColumnSize.Is4">
+            <FieldLabel>@L[NecnatEndpointConsts.IsAuthorizationDisplay]</FieldLabel>
+            <Check TValue="bool?" @bind-Checked="@Entity!.IsAuthorization">
+                <Feedback>
+                    <ValidationError />
+                </Feedback>
+            </Check>
+        </Field>
+    </Validation>
+    <Validation Validator="@ValidatePermissionsGroupName">
+        <Field ColumnSize="ColumnSize.Is8">
+            <FieldLabel>@L[NecnatEndpointConsts.PermissionsGroupNameDisplay]</FieldLabel>
+            <TextEdit @bind-Text="@Entity!.PermissionsGroupName" Disabled="@(Entity?.IsAuthorization != true)">
+                <Feedback>
+                    <ValidationError />
+                </Feedback>
+            </TextEdit>
+        </Field>
+    </Validation>
+</Fields>
+<Fields>
+    <Validation Validator="@ValidateIsHierarchyComponent">
+        <Field ColumnSize="ColumnSize.Is4">
+            <FieldLabel>@L[NecnatEndpointConsts.IsHierarchyComponentDisplay]</FieldLabel>
+            <Check TValue="bool?" @bind-Checked="@Entity!.IsHierarchyComponent">
+                <Feedback>
+                    <ValidationError />
+                </Feedback>
+            </Check>
+        </Field>
+    </Validation>
+    <Validation Validator="@ValidateHierarchyComponentTypeId">
+        <Field ColumnSize="ColumnSize.Is8">
+            <FieldLabel>@L[NecnatEndpointConsts.HierarchyComponentTypeIdDisplay]</FieldLabel>
+            <NumericEdit TValue="short?" @bind-Text="@Entity!.HierarchyComponentTypeId" Disabled="@(Entity?.IsHierarchyComponent != true)">
+                <Feedback>
+                    <ValidationError />
+                </Feedback>
+            </NumericEdit>
+        </Field>
+    </Validation>
+</Fields>
 
 @namespace Necnat.Abp.NnLibCommon.Blazor.Components
 @code {
@@ -104,11 +137,6 @@
         e.WithError(NecnatEndpointValidator.ValidateIsActive((bool?)e.Value, L));
     }
 
-    void ValidateIsAuthorization(ValidatorEventArgs e)
-    {
-        e.WithError(NecnatEndpointValidator.ValidateIsAuthorization((bool?)e.Value, L));
-    }
-
     void ValidateIsAuthServer(ValidatorEventArgs e)
     {
         e.WithError(NecnatEndpointValidator.ValidateIsAuthServer((bool?)e.Value, L));
@@ -117,6 +145,32 @@
     void ValidateIsBilling(ValidatorEventArgs e)
     {
         e.WithError(NecnatEndpointValidator.ValidateIsBilling((bool?)e.Value, L));
+    }
+
+    void ValidateIsAuthorization(ValidatorEventArgs e)
+    {
+        if ((bool?)e.Value != true)
+            Entity!.PermissionsGroupName = null;
+
+        e.WithError(NecnatEndpointValidator.ValidateIsAuthorization((bool?)e.Value, L));
+    }
+
+    void ValidatePermissionsGroupName(ValidatorEventArgs e)
+    {
+        e.WithError(NecnatEndpointValidator.ValidatePermissionsGroupName((string?)e.Value, Entity?.IsAuthorization, L));
+    }
+
+    void ValidateIsHierarchyComponent(ValidatorEventArgs e)
+    {
+        if ((bool?)e.Value != true)
+            Entity!.HierarchyComponentTypeId = null;
+
+        e.WithError(NecnatEndpointValidator.ValidateIsHierarchyComponent((bool?)e.Value, L));
+    }
+
+    void ValidateHierarchyComponentTypeId(ValidatorEventArgs e)
+    {
+        e.WithError(NecnatEndpointValidator.ValidateHierarchyComponentTypeId((short?)e.Value, Entity?.IsHierarchyComponent, L));
     }
 
 }

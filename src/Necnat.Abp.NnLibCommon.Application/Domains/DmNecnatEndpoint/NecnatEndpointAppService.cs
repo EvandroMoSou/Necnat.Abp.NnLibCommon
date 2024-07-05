@@ -48,11 +48,20 @@ namespace Necnat.Abp.NnLibCommon.Domains.DmNecnatEndpoint
             if (input.IsAuthorization != null)
                 q = q.Where(x => x.IsAuthorization == input.IsAuthorization);
 
+            if (!string.IsNullOrWhiteSpace(input.PermissionsGroupNameContains))
+                q = q.Where(x => x.PermissionsGroupName != null && x.PermissionsGroupName.Contains(input.PermissionsGroupNameContains));
+
             if (input.IsAuthServer != null)
                 q = q.Where(x => x.IsAuthServer == input.IsAuthServer);
 
             if (input.IsBilling != null)
                 q = q.Where(x => x.IsBilling == input.IsBilling);
+
+            if (input.IsHierarchyComponent != null)
+                q = q.Where(x => x.IsHierarchyComponent == input.IsHierarchyComponent);
+
+            if (input.HierarchyComponentTypeId != null)
+                q = q.Where(x => x.HierarchyComponentTypeId == input.HierarchyComponentTypeId);
 
             return q;
         }
