@@ -7,7 +7,7 @@
 		<Nullable>enable</Nullable>
 		<RootNamespace>Necnat.Abp.NnLibCommon</RootNamespace>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>0.2.11</Version>
+    <Version>0.2.13</Version>
 	</PropertyGroup>
 
 	<ItemGroup>

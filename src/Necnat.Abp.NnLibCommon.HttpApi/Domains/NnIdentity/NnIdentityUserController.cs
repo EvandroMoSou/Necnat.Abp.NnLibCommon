@@ -19,7 +19,7 @@ namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
         }
 
         [HttpGet]
-        [Route("{id}")]
+        [Route("{id}/my")]
         public virtual Task<IdentityUserDto> GetMyAsync(Guid id)
         {
             return AppService.GetMyAsync(id);
