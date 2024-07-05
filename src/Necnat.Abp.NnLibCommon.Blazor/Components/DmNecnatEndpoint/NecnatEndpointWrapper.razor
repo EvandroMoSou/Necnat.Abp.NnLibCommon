@@ -42,10 +42,20 @@
     </Validation>
 </Fields>
 <Fields>
-    <Validation Validator="@ValidateIsAuthz">
+    <Validation Validator="@ValidateIsAuthorization">
         <Field ColumnSize="ColumnSize.Is4">
-            <FieldLabel>@L[NecnatEndpointConsts.IsAuthzDisplay]</FieldLabel>
-            <Check TValue="bool?" @bind-Checked="@Entity!.IsAuthz">
+            <FieldLabel>@L[NecnatEndpointConsts.IsAuthorizationDisplay]</FieldLabel>
+            <Check TValue="bool?" @bind-Checked="@Entity!.IsAuthorization">
+                <Feedback>
+                    <ValidationError />
+                </Feedback>
+            </Check>
+        </Field>
+    </Validation>
+    <Validation Validator="@ValidateIsAuthServer">
+        <Field ColumnSize="ColumnSize.Is4">
+            <FieldLabel>@L[NecnatEndpointConsts.IsAuthServerDisplay]</FieldLabel>
+            <Check TValue="bool?" @bind-Checked="@Entity!.IsAuthServer">
                 <Feedback>
                     <ValidationError />
                 </Feedback>
@@ -56,16 +66,6 @@
         <Field ColumnSize="ColumnSize.Is4">
             <FieldLabel>@L[NecnatEndpointConsts.IsBillingDisplay]</FieldLabel>
             <Check TValue="bool?" @bind-Checked="@Entity!.IsBilling">
-                <Feedback>
-                    <ValidationError />
-                </Feedback>
-            </Check>
-        </Field>
-    </Validation>
-    <Validation Validator="@ValidateIsUser">
-        <Field ColumnSize="ColumnSize.Is4">
-            <FieldLabel>@L[NecnatEndpointConsts.IsUserDisplay]</FieldLabel>
-            <Check TValue="bool?" @bind-Checked="@Entity!.IsUser">
                 <Feedback>
                     <ValidationError />
                 </Feedback>
@@ -104,19 +104,19 @@
         e.WithError(NecnatEndpointValidator.ValidateIsActive((bool?)e.Value, L));
     }
 
-    void ValidateIsAuthz(ValidatorEventArgs e)
+    void ValidateIsAuthorization(ValidatorEventArgs e)
     {
-        e.WithError(NecnatEndpointValidator.ValidateIsAuthz((bool?)e.Value, L));
+        e.WithError(NecnatEndpointValidator.ValidateIsAuthorization((bool?)e.Value, L));
+    }
+
+    void ValidateIsAuthServer(ValidatorEventArgs e)
+    {
+        e.WithError(NecnatEndpointValidator.ValidateIsAuthServer((bool?)e.Value, L));
     }
 
     void ValidateIsBilling(ValidatorEventArgs e)
     {
         e.WithError(NecnatEndpointValidator.ValidateIsBilling((bool?)e.Value, L));
-    }
-
-    void ValidateIsUser(ValidatorEventArgs e)
-    {
-        e.WithError(NecnatEndpointValidator.ValidateIsUser((bool?)e.Value, L));
     }
 
 }

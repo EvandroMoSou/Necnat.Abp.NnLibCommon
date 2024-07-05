@@ -45,14 +45,14 @@ namespace Necnat.Abp.NnLibCommon.Domains.DmNecnatEndpoint
             if (input.IsActive != null)
                 q = q.Where(x => x.IsActive == input.IsActive);
 
-            if (input.IsAuthz != null)
-                q = q.Where(x => x.IsAuthz == input.IsAuthz);
+            if (input.IsAuthorization != null)
+                q = q.Where(x => x.IsAuthorization == input.IsAuthorization);
+
+            if (input.IsAuthServer != null)
+                q = q.Where(x => x.IsAuthServer == input.IsAuthServer);
 
             if (input.IsBilling != null)
                 q = q.Where(x => x.IsBilling == input.IsBilling);
-
-            if (input.IsUser != null)
-                q = q.Where(x => x.IsUser == input.IsUser);
 
             return q;
         }

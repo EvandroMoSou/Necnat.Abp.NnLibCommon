@@ -39,11 +39,10 @@ public static class NnLibCommonDbContextModelCreatingExtensions
             b.ConfigureByConvention(); //auto configure for the base class props
             b.Property(x => x.DisplayName).HasMaxLength(NecnatEndpointConsts.MaxDisplayNameLength);
             b.Property(x => x.Endpoint).IsRequired().HasMaxLength(NecnatEndpointConsts.MaxEndpointLength);
-            b.Property(x => x.PermissionsGroupName).HasMaxLength(NecnatEndpointConsts.MaxPermissionsGroupNameLength);
             b.Property(x => x.IsActive).IsRequired();
-            b.Property(x => x.IsAuthz).IsRequired();
+            b.Property(x => x.IsAuthorization).IsRequired();
             b.Property(x => x.IsBilling).IsRequired();
-            b.Property(x => x.IsUser).IsRequired();
+            b.Property(x => x.IsAuthServer).IsRequired();
         });
     }
 }

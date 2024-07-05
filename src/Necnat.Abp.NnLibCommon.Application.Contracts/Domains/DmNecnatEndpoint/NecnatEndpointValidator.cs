@@ -14,9 +14,9 @@ namespace Necnat.Abp.NnLibCommon.Domains
             lError.AddIfNotIsNullOrWhiteSpace(ValidateDisplayName(dto.DisplayName, stringLocalizer));
             lError.AddIfNotIsNullOrWhiteSpace(ValidateEndpoint(dto.Endpoint, stringLocalizer));
             lError.AddIfNotIsNullOrWhiteSpace(ValidateIsActive(dto.IsActive, stringLocalizer));
-            lError.AddIfNotIsNullOrWhiteSpace(ValidateIsAuthz(dto.IsAuthz, stringLocalizer));
+            lError.AddIfNotIsNullOrWhiteSpace(ValidateIsAuthorization(dto.IsAuthorization, stringLocalizer));
+            lError.AddIfNotIsNullOrWhiteSpace(ValidateIsAuthServer(dto.IsAuthServer, stringLocalizer));
             lError.AddIfNotIsNullOrWhiteSpace(ValidateIsBilling(dto.IsBilling, stringLocalizer));
-            lError.AddIfNotIsNullOrWhiteSpace(ValidateIsUser(dto.IsUser, stringLocalizer));
 
             if (lError.Count > 0)
                 return lError;
@@ -54,10 +54,18 @@ namespace Necnat.Abp.NnLibCommon.Domains
             return null;
         }
 
-        public static string? ValidateIsAuthz(bool? value, IStringLocalizer stringLocalizer)
+        public static string? ValidateIsAuthorization(bool? value, IStringLocalizer stringLocalizer)
         {
             if (value == null)
-                return string.Format(stringLocalizer[ValidationMessages.Required], NecnatEndpointConsts.IsAuthzDisplay);
+                return string.Format(stringLocalizer[ValidationMessages.Required], NecnatEndpointConsts.IsAuthorizationDisplay);
+
+            return null;
+        }
+
+        public static string? ValidateIsAuthServer(bool? value, IStringLocalizer stringLocalizer)
+        {
+            if (value == null)
+                return string.Format(stringLocalizer[ValidationMessages.Required], NecnatEndpointConsts.IsAuthServerDisplay);
 
             return null;
         }
@@ -66,14 +74,6 @@ namespace Necnat.Abp.NnLibCommon.Domains
         {
             if (value == null)
                 return string.Format(stringLocalizer[ValidationMessages.Required], NecnatEndpointConsts.IsBillingDisplay);
-
-            return null;
-        }
-
-        public static string? ValidateIsUser(bool? value, IStringLocalizer stringLocalizer)
-        {
-            if (value == null)
-                return string.Format(stringLocalizer[ValidationMessages.Required], NecnatEndpointConsts.IsUserDisplay);
 
             return null;
         }
