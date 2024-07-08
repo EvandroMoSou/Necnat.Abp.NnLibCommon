@@ -16,7 +16,8 @@ namespace Necnat.Abp.NnLibCommon.Controllers
             AppService = appService;
         }
 
-        [HttpGet]
+        [HttpPost]
+        [Route("get-list")]
         public virtual Task<PagedResultDto<TEntityDto>> GetListAsync(TGetListInput input)
         {
             return AppService.GetListAsync(input);
