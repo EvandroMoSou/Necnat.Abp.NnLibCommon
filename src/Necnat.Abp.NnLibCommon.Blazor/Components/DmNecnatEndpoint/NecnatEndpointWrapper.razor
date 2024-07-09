@@ -99,7 +99,7 @@
     <Validation Validator="@ValidateHierarchyComponentTypeId">
         <Field ColumnSize="ColumnSize.Is8">
             <FieldLabel>@L[NecnatEndpointConsts.HierarchyComponentTypeIdDisplay]</FieldLabel>
-            <NumericEdit TValue="short?" @bind-Text="@Entity!.HierarchyComponentTypeId" Disabled="@(Entity?.IsHierarchyComponent != true)">
+            <NumericEdit TValue="short?" @bind-Value="@Entity!.HierarchyComponentTypeId" Disabled="@(Entity?.IsHierarchyComponent != true)">
                 <Feedback>
                     <ValidationError />
                 </Feedback>
@@ -172,5 +172,4 @@
     {
         e.WithError(NecnatEndpointValidator.ValidateHierarchyComponentTypeId((short?)e.Value, Entity?.IsHierarchyComponent, L));
     }
-
 }
