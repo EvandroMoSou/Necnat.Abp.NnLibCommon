@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
-using Necnat.Abp.NnLibCommon.Domains.DmNnEndpoint;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +23,7 @@ namespace Necnat.Abp.NnLibCommon.Domains
             _cache = cache;
         }
 
-        public virtual async Task<List<NnEndpointModel>> GetListByTag(string tag, bool isActive = true)
+        public virtual async Task<List<NnEndpointModel>> GetListByTagAsync(string tag, bool isActive = true)
         {
             var nnEndpointList = await GetCacheItemAsync();
 

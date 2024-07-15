@@ -34,7 +34,7 @@ public static class NnLibCommonDbContextModelCreatingExtensions
 
         builder.Entity<NnEndpoint>(b =>
         {
-            b.ToTable(NnLibCommonDbProperties.DbTablePrefix + "NecnatEndpoint",
+            b.ToTable(NnLibCommonDbProperties.DbTablePrefix + "NnEndpoint",
                 NnLibCommonDbProperties.DbSchema);
             b.ConfigureByConvention(); //auto configure for the base class props
             b.Property(x => x.DisplayName).HasMaxLength(NnEndpointConsts.MaxDisplayNameLength);

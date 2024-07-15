@@ -24,5 +24,5 @@ public interface INnLibCommonDbContext : IEfCoreDbContext
     DbSet<IdentityUserRole> UserRoles { get; }
 
     //Necnat
-    DbSet<NnEndpoint> NecnatEndpoint { get; }
+    DbSet<NnEndpoint> NnEndpoint { get; }
 }

@@ -1,4 +1,4 @@
-﻿namespace Necnat.Abp.NnLibCommon.Domains.DmNnEndpoint
+﻿namespace Necnat.Abp.NnLibCommon.Domains
 {
     public class NnEndpointModel
     {
