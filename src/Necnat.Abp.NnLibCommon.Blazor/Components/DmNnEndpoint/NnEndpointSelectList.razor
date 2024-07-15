@@ -2,7 +2,7 @@
 @using Necnat.Abp.NnLibCommon.Domains
 @using Necnat.Abp.NnLibCommon.Localization
 @using Volo.Abp.Identity
-@inherits SelectCmptBase<INecnatEndpointAppService, NecnatEndpointDto, Guid, NecnatEndpointResultRequestDto>
+@inherits SelectCmptBase<INnEndpointAppService, NnEndpointDto, Guid, NnEndpointResultRequestDto>
 
 @if (_isLoading)
 {
@@ -10,7 +10,7 @@
 }
 else
 {
-    <SelectList TItem="NecnatEndpointDto"
+    <SelectList TItem="NnEndpointDto"
                 TValue="Guid"
                 Data="@Data"
                 TextField="@((item) => item.DisplayName)"
@@ -25,15 +25,9 @@ else
 @code {
 
     [Parameter]
-    public bool? IsAuthorization { get; set; }
+    public string? TagContains { get; set; }
 
-    [Parameter]
-    public bool? IsAuthServer { get; set; }
-
-    [Parameter]
-    public bool? IsBilling { get; set; }
-
-    public NecnatEndpointSelectList()
+    public NnEndpointSelectList()
     {
         LocalizationResource = typeof(NnLibCommonResource);
     }
@@ -41,11 +35,9 @@ else
     protected override async Task OnInitializedAsync()
     {
         if (Data == null)
-            Data = (await AppService.GetListAsync(new NecnatEndpointResultRequestDto
+            Data = (await AppService.GetListAsync(new NnEndpointResultRequestDto
                 {
-                    IsAuthorization = IsAuthorization,
-                    IsAuthServer = IsAuthServer,
-                    IsBilling = IsBilling,
+                    TagContains = TagContains,
                     IsPaged = false
                 })).Items.ToList();
 

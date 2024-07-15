@@ -32,17 +32,15 @@ public static class NnLibCommonDbContextModelCreatingExtensions
         });
         */
 
-        builder.Entity<NecnatEndpoint>(b =>
+        builder.Entity<NnEndpoint>(b =>
         {
             b.ToTable(NnLibCommonDbProperties.DbTablePrefix + "NecnatEndpoint",
                 NnLibCommonDbProperties.DbSchema);
             b.ConfigureByConvention(); //auto configure for the base class props
-            b.Property(x => x.DisplayName).HasMaxLength(NecnatEndpointConsts.MaxDisplayNameLength);
-            b.Property(x => x.Endpoint).IsRequired().HasMaxLength(NecnatEndpointConsts.MaxEndpointLength);
+            b.Property(x => x.DisplayName).HasMaxLength(NnEndpointConsts.MaxDisplayNameLength);
+            b.Property(x => x.Tag).IsRequired().HasMaxLength(NnEndpointConsts.MaxTagLength);
+            b.Property(x => x.UrlUri).IsRequired().HasMaxLength(NnEndpointConsts.MaxUrlUriLength);
             b.Property(x => x.IsActive).IsRequired();
-            b.Property(x => x.IsAuthorization).IsRequired();
-            b.Property(x => x.IsBilling).IsRequired();
-            b.Property(x => x.IsAuthServer).IsRequired();
         });
     }
 }

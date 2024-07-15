@@ -12,9 +12,9 @@
 @using Volo.Abp.BlazoriseUI.Components
 @using Volo.Abp.Identity
 @attribute [Authorize(NnLibCommonPermissions.PrmNecnatEndpoint.Default)]
-@inherits AbpCrudPageBase<INecnatEndpointAppService, NecnatEndpointDto, Guid, NecnatEndpointResultRequestDto>
+@inherits AbpCrudPageBase<INnEndpointAppService, NnEndpointDto, Guid, NnEndpointResultRequestDto>
 @inject IStringLocalizer<NnLibCommonResource> NL
-@inject INecnatEndpointAppService AppService
+@inject INnEndpointAppService AppService
 
 <Card>
     <CardHeader>
@@ -34,7 +34,7 @@
         </Row>
     </CardHeader>
     <CardBody>
-        <DataGrid TItem="NecnatEndpointDto"
+        <DataGrid TItem="NnEndpointDto"
                   Data="Entities"
                   ReadData="OnDataGridReadAsync"
                   CurrentPage="CurrentPage"
@@ -42,14 +42,14 @@
                   ShowPager="true"
                   PageSize="PageSize">
             <DataGridColumns>
-                <DataGridEntityActionsColumn TItem="NecnatEndpointDto" @ref="@EntityActionsColumn">
+                <DataGridEntityActionsColumn TItem="NnEndpointDto" @ref="@EntityActionsColumn">
                     <DisplayTemplate>
-                        <EntityActions TItem="NecnatEndpointDto" EntityActionsColumn="@EntityActionsColumn">
-                            <EntityAction TItem="NecnatEndpointDto"
+                        <EntityActions TItem="NnEndpointDto" EntityActionsColumn="@EntityActionsColumn">
+                            <EntityAction TItem="NnEndpointDto"
                                           Text="@NL["Edit"]"
                                           Visible=HasUpdatePermission
                                           Clicked="() => OpenEditModalAsync(context)" />
-                            <EntityAction TItem="NecnatEndpointDto"
+                            <EntityAction TItem="NnEndpointDto"
                                           Text="@NL["Delete"]"
                                           Visible=HasDeletePermission
                                           Clicked="() => DeleteEntityAsync(context)"
@@ -57,15 +57,18 @@
                         </EntityActions>
                     </DisplayTemplate>
                 </DataGridEntityActionsColumn>
-                <DataGridColumn TItem="NecnatEndpointDto"
-                                Field="@nameof(NecnatEndpointDto.DisplayName)"
-                                Caption="@L[NecnatEndpointConsts.DisplayNameDisplay]"></DataGridColumn>
-                <DataGridColumn TItem="NecnatEndpointDto"
-                                Field="@nameof(NecnatEndpointDto.Endpoint)"
-                                Caption="@L[NecnatEndpointConsts.EndpointDisplay]"></DataGridColumn>
-                <DataGridCheckColumn TItem="NecnatEndpointDto"
-                                     Field="@nameof(NecnatEndpointDto.IsActive)"
-                                     Caption="@L[NecnatEndpointConsts.IsActiveDisplay]"></DataGridCheckColumn>
+                <DataGridColumn TItem="NnEndpointDto"
+                                Field="@nameof(NnEndpointDto.DisplayName)"
+                                Caption="@L[NnEndpointConsts.DisplayNameDisplay]"></DataGridColumn>
+                <DataGridColumn TItem="NnEndpointDto"
+                                Field="@nameof(NnEndpointDto.Tag)"
+                                Caption="@L[NnEndpointConsts.TagDisplay]"></DataGridColumn>
+                <DataGridColumn TItem="NnEndpointDto"
+                                Field="@nameof(NnEndpointDto.UrlUri)"
+                                Caption="@L[NnEndpointConsts.UrlUriDisplay]"></DataGridColumn>
+                <DataGridCheckColumn TItem="NnEndpointDto"
+                                     Field="@nameof(NnEndpointDto.IsActive)"
+                                     Caption="@L[NnEndpointConsts.IsActiveDisplay]"></DataGridCheckColumn>
             </DataGridColumns>
         </DataGrid>
     </CardBody>
@@ -80,7 +83,7 @@
             </ModalHeader>
             <ModalBody>
                 <Validations @ref="@CreateValidationsRef" Model="@NewEntity" ValidateOnLoad="true">
-                    <NecnatEndpointWrapper @bind-Entity="NewEntity" />
+                    <NnEndpointWrapper @bind-Entity="NewEntity" />
                 </Validations>
             </ModalBody>
             <ModalFooter>
@@ -108,7 +111,7 @@
             </ModalHeader>
             <ModalBody>
                 <Validations @ref="@EditValidationsRef" Model="@EditingEntity" ValidateOnLoad="false">
-                    <NecnatEndpointWrapper @bind-Entity="EditingEntity" />
+                    <NnEndpointWrapper @bind-Entity="EditingEntity" />
                 </Validations>
             </ModalBody>
             <ModalFooter>
@@ -130,7 +133,7 @@
 @namespace Necnat.Abp.NnLibCommon.Blazor.Pages
 @code
 {
-    public NecnatEndpointCrud() // Constructor
+    public NnEndpointCrud() // Constructor
     {
         LocalizationResource = typeof(NnLibCommonResource);
 
@@ -150,7 +153,7 @@
 
             await CheckCreatePolicyAsync();
 
-            NewEntity = new NecnatEndpointDto();
+            NewEntity = new NnEndpointDto();
             NewEntity.IsActive = true;
 
             // Mapper will not notify Blazor that binded values are changed

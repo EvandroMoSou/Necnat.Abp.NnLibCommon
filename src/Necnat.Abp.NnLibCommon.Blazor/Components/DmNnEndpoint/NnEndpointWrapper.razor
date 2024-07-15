@@ -1,0 +1,91 @@
+﻿@using Microsoft.Extensions.Localization;
+@using System.Collections.ObjectModel
+@using Necnat.Abp.NnLibCommon.Blazor.Extensions
+@using Necnat.Abp.NnLibCommon.Domains
+@using Necnat.Abp.NnLibCommon.Localization
+@using Volo.Abp.AspNetCore.Components
+@using Volo.Abp.Identity
+@inherits AbpComponentBase
+
+<Fields>
+    <Validation Validator="@ValidateDisplayName">
+        <Field ColumnSize="ColumnSize.Is10">
+            <FieldLabel>@L[NnEndpointConsts.DisplayNameDisplay]</FieldLabel>
+            <TextEdit @bind-Text="@Entity!.DisplayName">
+                <Feedback>
+                    <ValidationError />
+                </Feedback>
+            </TextEdit>
+        </Field>
+    </Validation>
+    <Validation Validator="@ValidateIsActive">
+        <Field ColumnSize="ColumnSize.Is2">
+            <FieldLabel>@L[NnEndpointConsts.IsActiveDisplay]</FieldLabel>
+            <Check TValue="bool?" @bind-Checked="@Entity!.IsActive">
+                <Feedback>
+                    <ValidationError />
+                </Feedback>
+            </Check>
+        </Field>
+    </Validation>
+</Fields>
+<Fields>
+    <Validation Validator="@ValidateTag">
+        <Field ColumnSize="ColumnSize.Is12">
+            <FieldLabel>@L[NnEndpointConsts.TagDisplay]</FieldLabel>
+            <TextEdit @bind-Text="@Entity!.Tag">
+                <Feedback>
+                    <ValidationError />
+                </Feedback>
+            </TextEdit>
+        </Field>
+    </Validation>
+</Fields>
+<Fields>
+    <Validation Validator="@ValidateUrlUri">
+        <Field ColumnSize="ColumnSize.Is12">
+            <FieldLabel>@L[NnEndpointConsts.UrlUriDisplay]</FieldLabel>
+            <TextEdit @bind-Text="@Entity!.UrlUri">
+                <Feedback>
+                    <ValidationError />
+                </Feedback>
+            </TextEdit>
+        </Field>
+    </Validation>
+</Fields>
+
+@namespace Necnat.Abp.NnLibCommon.Blazor.Components
+@code {
+
+    [Parameter]
+    public NnEndpointDto? Entity { get; set; }
+
+    [Parameter]
+    public EventCallback<NnEndpointDto?> EntityChanged { get; set; }
+
+    public NnEndpointWrapper()
+    {
+        LocalizationResource = typeof(NnLibCommonResource);
+    }
+
+    void ValidateDisplayName(ValidatorEventArgs e)
+    {
+        e.WithError(NnEndpointValidator.ValidateDisplayName((string?)e.Value, L));
+    }
+
+    void ValidateTag(ValidatorEventArgs e)
+    {
+        e.WithError(NnEndpointValidator.ValidateTag((string?)e.Value, L));
+    }
+
+    void ValidateUrlUri(ValidatorEventArgs e)
+    {
+        e.WithError(NnEndpointValidator.ValidateUrlUri((string?)e.Value, L));
+    }
+
+    void ValidateIsActive(ValidatorEventArgs e)
+    {
+        e.WithError(NnEndpointValidator.ValidateIsActive((bool?)e.Value, L));
+    }
+
+}

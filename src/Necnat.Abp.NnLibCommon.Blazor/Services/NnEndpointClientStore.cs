@@ -1,0 +1,36 @@
+﻿using Necnat.Abp.NnLibCommon.Domains;
+using Necnat.Abp.NnLibCommon.Domains.DmNnEndpoint;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Necnat.Abp.NnLibCommon.Blazor.Services
+{
+    public class NnEndpointClientStore : INnEndpointStore
+    {
+        protected readonly INnEndpointAppService _appService;
+
+        public List<NnEndpointModel>? NnEndpointList { get; set; }
+
+        public NnEndpointClientStore(
+            INnEndpointAppService appService)
+        {
+            _appService = appService;
+        }
+
+        public async Task<List<NnEndpointModel>> GetListByTag(string tag, bool isActive = true)
+        {
+            if (NnEndpointList == null)
+                NnEndpointList = (await _appService.GetListAsync(new NnEndpointResultRequestDto { IsPaged = false, IsActive = true })).Items.Select(
+                x => new NnEndpointModel
+                {
+                    DisplayName = x.DisplayName ?? string.Empty,
+                    Tag = x.Tag ?? string.Empty,
+                    UrlUri = x.UrlUri ?? string.Empty,
+                    IsActive = true
+                }).ToList();
+
+            return NnEndpointList;
+        }
+    }
+}
