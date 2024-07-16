@@ -17,17 +17,33 @@ namespace Necnat.Abp.NnLibCommon.Blazor.Services
             _appService = appService;
         }
 
+        public async Task<List<NnEndpointModel>> GetListAsync(bool isActive = true)
+        {
+            if (NnEndpointList == null)
+                NnEndpointList = (await _appService.GetListAsync(new NnEndpointResultRequestDto { IsPaged = false, IsActive = true })).Items.Where(x => x.IsActive == isActive).Select(
+                    x => new NnEndpointModel
+                    {
+                        DisplayName = x.DisplayName ?? string.Empty,
+                        Tag = x.Tag ?? string.Empty,
+                        UrlUri = x.UrlUri ?? string.Empty,
+                        IsActive = true
+                    }).ToList();
+
+            return NnEndpointList;
+        }
+
         public async Task<List<NnEndpointModel>> GetListByTagAsync(string tag, bool isActive = true)
         {
             if (NnEndpointList == null)
-                NnEndpointList = (await _appService.GetListAsync(new NnEndpointResultRequestDto { IsPaged = false, IsActive = true })).Items.Select(
-                x => new NnEndpointModel
-                {
-                    DisplayName = x.DisplayName ?? string.Empty,
-                    Tag = x.Tag ?? string.Empty,
-                    UrlUri = x.UrlUri ?? string.Empty,
-                    IsActive = true
-                }).ToList();
+                NnEndpointList = (await _appService.GetListAsync(new NnEndpointResultRequestDto { IsPaged = false, IsActive = true })).Items
+                    .Where(x => x.IsActive == isActive && (x.Tag != null && x.Tag.StartsWith(tag))).Select(
+                    x => new NnEndpointModel
+                    {
+                        DisplayName = x.DisplayName ?? string.Empty,
+                        Tag = x.Tag ?? string.Empty,
+                        UrlUri = x.UrlUri ?? string.Empty,
+                        IsActive = true
+                    }).ToList();
 
             return NnEndpointList;
         }

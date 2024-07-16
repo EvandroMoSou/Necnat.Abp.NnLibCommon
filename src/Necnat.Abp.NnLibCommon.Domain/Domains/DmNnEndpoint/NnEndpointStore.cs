@@ -23,6 +23,20 @@ namespace Necnat.Abp.NnLibCommon.Domains
             _cache = cache;
         }
 
+        public virtual async Task<List<NnEndpointModel>> GetListAsync(bool isActive = true)
+        {
+            var nnEndpointList = await GetCacheItemAsync();
+
+            return nnEndpointList.NnEndpointList.Where(x => x.IsActive == isActive).Select(
+                x => new NnEndpointModel
+                {
+                    DisplayName = x.DisplayName,
+                    Tag = x.Tag,
+                    UrlUri = x.UrlUri,
+                    IsActive = x.IsActive
+                }).ToList();
+        }
+
         public virtual async Task<List<NnEndpointModel>> GetListByTagAsync(string tag, bool isActive = true)
         {
             var nnEndpointList = await GetCacheItemAsync();
