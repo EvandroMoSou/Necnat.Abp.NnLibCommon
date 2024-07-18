@@ -11,7 +11,7 @@ namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
     [Area(NnLibCommonRemoteServiceConsts.ModuleName)]
     [ControllerName("NnIdentityRole")]
     [Route("api/nn-lib-common/nn-identity-role")]
-    public class NnIdentityRoleController : NecnatController<INnIdentityRoleAppService, IdentityRoleDto, Guid, NnIdentityRoleResultRequestDto>, INnIdentityRoleAppService
+    public class NnIdentityRoleController : NecnatController<INnIdentityRoleAppService, NnIdentityRoleDto, Guid, NnIdentityRoleResultRequestDto>, INnIdentityRoleAppService
     {
         public NnIdentityRoleController(INnIdentityRoleAppService appService) : base(appService)
         {

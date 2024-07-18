@@ -3,11 +3,11 @@ using System;
 
 namespace Necnat.Abp.NnLibCommon.Domains
 {
-    public class NnEndpointDto : ConcurrencyEntityDto<Guid>
+    public class DistributedServiceDto : ConcurrencyEntityDto<Guid>
     {
-        public string? DisplayName { get; set; }
+        public string? ApplicationName { get; set; }
         public string? Tag { get; set; }
-        public string? UrlUri { get; set; }
+        public string? Url { get; set; }
         public bool? IsActive { get; set; }
     }
 }

@@ -6,7 +6,7 @@ namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
 {
     public interface INnIdentityRoleAppService :
         ICrudAppService<
-            IdentityRoleDto,
+            NnIdentityRoleDto,
             Guid,
             NnIdentityRoleResultRequestDto>
     {

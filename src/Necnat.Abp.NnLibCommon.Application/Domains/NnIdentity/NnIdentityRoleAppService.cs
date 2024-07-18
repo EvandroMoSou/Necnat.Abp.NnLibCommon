@@ -10,7 +10,7 @@ using Volo.Abp.Users;
 
 namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
 {
-    public class NnIdentityRoleAppService : NecnatAppService<IdentityRole, IdentityRoleDto, Guid, NnIdentityRoleResultRequestDto, INnIdentityRoleRepository>, INnIdentityRoleAppService
+    public class NnIdentityRoleAppService : NecnatAppService<IdentityRole, NnIdentityRoleDto, Guid, NnIdentityRoleResultRequestDto, INnIdentityRoleRepository>, INnIdentityRoleAppService
     {
         public NnIdentityRoleAppService(
             ICurrentUser currentUser,
@@ -38,14 +38,14 @@ namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
         }
 
         [RemoteService(false)]
-        public override Task<IdentityRoleDto> CreateAsync(IdentityRoleDto input)
+        public override Task<NnIdentityRoleDto> CreateAsync(NnIdentityRoleDto input)
         {
             //return base.CreateAsync(input);
             throw new NotImplementedException();
         }
 
         [RemoteService(false)]
-        public override Task<IdentityRoleDto> UpdateAsync(Guid id, IdentityRoleDto input)
+        public override Task<NnIdentityRoleDto> UpdateAsync(Guid id, NnIdentityRoleDto input)
         {
             //return base.UpdateAsync(id, input);
             throw new NotImplementedException();

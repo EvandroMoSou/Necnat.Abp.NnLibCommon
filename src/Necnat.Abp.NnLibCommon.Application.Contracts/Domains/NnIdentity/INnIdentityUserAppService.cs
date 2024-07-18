@@ -7,10 +7,10 @@ namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
 {
     public interface INnIdentityUserAppService :
         ICrudAppService<
-            IdentityUserDto,
+            NnIdentityUserDto,
             Guid,
             NnIdentityUserResultRequestDto>
     {
-        Task<IdentityUserDto> GetMyAsync(Guid id);
+        Task<NnIdentityUserDto> GetMyAsync(Guid id);
     }
 }

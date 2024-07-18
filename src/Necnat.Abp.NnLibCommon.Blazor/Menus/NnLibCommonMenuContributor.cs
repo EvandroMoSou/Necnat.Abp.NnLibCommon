@@ -33,7 +33,7 @@ public class NnLibCommonMenuContributor : IMenuContributor
             order: 1
         );
 
-        if (await context.IsGrantedAsync(NnLibCommonPermissions.PrmNecnatEndpoint.Default))
+        if (await context.IsGrantedAsync(NnLibCommonPermissions.PrmDistributedService.Default))
         {
             billingConfiguracaoMenu.AddItem(new ApplicationMenuItem(
                 NnLibCommonMenus.Configuration_NecnatEndpoint,

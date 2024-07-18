@@ -32,14 +32,14 @@ public static class NnLibCommonDbContextModelCreatingExtensions
         });
         */
 
-        builder.Entity<NnEndpoint>(b =>
+        builder.Entity<DistributedService>(b =>
         {
-            b.ToTable(NnLibCommonDbProperties.DbTablePrefix + "NnEndpoint",
+            b.ToTable(NnLibCommonDbProperties.DbTablePrefix + "DistributedService",
                 NnLibCommonDbProperties.DbSchema);
             b.ConfigureByConvention(); //auto configure for the base class props
-            b.Property(x => x.DisplayName).HasMaxLength(NnEndpointConsts.MaxDisplayNameLength);
-            b.Property(x => x.Tag).IsRequired().HasMaxLength(NnEndpointConsts.MaxTagLength);
-            b.Property(x => x.UrlUri).IsRequired().HasMaxLength(NnEndpointConsts.MaxUrlUriLength);
+            b.Property(x => x.ApplicationName).HasMaxLength(DistributedServiceConsts.MaxApplicationNameLength);
+            b.Property(x => x.Tag).IsRequired().HasMaxLength(DistributedServiceConsts.MaxTagLength);
+            b.Property(x => x.Url).IsRequired().HasMaxLength(DistributedServiceConsts.MaxUrlLength);
             b.Property(x => x.IsActive).IsRequired();
         });
     }

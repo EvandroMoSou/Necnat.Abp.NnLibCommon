@@ -2,7 +2,7 @@
 @using Necnat.Abp.NnLibCommon.Domains
 @using Necnat.Abp.NnLibCommon.Localization
 @using Volo.Abp.Identity
-@inherits SelectCmptBase<INnEndpointAppService, NnEndpointDto, Guid, NnEndpointResultRequestDto>
+@inherits SelectCmptBase<IDistributedServiceDtoAppService, DistributedServiceDto, Guid, DistributedServiceResultRequestDto>
 
 @if (_isLoading)
 {
@@ -10,10 +10,10 @@
 }
 else
 {
-    <SelectList TItem="NnEndpointDto"
+    <SelectList TItem="DistributedServiceDto"
                 TValue="Guid"
                 Data="@Data"
-                TextField="@((item) => item.DisplayName)"
+                TextField="@((item) => item.ApplicationName)"
                 ValueField="@((item) => item.Id)"
                 SelectedValue="@_internalSelectedValue"
                 SelectedValueChanged="@OnSelectedValueChangedAsync"
@@ -27,7 +27,7 @@ else
     [Parameter]
     public string? TagContains { get; set; }
 
-    public NnEndpointSelectList()
+    public DistributedServiceSelectList()
     {
         LocalizationResource = typeof(NnLibCommonResource);
     }
@@ -35,7 +35,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         if (Data == null)
-            Data = (await AppService.GetListAsync(new NnEndpointResultRequestDto
+            Data = (await AppService.GetListAsync(new DistributedServiceResultRequestDto
                 {
                     TagContains = TagContains,
                     IsPaged = false

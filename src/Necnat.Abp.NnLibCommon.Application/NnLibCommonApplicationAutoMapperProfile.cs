@@ -11,8 +11,8 @@ public class NnLibCommonApplicationAutoMapperProfile : Profile
          * Alternatively, you can split your mapping configurations
          * into multiple profile classes for a better organization. */
 
-        CreateMap<NnEndpoint, NnEndpointDto>();
-        CreateMap<NnEndpointDto, NnEndpoint>()
+        CreateMap<DistributedService, DistributedServiceDto>();
+        CreateMap<DistributedServiceDto, DistributedService>()
             .ForMember(x => x.LastModificationTime, opt => opt.Ignore())
             .ForMember(x => x.LastModifierId, opt => opt.Ignore())
             .ForMember(x => x.CreationTime, opt => opt.Ignore())

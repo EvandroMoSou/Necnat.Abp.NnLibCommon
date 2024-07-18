@@ -3,11 +3,11 @@ using Volo.Abp.Domain.Entities.Auditing;
 
 namespace Necnat.Abp.NnLibCommon.Domains
 {
-    public class NnEndpoint : AuditedAggregateRoot<Guid>
+    public class DistributedService : AuditedAggregateRoot<Guid>
     {
-        public string DisplayName { get; set; } = string.Empty;
+        public string ApplicationName { get; set; } = string.Empty;
         public string Tag { get; set; } = string.Empty;
-        public string UrlUri { get; set; } = string.Empty;
+        public string Url { get; set; } = string.Empty;
         public bool IsActive { get; set; }
     }
 }

@@ -12,7 +12,7 @@ namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
     [Area(NnLibCommonRemoteServiceConsts.ModuleName)]
     [ControllerName("NnIdentityUser")]
     [Route("api/nn-lib-common/nn-identity-user")]
-    public class NnIdentityUserController : NecnatController<INnIdentityUserAppService, IdentityUserDto, Guid, NnIdentityUserResultRequestDto>, INnIdentityUserAppService
+    public class NnIdentityUserController : NecnatController<INnIdentityUserAppService, NnIdentityUserDto, Guid, NnIdentityUserResultRequestDto>, INnIdentityUserAppService
     {
         public NnIdentityUserController(INnIdentityUserAppService appService) : base(appService)
         {
@@ -20,7 +20,7 @@ namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
 
         [HttpGet]
         [Route("{id}/my")]
-        public virtual Task<IdentityUserDto> GetMyAsync(Guid id)
+        public virtual Task<NnIdentityUserDto> GetMyAsync(Guid id)
         {
             return AppService.GetMyAsync(id);
         }

@@ -1,4 +1,4 @@
-﻿@page "/NnLibCommon/Configuration/NecnatEndpoints"
+﻿@page "/NnLibCommon/Configuration/DistributedServices"
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.Extensions.Localization
 @using System.Collections.ObjectModel
@@ -11,16 +11,16 @@
 @using Volo.Abp.AspNetCore.Components.Web
 @using Volo.Abp.BlazoriseUI.Components
 @using Volo.Abp.Identity
-@attribute [Authorize(NnLibCommonPermissions.PrmNecnatEndpoint.Default)]
-@inherits AbpCrudPageBase<INnEndpointAppService, NnEndpointDto, Guid, NnEndpointResultRequestDto>
+@attribute [Authorize(NnLibCommonPermissions.PrmDistributedService.Default)]
+@inherits AbpCrudPageBase<IDistributedServiceDtoAppService, DistributedServiceDto, Guid, DistributedServiceResultRequestDto>
 @inject IStringLocalizer<NnLibCommonResource> NL
-@inject INnEndpointAppService AppService
+@inject IDistributedServiceDtoAppService AppService
 
 <Card>
     <CardHeader>
         <Row Class="justify-content-between">
             <Column ColumnSize="ColumnSize.IsAuto">
-                <h2>@L["Endpoints"]</h2>
+                <h2>@L["Distributed Services"]</h2>
             </Column>
             <Column ColumnSize="ColumnSize.IsAuto">
                 @if (HasCreatePermission)
@@ -34,7 +34,7 @@
         </Row>
     </CardHeader>
     <CardBody>
-        <DataGrid TItem="NnEndpointDto"
+        <DataGrid TItem="DistributedServiceDto"
                   Data="Entities"
                   ReadData="OnDataGridReadAsync"
                   CurrentPage="CurrentPage"
@@ -42,14 +42,14 @@
                   ShowPager="true"
                   PageSize="PageSize">
             <DataGridColumns>
-                <DataGridEntityActionsColumn TItem="NnEndpointDto" @ref="@EntityActionsColumn">
+                <DataGridEntityActionsColumn TItem="DistributedServiceDto" @ref="@EntityActionsColumn">
                     <DisplayTemplate>
-                        <EntityActions TItem="NnEndpointDto" EntityActionsColumn="@EntityActionsColumn">
-                            <EntityAction TItem="NnEndpointDto"
+                        <EntityActions TItem="DistributedServiceDto" EntityActionsColumn="@EntityActionsColumn">
+                            <EntityAction TItem="DistributedServiceDto"
                                           Text="@NL["Edit"]"
                                           Visible=HasUpdatePermission
                                           Clicked="() => OpenEditModalAsync(context)" />
-                            <EntityAction TItem="NnEndpointDto"
+                            <EntityAction TItem="DistributedServiceDto"
                                           Text="@NL["Delete"]"
                                           Visible=HasDeletePermission
                                           Clicked="() => DeleteEntityAsync(context)"
@@ -57,18 +57,18 @@
                         </EntityActions>
                     </DisplayTemplate>
                 </DataGridEntityActionsColumn>
-                <DataGridColumn TItem="NnEndpointDto"
-                                Field="@nameof(NnEndpointDto.DisplayName)"
-                                Caption="@L[NnEndpointConsts.DisplayNameDisplay]"></DataGridColumn>
-                <DataGridColumn TItem="NnEndpointDto"
-                                Field="@nameof(NnEndpointDto.Tag)"
-                                Caption="@L[NnEndpointConsts.TagDisplay]"></DataGridColumn>
-                <DataGridColumn TItem="NnEndpointDto"
-                                Field="@nameof(NnEndpointDto.UrlUri)"
-                                Caption="@L[NnEndpointConsts.UrlUriDisplay]"></DataGridColumn>
-                <DataGridCheckColumn TItem="NnEndpointDto"
-                                     Field="@nameof(NnEndpointDto.IsActive)"
-                                     Caption="@L[NnEndpointConsts.IsActiveDisplay]"></DataGridCheckColumn>
+                <DataGridColumn TItem="DistributedServiceDto"
+                                Field="@nameof(DistributedServiceDto.ApplicationName)"
+                                Caption="@L[DistributedServiceConsts.ApplicationNameDisplay]"></DataGridColumn>
+                <DataGridColumn TItem="DistributedServiceDto"
+                                Field="@nameof(DistributedServiceDto.Tag)"
+                                Caption="@L[DistributedServiceConsts.TagDisplay]"></DataGridColumn>
+                <DataGridColumn TItem="DistributedServiceDto"
+                                Field="@nameof(DistributedServiceDto.Url)"
+                                Caption="@L[DistributedServiceConsts.UrlDisplay]"></DataGridColumn>
+                <DataGridCheckColumn TItem="DistributedServiceDto"
+                                     Field="@nameof(DistributedServiceDto.IsActive)"
+                                     Caption="@L[DistributedServiceConsts.IsActiveDisplay]"></DataGridCheckColumn>
             </DataGridColumns>
         </DataGrid>
     </CardBody>
@@ -78,12 +78,12 @@
     <ModalContent Centered Size="ModalSize.Large">
         <Form>
             <ModalHeader>
-                <ModalTitle>@NL["New"] @L["Endpoint"]</ModalTitle>
+                <ModalTitle>@NL["New"] @L["Distributed Service"]</ModalTitle>
                 <CloseButton Clicked="CloseCreateModalAsync" />
             </ModalHeader>
             <ModalBody>
                 <Validations @ref="@CreateValidationsRef" Model="@NewEntity" ValidateOnLoad="true">
-                    <NnEndpointWrapper @bind-Entity="NewEntity" />
+                    <DistributedServiceWrapper @bind-Entity="NewEntity" />
                 </Validations>
             </ModalBody>
             <ModalFooter>
@@ -106,12 +106,12 @@
     <ModalContent Centered Size="ModalSize.Large">
         <Form>
             <ModalHeader>
-                <ModalTitle>@L["Endpoint"] - @EditingEntity.DisplayName</ModalTitle>
+                <ModalTitle>@L["Distributed Service"] - @EditingEntity.ApplicationName</ModalTitle>
                 <CloseButton Clicked="CloseEditModalAsync" />
             </ModalHeader>
             <ModalBody>
                 <Validations @ref="@EditValidationsRef" Model="@EditingEntity" ValidateOnLoad="false">
-                    <NnEndpointWrapper @bind-Entity="EditingEntity" />
+                    <DistributedServiceWrapper @bind-Entity="EditingEntity" />
                 </Validations>
             </ModalBody>
             <ModalFooter>
@@ -133,13 +133,13 @@
 @namespace Necnat.Abp.NnLibCommon.Blazor.Pages
 @code
 {
-    public NnEndpointCrud() // Constructor
+    public DistributedServiceCrud() // Constructor
     {
         LocalizationResource = typeof(NnLibCommonResource);
 
-        CreatePolicyName = NnLibCommonPermissions.PrmNecnatEndpoint.Create;
-        UpdatePolicyName = NnLibCommonPermissions.PrmNecnatEndpoint.Update;
-        DeletePolicyName = NnLibCommonPermissions.PrmNecnatEndpoint.Delete;
+        CreatePolicyName = NnLibCommonPermissions.PrmDistributedService.Create;
+        UpdatePolicyName = NnLibCommonPermissions.PrmDistributedService.Update;
+        DeletePolicyName = NnLibCommonPermissions.PrmDistributedService.Delete;
     }
 
     protected override async Task OpenCreateModalAsync()
@@ -153,7 +153,7 @@
 
             await CheckCreatePolicyAsync();
 
-            NewEntity = new NnEndpointDto();
+            NewEntity = new DistributedServiceDto();
             NewEntity.IsActive = true;
 
             // Mapper will not notify Blazor that binded values are changed

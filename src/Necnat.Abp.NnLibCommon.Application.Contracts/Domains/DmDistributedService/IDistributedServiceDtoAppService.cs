@@ -3,11 +3,11 @@ using Volo.Abp.Application.Services;
 
 namespace Necnat.Abp.NnLibCommon.Domains
 {
-    public interface INnEndpointAppService :
+    public interface IDistributedServiceDtoAppService :
         ICrudAppService<
-            NnEndpointDto,
+            DistributedServiceDto,
             Guid,
-            NnEndpointResultRequestDto>
+            DistributedServiceResultRequestDto>
     {
 
     }

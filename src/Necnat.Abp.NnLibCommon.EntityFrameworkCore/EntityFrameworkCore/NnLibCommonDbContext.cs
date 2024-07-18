@@ -25,7 +25,7 @@ public class NnLibCommonDbContext : AbpDbContext<NnLibCommonDbContext>, INnLibCo
     public DbSet<IdentityUserRole> UserRoles { get; set; }
 
     //Necnat
-    public DbSet<NnEndpoint> NnEndpoint { get; set; }
+    public DbSet<DistributedService> DistributedService { get; set; }
 
     public NnLibCommonDbContext(DbContextOptions<NnLibCommonDbContext> options)
         : base(options)

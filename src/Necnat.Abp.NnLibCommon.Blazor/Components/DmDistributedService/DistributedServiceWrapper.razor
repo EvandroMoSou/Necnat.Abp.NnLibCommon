@@ -8,10 +8,10 @@
 @inherits AbpComponentBase
 
 <Fields>
-    <Validation Validator="@ValidateDisplayName">
+    <Validation Validator="@ValidateApplicationName">
         <Field ColumnSize="ColumnSize.Is10">
-            <FieldLabel>@L[NnEndpointConsts.DisplayNameDisplay]</FieldLabel>
-            <TextEdit @bind-Text="@Entity!.DisplayName">
+            <FieldLabel>@L[DistributedServiceConsts.ApplicationNameDisplay]</FieldLabel>
+            <TextEdit @bind-Text="@Entity!.ApplicationName">
                 <Feedback>
                     <ValidationError />
                 </Feedback>
@@ -20,7 +20,7 @@
     </Validation>
     <Validation Validator="@ValidateIsActive">
         <Field ColumnSize="ColumnSize.Is2">
-            <FieldLabel>@L[NnEndpointConsts.IsActiveDisplay]</FieldLabel>
+            <FieldLabel>@L[DistributedServiceConsts.IsActiveDisplay]</FieldLabel>
             <Check TValue="bool?" @bind-Checked="@Entity!.IsActive">
                 <Feedback>
                     <ValidationError />
@@ -32,7 +32,7 @@
 <Fields>
     <Validation Validator="@ValidateTag">
         <Field ColumnSize="ColumnSize.Is12">
-            <FieldLabel>@L[NnEndpointConsts.TagDisplay]</FieldLabel>
+            <FieldLabel>@L[DistributedServiceConsts.TagDisplay]</FieldLabel>
             <TextEdit @bind-Text="@Entity!.Tag">
                 <Feedback>
                     <ValidationError />
@@ -42,10 +42,10 @@
     </Validation>
 </Fields>
 <Fields>
-    <Validation Validator="@ValidateUrlUri">
+    <Validation Validator="@ValidateUrl">
         <Field ColumnSize="ColumnSize.Is12">
-            <FieldLabel>@L[NnEndpointConsts.UrlUriDisplay]</FieldLabel>
-            <TextEdit @bind-Text="@Entity!.UrlUri">
+            <FieldLabel>@L[DistributedServiceConsts.UrlDisplay]</FieldLabel>
+            <TextEdit @bind-Text="@Entity!.Url">
                 <Feedback>
                     <ValidationError />
                 </Feedback>
@@ -58,34 +58,34 @@
 @code {
 
     [Parameter]
-    public NnEndpointDto? Entity { get; set; }
+    public DistributedServiceDto? Entity { get; set; }
 
     [Parameter]
-    public EventCallback<NnEndpointDto?> EntityChanged { get; set; }
+    public EventCallback<DistributedServiceDto?> EntityChanged { get; set; }
 
-    public NnEndpointWrapper()
+    public DistributedServiceWrapper()
     {
         LocalizationResource = typeof(NnLibCommonResource);
     }
 
-    void ValidateDisplayName(ValidatorEventArgs e)
+    void ValidateApplicationName(ValidatorEventArgs e)
     {
-        e.WithError(NnEndpointValidator.ValidateDisplayName((string?)e.Value, L));
+        e.WithError(DistributedServiceValidator.ValidateApplicationName((string?)e.Value, L));
     }
 
     void ValidateTag(ValidatorEventArgs e)
     {
-        e.WithError(NnEndpointValidator.ValidateTag((string?)e.Value, L));
+        e.WithError(DistributedServiceValidator.ValidateTag((string?)e.Value, L));
     }
 
-    void ValidateUrlUri(ValidatorEventArgs e)
+    void ValidateUrl(ValidatorEventArgs e)
     {
-        e.WithError(NnEndpointValidator.ValidateUrlUri((string?)e.Value, L));
+        e.WithError(DistributedServiceValidator.ValidateUrl((string?)e.Value, L));
     }
 
     void ValidateIsActive(ValidatorEventArgs e)
     {
-        e.WithError(NnEndpointValidator.ValidateIsActive((bool?)e.Value, L));
+        e.WithError(DistributedServiceValidator.ValidateIsActive((bool?)e.Value, L));
     }
 
 }

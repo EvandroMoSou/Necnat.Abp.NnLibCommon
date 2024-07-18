@@ -10,10 +10,10 @@ public class NnLibCommonPermissionDefinitionProvider : PermissionDefinitionProvi
     {
         var myGroup = context.AddGroup(NnLibCommonPermissions.GroupName, L("Permission:NnLibCommon"));
 
-        var pgNecnatEndpoint = myGroup.AddPermission(NnLibCommonPermissions.PrmNecnatEndpoint.Default, L("Permission:NecnatEndpoint:Default"));
-        pgNecnatEndpoint.AddChild(NnLibCommonPermissions.PrmNecnatEndpoint.Create, L("Permission:NecnatEndpoint:Create"));
-        pgNecnatEndpoint.AddChild(NnLibCommonPermissions.PrmNecnatEndpoint.Update, L("Permission:NecnatEndpoint:Update"));
-        pgNecnatEndpoint.AddChild(NnLibCommonPermissions.PrmNecnatEndpoint.Delete, L("Permission:NecnatEndpoint:Delete"));
+        var pgDistributedService = myGroup.AddPermission(NnLibCommonPermissions.PrmDistributedService.Default, L("Permission:DistributedService:Default"));
+        pgDistributedService.AddChild(NnLibCommonPermissions.PrmDistributedService.Create, L("Permission:DistributedService:Create"));
+        pgDistributedService.AddChild(NnLibCommonPermissions.PrmDistributedService.Update, L("Permission:DistributedService:Update"));
+        pgDistributedService.AddChild(NnLibCommonPermissions.PrmDistributedService.Delete, L("Permission:DistributedService:Delete"));
     }
 
     private static LocalizableString L(string name)

@@ -3,7 +3,7 @@ using Volo.Abp.Domain.Repositories;
 
 namespace Necnat.Abp.NnLibCommon.Domains
 {
-    public interface INnEndpointRepository : IRepository<NnEndpoint, Guid>
+    public interface IDistributedServiceRepository : IRepository<DistributedService, Guid>
     {
 
     }

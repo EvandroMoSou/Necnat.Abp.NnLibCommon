@@ -1,22 +1,46 @@
-﻿using Microsoft.Extensions.Localization;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Localization;
+using Necnat.Abp.NnLibCommon.Domains.DmDistributedService;
 using Necnat.Abp.NnLibCommon.Localization;
 using Necnat.Abp.NnLibCommon.Services;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Volo.Abp;
+using Volo.Abp.Application.Dtos;
+using Volo.Abp.Domain.Entities;
 using Volo.Abp.Identity;
 using Volo.Abp.Users;
 
 namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
 {
-    public class NnIdentityUserAppService : NecnatAppService<IdentityUser, IdentityUserDto, Guid, NnIdentityUserResultRequestDto, INnIdentityUserRepository>, INnIdentityUserAppService
+    public class NnIdentityUserAppService : NecnatAppService<IdentityUser, NnIdentityUserDto, Guid, NnIdentityUserResultRequestDto, INnIdentityUserRepository>, INnIdentityUserAppService
     {
+        protected readonly IConfiguration _configuration;
+        protected readonly IDistributedServiceStore _distributedServiceStore;
+        protected readonly IHttpClientFactory _httpClientFactory;
+
+        protected string _applicationName;
+
         public NnIdentityUserAppService(
             ICurrentUser currentUser,
             IStringLocalizer<NnLibCommonResource> necnatLocalizer,
-            INnIdentityUserRepository repository) : base(currentUser, necnatLocalizer, repository)
+            INnIdentityUserRepository repository,
+
+            IConfiguration configuration,
+            IDistributedServiceStore distributedServiceStore,
+            IHttpClientFactory httpClientFactory) : base(currentUser, necnatLocalizer, repository)
         {
+            _configuration = configuration;
+            _distributedServiceStore = distributedServiceStore;
+            _httpClientFactory = httpClientFactory;
+
+            _applicationName = _configuration["DistributedService:ApplicationName"]!;
+
             GetPolicyName = IdentityPermissions.Users.Default;
             GetListPolicyName = IdentityPermissions.Users.Default;
             CreatePolicyName = IdentityPermissions.Users.Create;
@@ -43,21 +67,115 @@ namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
             return q;
         }
 
-        public virtual async Task<IdentityUserDto> GetMyAsync(Guid id)
+        public override async Task<NnIdentityUserDto> GetAsync(Guid id)
         {
             ThrowIfIsNotMy(id);
-            return await base.GetAsync(id);
+
+            var distributedServiceList = await _distributedServiceStore.GetListAsync(tag: NnLibCommonDistributedServiceConsts.NnIdentityUserTag);
+            foreach (var iDistributedService in distributedServiceList)
+            {
+                if (iDistributedService.ApplicationName == _applicationName)
+                {
+                    try
+                    {
+                        return await base.GetAsync(id);
+                    }
+                    catch { }
+                }
+                else
+                {
+                    using (HttpClient client = _httpClientFactory.CreateClient(NnLibCommonDistributedServiceConsts.HttpClientName))
+                    {
+                        try
+                        {
+                            var httpResponseMessage = await client.GetAsync($"{iDistributedService.Url}/api/nn-lib-common/nn-identity-user/my");
+                            if (httpResponseMessage.IsSuccessStatusCode)
+                                return JsonSerializer.Deserialize<NnIdentityUserDto>(await httpResponseMessage.Content.ReadAsStringAsync())!;
+                        }
+                        catch { }
+                    }
+                }
+            }
+
+            throw new EntityNotFoundException(typeof(IdentityUserDto), id);
         }
 
+        public virtual async Task<NnIdentityUserDto> GetMyAsync(Guid id)
+        {
+            ThrowIfIsNotMy(id);
+
+            var distributedServiceList = await _distributedServiceStore.GetListAsync(tag: NnLibCommonDistributedServiceConsts.NnIdentityUserTag);
+            foreach (var iDistributedService in distributedServiceList)
+            {
+                if (iDistributedService.ApplicationName == _applicationName)
+                {
+                    try
+                    {
+                        return await GetAsync(id);
+                    }
+                    catch { }
+                }
+                else
+                {
+                    using (HttpClient client = _httpClientFactory.CreateClient(NnLibCommonDistributedServiceConsts.HttpClientName))
+                    {
+                        try
+                        {
+                            var httpResponseMessage = await client.GetAsync($"{iDistributedService.Url}/api/nn-lib-common/nn-identity-user/my");
+                            if (httpResponseMessage.IsSuccessStatusCode)
+                                return JsonSerializer.Deserialize<NnIdentityUserDto>(await httpResponseMessage.Content.ReadAsStringAsync())!;
+                        }
+                        catch { }
+                    }
+                }
+            }
+
+            throw new EntityNotFoundException(typeof(IdentityUserDto), id);
+        }
+
+        public override async Task<PagedResultDto<NnIdentityUserDto>> GetListAsync(NnIdentityUserResultRequestDto input)
+        {
+            var l = new List<PagedResultDto<NnIdentityUserDto>>();
+
+            var distributedServiceList = await _distributedServiceStore.GetListAsync(tag: NnLibCommonDistributedServiceConsts.NnIdentityUserTag);
+            foreach (var iDistributedService in distributedServiceList)
+            {
+                if (iDistributedService.ApplicationName == _applicationName)
+                {
+                    try
+                    {
+                        l.Add(await base.GetListAsync(input));
+                    }
+                    catch { }
+                }
+                else
+                {
+                    using (HttpClient client = _httpClientFactory.CreateClient(NnLibCommonDistributedServiceConsts.HttpClientName))
+                    {
+                        try
+                        {
+                            var httpResponseMessage = await client.PostAsJsonAsync($"{iDistributedService.Url}/api/nn-lib-common/nn-identity-user/get-list", input);
+                            if (httpResponseMessage.IsSuccessStatusCode)
+                                l.Add(JsonSerializer.Deserialize<PagedResultDto<NnIdentityUserDto>>(await httpResponseMessage.Content.ReadAsStringAsync())!);
+                        }
+                        catch { }
+                    }
+                }
+            }
+
+            return new PagedResultDto<NnIdentityUserDto>(l.Sum(x => x.TotalCount), l.SelectMany(x => x.Items).ToList());
+        }
+
+
         [RemoteService(false)]
-        public override Task<IdentityUserDto> CreateAsync(IdentityUserDto input)
+        public override Task<NnIdentityUserDto> CreateAsync(NnIdentityUserDto input)
         {
             //return base.CreateAsync(input);
             throw new NotImplementedException();
         }
 
         [RemoteService(false)]
-        public override Task<IdentityUserDto> UpdateAsync(Guid id, IdentityUserDto input)
+        public override Task<NnIdentityUserDto> UpdateAsync(Guid id, NnIdentityUserDto input)
         {
             //return base.UpdateAsync(id, input);
             throw new NotImplementedException();

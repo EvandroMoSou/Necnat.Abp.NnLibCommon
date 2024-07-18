@@ -9,10 +9,10 @@ namespace Necnat.Abp.NnLibCommon.Domains.DmNecnatEndpoint
     [RemoteService(Name = NnLibCommonRemoteServiceConsts.RemoteServiceName)]
     [Area(NnLibCommonRemoteServiceConsts.ModuleName)]
     [ControllerName("NnEndpoint")]
-    [Route("api/nn-lib-common/nn-endpoint")]
-    public class NnEndpointController : NecnatController<INnEndpointAppService, NnEndpointDto, Guid, NnEndpointResultRequestDto>, INnEndpointAppService
+    [Route("api/nn-lib-common/distributed-service")]
+    public class DistributedServiceController : NecnatController<IDistributedServiceDtoAppService, DistributedServiceDto, Guid, DistributedServiceResultRequestDto>, IDistributedServiceDtoAppService
     {
-        public NnEndpointController(INnEndpointAppService appService) : base(appService)
+        public DistributedServiceController(IDistributedServiceDtoAppService appService) : base(appService)
         {
         }
     }
