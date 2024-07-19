@@ -25,6 +25,7 @@ namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
         protected readonly IHttpClientFactory _httpClientFactory;
 
         protected string _applicationName;
+        protected const string _controllerbase = "nn-lib-common/nn-identity-user";
 
         public NnIdentityUserAppService(
             ICurrentUser currentUser,
@@ -69,8 +70,6 @@ namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
 
         public override async Task<NnIdentityUserDto> GetAsync(Guid id)
         {
-            ThrowIfIsNotMy(id);
-
             var distributedServiceList = await _distributedServiceStore.GetListAsync(tag: NnLibCommonDistributedServiceConsts.NnIdentityUserTag);
             foreach (var iDistributedService in distributedServiceList)
             {
@@ -90,7 +89,7 @@ namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
                     {
                         try
                         {
-                            var httpResponseMessage = await client.GetAsync($"{iDistributedService.Url}/api/nn-lib-common/nn-identity-user/my");
+                            var httpResponseMessage = await client.GetAsync($"{iDistributedService.Url}/api/{_controllerbase}/{id}");
                             if (httpResponseMessage.IsSuccessStatusCode)
                                 return JsonSerializer.Deserialize<NnIdentityUserDto>(await httpResponseMessage.Content.ReadAsStringAsync())!;
                         }
@@ -123,7 +122,7 @@ namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
                     {
                         try
                         {
-                            var httpResponseMessage = await client.GetAsync($"{iDistributedService.Url}/api/nn-lib-common/nn-identity-user/{id}");
+                            var httpResponseMessage = await client.GetAsync($"{iDistributedService.Url}/api/{_controllerbase}/my");
                             if (httpResponseMessage.IsSuccessStatusCode)
                                 return JsonSerializer.Deserialize<NnIdentityUserDto>(await httpResponseMessage.Content.ReadAsStringAsync())!;
                         }

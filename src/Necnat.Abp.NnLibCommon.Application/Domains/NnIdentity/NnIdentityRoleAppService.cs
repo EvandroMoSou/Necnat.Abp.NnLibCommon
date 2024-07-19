@@ -25,6 +25,7 @@ namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
         protected readonly IHttpClientFactory _httpClientFactory;
 
         protected string _applicationName;
+        protected const string _controllerbase = "nn-lib-common/nn-identity-role";
 
         public NnIdentityRoleAppService(
             ICurrentUser currentUser,
@@ -84,7 +85,7 @@ namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
                     {
                         try
                         {
-                            var httpResponseMessage = await client.GetAsync($"{iDistributedService.Url}/api/nn-lib-common/nn-identity-user/my");
+                            var httpResponseMessage = await client.GetAsync($"{iDistributedService.Url}/api/{_controllerbase}/{id}");
                             if (httpResponseMessage.IsSuccessStatusCode)
                                 return JsonSerializer.Deserialize<NnIdentityRoleDto>(await httpResponseMessage.Content.ReadAsStringAsync())!;
                         }
@@ -120,7 +121,7 @@ namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
                     {
                         try
                         {
-                            var httpResponseMessage = await client.PostAsJsonAsync($"{iDistributedService.Url}/api/nn-lib-common/nn-identity-user/get-list", input);
+                            var httpResponseMessage = await client.PostAsJsonAsync($"{iDistributedService.Url}/api/{_controllerbase}/get-list", input);
                             if (httpResponseMessage.IsSuccessStatusCode)
                                 l.Add(JsonSerializer.Deserialize<PagedResultDto<NnIdentityRoleDto>>(await httpResponseMessage.Content.ReadAsStringAsync())!);
                         }
