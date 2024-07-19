@@ -2,7 +2,7 @@
 @using Necnat.Abp.NnLibCommon.Domains.NnIdentity
 @using Necnat.Abp.NnLibCommon.Localization
 @using Volo.Abp.Identity
-@inherits AutocompleteCmptBase<INnIdentityRoleAppService, IdentityRoleDto, Guid, NnIdentityRoleResultRequestDto>
+@inherits AutocompleteCmptBase<INnIdentityRoleAppService, NnIdentityRoleDto, Guid, NnIdentityRoleResultRequestDto>
 
 @if (_isLoading)
 {
@@ -10,7 +10,7 @@
 }
 else
 {
-    <Autocomplete TItem="IdentityRoleDto"
+    <Autocomplete TItem="NnIdentityRoleDto"
                   TValue="Guid"
                   Data="@Data"
                   ReadData="@OnHandleReadData"

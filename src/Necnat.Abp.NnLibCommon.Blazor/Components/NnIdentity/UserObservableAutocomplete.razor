@@ -3,12 +3,12 @@
 @using Necnat.Abp.NnLibCommon.Localization
 @using Volo.Abp.BlazoriseUI.Components
 @using Volo.Abp.Identity
-@inherits ObservableAutocompleteCmptBase<INnIdentityUserAppService, IdentityUserDto, Guid, NnIdentityUserResultRequestDto>
+@inherits ObservableAutocompleteCmptBase<INnIdentityUserAppService, NnIdentityUserDto, Guid, NnIdentityUserResultRequestDto>
 
 <Fields>
     <Field ColumnSize="ColumnSize.Is10">
-        <Autocomplete @ref="_autocomplete" TItem="IdentityUserDto"
-                      TValue="IdentityUserDto"
+        <Autocomplete @ref="_autocomplete" TItem="NnIdentityUserDto"
+                      TValue="NnIdentityUserDto"
                       Data="@Data"
                       ReadData="@OnHandleReadDataAsync"
                       TextField="@((item) => $"[{item.UserName}] {item.Name}")"
@@ -25,25 +25,25 @@
     </Field>
 </Fields>
 
-<DataGrid TItem="IdentityUserDto"
+<DataGrid TItem="NnIdentityUserDto"
           Data="SelectedEntityDtoList"
           ShowPager="true"
           PageSize="PageSize">
     <DataGridColumns>
-        <DataGridEntityActionsColumn TItem="IdentityUserDto">
+        <DataGridEntityActionsColumn TItem="NnIdentityUserDto">
             <DisplayTemplate>
-                <EntityActions TItem="IdentityUserDto">
-                    <EntityAction TItem="IdentityUserDto"
+                <EntityActions TItem="NnIdentityUserDto">
+                    <EntityAction TItem="NnIdentityUserDto"
                                   Text="@L["Delete"]"
                                   Clicked="async () => await RemoveAsync(context)" />
                 </EntityActions>
             </DisplayTemplate>
         </DataGridEntityActionsColumn>
-        <DataGridColumn TItem="IdentityUserDto"
-                        Field="@nameof(IdentityUserDto.UserName)"
+        <DataGridColumn TItem="NnIdentityUserDto"
+                        Field="@nameof(NnIdentityUserDto.UserName)"
                         Caption="@L[NndentityUserConsts.UserNameDisplay]"></DataGridColumn>
-        <DataGridColumn TItem="IdentityUserDto"
-                        Field="@nameof(IdentityUserDto.Name)"
+        <DataGridColumn TItem="NnIdentityUserDto"
+                        Field="@nameof(NnIdentityUserDto.Name)"
                         Caption="@L[NndentityUserConsts.NameDisplay]"></DataGridColumn>
     </DataGridColumns>
 </DataGrid>

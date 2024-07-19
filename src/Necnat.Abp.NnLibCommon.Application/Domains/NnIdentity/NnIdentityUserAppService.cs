@@ -78,7 +78,9 @@ namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
                 {
                     try
                     {
-                        return await base.GetAsync(id);
+                        var result = await base.GetAsync(id);
+                        result.DistributedAppName = _applicationName;
+                        return result;
                     }
                     catch { }
                 }
@@ -121,7 +123,7 @@ namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
                     {
                         try
                         {
-                            var httpResponseMessage = await client.GetAsync($"{iDistributedService.Url}/api/nn-lib-common/nn-identity-user/my");
+                            var httpResponseMessage = await client.GetAsync($"{iDistributedService.Url}/api/nn-lib-common/nn-identity-user/{id}");
                             if (httpResponseMessage.IsSuccessStatusCode)
                                 return JsonSerializer.Deserialize<NnIdentityUserDto>(await httpResponseMessage.Content.ReadAsStringAsync())!;
                         }
@@ -144,7 +146,10 @@ namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
                 {
                     try
                     {
-                        l.Add(await base.GetListAsync(input));
+                        var result = await base.GetListAsync(input);
+                        var items = result.Items.ToList();
+                        items.ForEach(x => x.DistributedAppName = _applicationName);
+                        l.Add(new PagedResultDto<NnIdentityUserDto>(result.TotalCount, items));
                     }
                     catch { }
                 }
@@ -165,7 +170,6 @@ namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
 
             return new PagedResultDto<NnIdentityUserDto>(l.Sum(x => x.TotalCount), l.SelectMany(x => x.Items).ToList());
         }
-
 
         [RemoteService(false)]
         public override Task<NnIdentityUserDto> CreateAsync(NnIdentityUserDto input)
