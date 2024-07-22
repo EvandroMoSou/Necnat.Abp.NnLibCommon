@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Localization;
 using Necnat.Abp.NnLibCommon.Domains.DmDistributedService;
+using Necnat.Abp.NnLibCommon.Extensions;
 using Necnat.Abp.NnLibCommon.Localization;
 using Necnat.Abp.NnLibCommon.Services;
 using System;
@@ -87,7 +88,7 @@ namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
                         {
                             var httpResponseMessage = await client.GetAsync($"{iDistributedService.Url}/api/{_controllerbase}/{id}");
                             if (httpResponseMessage.IsSuccessStatusCode)
-                                return JsonSerializer.Deserialize<NnIdentityRoleDto>(await httpResponseMessage.Content.ReadAsStringAsync())!;
+                                return (await httpResponseMessage.Content.ReadAsStringAsync()).DeserializeCaseInsensitive<NnIdentityRoleDto>()!;
                         }
                         catch { }
                     }
@@ -123,7 +124,7 @@ namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
                         {
                             var httpResponseMessage = await client.PostAsJsonAsync($"{iDistributedService.Url}/api/{_controllerbase}/get-list", input);
                             if (httpResponseMessage.IsSuccessStatusCode)
-                                l.Add(JsonSerializer.Deserialize<PagedResultDto<NnIdentityRoleDto>>(await httpResponseMessage.Content.ReadAsStringAsync())!);
+                                return (await httpResponseMessage.Content.ReadAsStringAsync()).DeserializeCaseInsensitive<PagedResultDto<NnIdentityRoleDto>>()!;
                         }
                         catch { }
                     }
