@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Necnat.Abp.NnLibCommon.Domains;
+using Necnat.Abp.NnLibCommon.Domains.NnIdentity;
+using Volo.Abp.Identity;
 
 namespace Necnat.Abp.NnLibCommon;
 
@@ -19,5 +21,15 @@ public class NnLibCommonApplicationAutoMapperProfile : Profile
             .ForMember(x => x.CreatorId, opt => opt.Ignore())
             .ForMember(x => x.ExtraProperties, opt => opt.Ignore())
             .ForMember(x => x.ConcurrencyStamp, opt => opt.Ignore());
+
+        CreateMap<IdentityUser, NnIdentityUserDto>()
+            .ForMember(x => x.DistributedAppName, opt => opt.Ignore());
+        CreateMap<NnIdentityUserDto, IdentityUser>()
+            .MapExtraProperties();
+
+        CreateMap<IdentityRole, NnIdentityRoleDto>()
+            .ForMember(x => x.DistributedAppName, opt => opt.Ignore());
+        CreateMap<NnIdentityRoleDto, IdentityRole>()
+            .MapExtraProperties();
     }
 }
