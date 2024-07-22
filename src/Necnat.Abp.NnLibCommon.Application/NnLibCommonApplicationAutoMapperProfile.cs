@@ -25,11 +25,26 @@ public class NnLibCommonApplicationAutoMapperProfile : Profile
         CreateMap<IdentityUser, NnIdentityUserDto>()
             .ForMember(x => x.DistributedAppName, opt => opt.Ignore());
         CreateMap<NnIdentityUserDto, IdentityUser>()
-            .MapExtraProperties();
+            .MapExtraProperties()
+            .ForMember(dest => dest.NormalizedUserName, opt => opt.Ignore())
+            .ForMember(dest => dest.NormalizedEmail, opt => opt.Ignore())
+            .ForMember(dest => dest.PasswordHash, opt => opt.Ignore())
+            .ForMember(dest => dest.SecurityStamp, opt => opt.Ignore())
+            .ForMember(dest => dest.IsExternal, opt => opt.Ignore())
+            .ForMember(dest => dest.TwoFactorEnabled, opt => opt.Ignore())
+            .ForMember(dest => dest.ShouldChangePasswordOnNextLogin, opt => opt.Ignore())
+            .ForMember(dest => dest.Roles, opt => opt.Ignore())
+            .ForMember(dest => dest.Claims, opt => opt.Ignore())
+            .ForMember(dest => dest.Logins, opt => opt.Ignore())
+            .ForMember(dest => dest.Tokens, opt => opt.Ignore())
+            .ForMember(dest => dest.OrganizationUnits, opt => opt.Ignore());
 
         CreateMap<IdentityRole, NnIdentityRoleDto>()
             .ForMember(x => x.DistributedAppName, opt => opt.Ignore());
         CreateMap<NnIdentityRoleDto, IdentityRole>()
-            .MapExtraProperties();
+            .MapExtraProperties()
+            .ForMember(dest => dest.NormalizedName, opt => opt.Ignore())
+            .ForMember(dest => dest.Claims, opt => opt.Ignore())
+            .ForMember(dest => dest.EntityVersion, opt => opt.Ignore());
     }
 }
