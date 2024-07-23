@@ -161,7 +161,7 @@ namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
                         {
                             var httpResponseMessage = await client.PostAsJsonAsync($"{iDistributedService.Url}/api/nn-lib-common/nn-identity-user/get-list", input);
                             if (httpResponseMessage.IsSuccessStatusCode)
-                                return (await httpResponseMessage.Content.ReadAsStringAsync()).DeserializeCaseInsensitive<PagedResultDto<NnIdentityUserDto>>()!;
+                                l.Add((await httpResponseMessage.Content.ReadAsStringAsync()).DeserializeCaseInsensitive<PagedResultDto<NnIdentityUserDto>>()!);
                         }
                         catch { }
                     }

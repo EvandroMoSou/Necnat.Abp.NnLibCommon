@@ -124,7 +124,7 @@ namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
                         {
                             var httpResponseMessage = await client.PostAsJsonAsync($"{iDistributedService.Url}/api/{_controllerbase}/get-list", input);
                             if (httpResponseMessage.IsSuccessStatusCode)
-                                return (await httpResponseMessage.Content.ReadAsStringAsync()).DeserializeCaseInsensitive<PagedResultDto<NnIdentityRoleDto>>()!;
+                                l.Add((await httpResponseMessage.Content.ReadAsStringAsync()).DeserializeCaseInsensitive<PagedResultDto<NnIdentityRoleDto>>()!);
                         }
                         catch { }
                     }
