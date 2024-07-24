@@ -1,231 +1,233 @@
-﻿//using Microsoft.Extensions.Localization;
-//using Necnat.Abp.NnLibCommon.Dtos;
-//using Necnat.Abp.NnLibCommon.Exceptions;
-//using Necnat.Abp.NnLibCommon.Localization;
-//using System.Linq;
-//using System.Threading.Tasks;
-//using Volo.Abp.Application.Dtos;
-//using Volo.Abp.Domain.Entities;
-//using Volo.Abp.Domain.Repositories;
-//using Volo.Abp.ObjectMapping;
-//using Volo.Abp.Users;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Localization;
+using Necnat.Abp.NnLibCommon.Dtos;
+using Necnat.Abp.NnLibCommon.Localization;
+using Necnat.Abp.NnLibCommon.Validators;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Volo.Abp.Application.Dtos;
+using Volo.Abp.Domain.Entities;
+using Volo.Abp.Domain.Repositories;
+using Volo.Abp.Users;
 
-//namespace Necnat.Abp.NnLibCommon.Services
-//{
-//    public abstract class NecnatSyncAppService<TEntity, TEntityDto, TKey, TRepository, TSyncEntity, TSyncKey, TSyncRepository>
-//        : NecnatSyncAppService<TEntity, TEntityDto, TKey, OptionalPagedAndSortedResultRequestDto, TRepository, TSyncEntity, TSyncKey, TSyncRepository>
-//        where TEntity : class, IEntity<TKey>
-//        where TEntityDto : class, IEntityDto<TKey>
-//        where TRepository : IRepository<TEntity, TKey>
-//        where TSyncEntity : class, IEntity<TSyncKey>
-//        where TSyncRepository : IRepository<TSyncEntity, TSyncKey>
-//    {
-//        protected NecnatSyncAppService(
-//            ICurrentUser currentUser,
-//            IStringLocalizer<NnLibCommonResource> necnatLocalizer,
-//            TRepository repository,
-//            TSyncRepository syncRepository) : base(currentUser, necnatLocalizer, repository, syncRepository)
-//        {
+namespace Necnat.Abp.NnLibCommon.Services
+{
+    public abstract class NecnatSyncAppService<TEntity, TEntityDto, TKey, TRepository, TValidator, TSyncEntity, TSyncKey, TSyncRepository>
+        : NecnatSyncAppService<TEntity, TEntityDto, TKey, OptionalPagedAndSortedResultRequestDto, TRepository, TValidator, TSyncEntity, TSyncKey, TSyncRepository>
+        where TEntity : class, IEntity<TKey>
+        where TEntityDto : class, IEntityDto<TKey>
+        where TRepository : IRepository<TEntity, TKey>
+        where TValidator : IValidator<TEntityDto>
+        where TSyncEntity : class, IEntity<TSyncKey>
+        where TSyncRepository : IRepository<TSyncEntity, TSyncKey>
+    {
+        protected NecnatSyncAppService(
+            ICurrentUser currentUser,
+            IStringLocalizer<NnLibCommonResource> necnatLocalizer,
+            TRepository repository,
+            IConfiguration configuration,
+            TSyncRepository syncRepository) : base(currentUser, necnatLocalizer, repository, configuration, syncRepository)
+        {
 
-//        }
-//    }
+        }
+    }
 
-//    public abstract class NecnatSyncAppService<TEntity, TEntityDto, TKey, TGetListInput, TRepository, TSyncEntity, TSyncKey, TSyncRepository>
-//        : NecnatSyncAppService<TEntity, TEntityDto, TKey, TGetListInput, TEntityDto, TRepository, TSyncEntity, TSyncKey, TSyncRepository>
-//        where TEntity : class, IEntity<TKey>
-//        where TEntityDto : class, IEntityDto<TKey>
-//        where TGetListInput : OptionalPagedAndSortedResultRequestDto
-//        where TRepository : IRepository<TEntity, TKey>
-//        where TSyncEntity : class, IEntity<TSyncKey>
-//        where TSyncRepository : IRepository<TSyncEntity, TSyncKey>
-//    {
-//        protected NecnatSyncAppService(
-//            ICurrentUser currentUser,
-//            IStringLocalizer<NnLibCommonResource> necnatLocalizer,
-//            TRepository repository,
-//            TSyncRepository syncRepository) : base(currentUser, necnatLocalizer, repository, syncRepository)
-//        {
+    public abstract class NecnatSyncAppService<TEntity, TEntityDto, TKey, TGetListInput, TRepository, TValidator, TSyncEntity, TSyncKey, TSyncRepository>
+        : NecnatSyncAppService<TEntity, TEntityDto, TKey, TGetListInput, TEntityDto, TRepository, TValidator, TSyncEntity, TSyncKey, TSyncRepository>
+        where TEntity : class, IEntity<TKey>
+        where TEntityDto : class, IEntityDto<TKey>
+        where TGetListInput : OptionalPagedAndSortedResultRequestDto
+        where TRepository : IRepository<TEntity, TKey>
+        where TValidator : IValidator<TEntityDto, TGetListInput>
+        where TSyncEntity : class, IEntity<TSyncKey>
+        where TSyncRepository : IRepository<TSyncEntity, TSyncKey>
+    {
+        protected NecnatSyncAppService(
+            ICurrentUser currentUser,
+            IStringLocalizer<NnLibCommonResource> necnatLocalizer,
+            TRepository repository,
+            IConfiguration configuration,
+            TSyncRepository syncRepository) : base(currentUser, necnatLocalizer, repository, configuration, syncRepository)
+        {
 
-//        }
-//    }
+        }
+    }
 
-//    public abstract class NecnatSyncAppService<TEntity, TEntityDto, TKey, TGetListInput, TCreateInput, TRepository, TSyncEntity, TSyncKey, TSyncRepository>
-//        : NecnatSyncAppService<TEntity, TEntityDto, TKey, TGetListInput, TCreateInput, TCreateInput, TRepository, TSyncEntity, TSyncKey, TSyncRepository>
-//        where TEntity : class, IEntity<TKey>
-//        where TEntityDto : class, IEntityDto<TKey>
-//        where TGetListInput : OptionalPagedAndSortedResultRequestDto
-//        where TCreateInput : class, IEntityDto<TKey>
-//        where TRepository : IRepository<TEntity, TKey>
-//        where TSyncEntity : class, IEntity<TSyncKey>
-//        where TSyncRepository : IRepository<TSyncEntity, TSyncKey>
-//    {
-//        protected NecnatSyncAppService(
-//            ICurrentUser currentUser,
-//            IStringLocalizer<NnLibCommonResource> necnatLocalizer,
-//            TRepository repository,
-//            TSyncRepository syncRepository) : base(currentUser, necnatLocalizer, repository, syncRepository)
-//        {
+    public abstract class NecnatSyncAppService<TEntity, TEntityDto, TKey, TGetListInput, TCreateInput, TRepository, TValidator, TSyncEntity, TSyncKey, TSyncRepository>
+        : NecnatSyncAppService<TEntity, TEntityDto, TKey, TGetListInput, TCreateInput, TCreateInput, TRepository, TValidator, TSyncEntity, TSyncKey, TSyncRepository>
+        where TEntity : class, IEntity<TKey>
+        where TEntityDto : class, IEntityDto<TKey>
+        where TGetListInput : OptionalPagedAndSortedResultRequestDto
+        where TCreateInput : class, IEntityDto<TKey>
+        where TRepository : IRepository<TEntity, TKey>
+        where TValidator : IValidator<TCreateInput, TGetListInput>
+        where TSyncEntity : class, IEntity<TSyncKey>
+        where TSyncRepository : IRepository<TSyncEntity, TSyncKey>
 
-//        }
-//    }
+    {
+        protected NecnatSyncAppService(
+            ICurrentUser currentUser,
+            IStringLocalizer<NnLibCommonResource> necnatLocalizer,
+            TRepository repository,
+            IConfiguration configuration,
+            TSyncRepository syncRepository) : base(currentUser, necnatLocalizer, repository, configuration, syncRepository)
+        {
 
-//    public abstract class NecnatSyncAppService<TEntity, TEntityDto, TKey, TGetListInput, TCreateInput, TUpdateInput, TRepository, TSyncEntity, TSyncKey, TSyncRepository>
-//        : NecnatSyncAppService<TEntity, TEntityDto, TEntityDto, TKey, TGetListInput, TCreateInput, TUpdateInput, TRepository, TSyncEntity, TSyncKey, TSyncRepository>
-//        where TEntity : class, IEntity<TKey>
-//        where TEntityDto : class, IEntityDto<TKey>
-//        where TGetListInput : OptionalPagedAndSortedResultRequestDto
-//        where TCreateInput : class, IEntityDto<TKey>
-//        where TUpdateInput : class, IEntityDto<TKey>
-//        where TRepository : IRepository<TEntity, TKey>
-//        where TSyncEntity : class, IEntity<TSyncKey>
-//        where TSyncRepository : IRepository<TSyncEntity, TSyncKey>
-//    {
-//        protected NecnatSyncAppService(
-//            ICurrentUser currentUser,
-//            IStringLocalizer<NnLibCommonResource> necnatLocalizer,
-//            TRepository repository,
-//            TSyncRepository syncRepository) : base(currentUser, necnatLocalizer, repository, syncRepository)
-//        {
+        }
+    }
 
-//        }
-//    }
+    public abstract class NecnatSyncAppService<TEntity, TEntityDto, TKey, TGetListInput, TCreateInput, TUpdateInput, TRepository, TValidator, TSyncEntity, TSyncKey, TSyncRepository>
+        : NecnatSyncAppService<TEntity, TEntityDto, TEntityDto, TKey, TGetListInput, TCreateInput, TUpdateInput, TRepository, TValidator, TSyncEntity, TSyncKey, TSyncRepository>
+        where TEntity : class, IEntity<TKey>
+        where TEntityDto : class, IEntityDto<TKey>
+        where TGetListInput : OptionalPagedAndSortedResultRequestDto
+        where TCreateInput : class, IEntityDto<TKey>
+        where TUpdateInput : class, IEntityDto<TKey>
+        where TRepository : IRepository<TEntity, TKey>
+        where TValidator : IValidator<TCreateInput, TUpdateInput, TGetListInput>
+        where TSyncEntity : class, IEntity<TSyncKey>
+        where TSyncRepository : IRepository<TSyncEntity, TSyncKey>
+    {
+        protected NecnatSyncAppService(
+            ICurrentUser currentUser,
+            IStringLocalizer<NnLibCommonResource> necnatLocalizer,
+            TRepository repository,
+            IConfiguration configuration,
+            TSyncRepository syncRepository) : base(currentUser, necnatLocalizer, repository, configuration, syncRepository)
+        {
 
-//    public abstract class NecnatSyncAppService<TEntity, TGetOutputDto, TGetListOutputDto, TKey, TGetListInput, TCreateInput, TUpdateInput, TRepository, TSyncEntity, TSyncKey, TSyncRepository>
-//        : NecnatAppService<TEntity, TGetOutputDto, TGetListOutputDto, TKey, TGetListInput, TCreateInput, TUpdateInput, TRepository>
-//        where TEntity : class, IEntity<TKey>
-//        where TGetListInput : OptionalPagedAndSortedResultRequestDto
-//        where TCreateInput : class, IEntityDto<TKey>
-//        where TUpdateInput : class, IEntityDto<TKey>
-//        where TRepository : IRepository<TEntity, TKey>
-//        where TSyncEntity : class, IEntity<TSyncKey>
-//        where TSyncRepository : IRepository<TSyncEntity, TSyncKey>
-//    {
-//        protected TSyncRepository SyncRepository { get; }
+        }
+    }
 
-//        protected NecnatSyncAppService(
-//            ICurrentUser currentUser,
-//            IStringLocalizer<NnLibCommonResource> necnatLocalizer,
-//            TRepository repository,
-//            TSyncRepository syncRepository) : base(currentUser, necnatLocalizer, repository)
-//        {
-//            SyncRepository = syncRepository;
-//        }
+    public abstract class NecnatSyncAppService<TEntity, TGetOutputDto, TGetListOutputDto, TKey, TGetListInput, TCreateInput, TUpdateInput, TRepository, TValidator, TSyncEntity, TSyncKey, TSyncRepository>
+        : NecnatAppService<TEntity, TGetOutputDto, TGetListOutputDto, TKey, TGetListInput, TCreateInput, TUpdateInput, TRepository, TValidator>
+        where TEntity : class, IEntity<TKey>
+        where TGetListInput : OptionalPagedAndSortedResultRequestDto
+        where TCreateInput : class, IEntityDto<TKey>
+        where TUpdateInput : class, IEntityDto<TKey>
+        where TRepository : IRepository<TEntity, TKey>
+        where TValidator : IValidator<TCreateInput, TUpdateInput, TGetListInput>
+        where TSyncEntity : class, IEntity<TSyncKey>
+        where TSyncRepository : IRepository<TSyncEntity, TSyncKey>
+    {
+        protected TSyncRepository SyncRepository { get; }
 
-//        protected override async Task<TEntity> CheckCreateInsertedEntityAsync(TEntity insertedEntity, TCreateInput? input = null)
-//        {
-//            var syncEntity = ObjectMapper.Map<TEntity, TSyncEntity>(insertedEntity);
-//            await SyncToAsync(syncEntity);
+        protected readonly bool syncFrom;
+        protected readonly bool syncTo;
 
-//            return insertedEntity;
-//        }
+        protected NecnatSyncAppService(
+            ICurrentUser currentUser,
+            IStringLocalizer<NnLibCommonResource> necnatLocalizer,
+            TRepository repository,
 
-//        public override async Task<TGetOutputDto> UpdateAsync(TKey id, TCreateInput input)
-//        {
-//            await CheckUpdatePolicyAsync();
+            IConfiguration configuration,
+            TSyncRepository syncRepository) : base(currentUser, necnatLocalizer, repository)
+        {
+            SyncRepository = syncRepository;
 
-//            var entity = await GetEntityByIdAsync(id);
+            var syncFromSettings = configuration[$"Sync:{this.GetType().Name}:SyncFrom"];
+            syncFrom = syncFromSettings == null ? true : bool.Parse(syncFromSettings);
 
-//            await MapToEntityAsync(input, entity);
+            var syncToSettings = configuration[$"Sync:{this.GetType().Name}:SyncTo"];
+            syncTo = syncToSettings == null ? true : bool.Parse(syncToSettings);
+        }
 
-//            if (entity.SyncId != null)
-//            {
-//                var eSync = await SyncRepository.FindAsync((TSyncKey)entity.SyncId);
-//                if (eSync == null)
-//                    throw new SyncException($"The Sync database don't have the code: {entity.SyncId}");
+        protected override async Task<TEntity> AfterGetAsync(TEntity entity)
+        {
+            await SyncToAsync(entity);
+            return entity;
+        }
 
-//                eSync = ObjectMapper.Map(entity, eSync);
-//                await SyncRepository.UpdateAsync(eSync);
-//            }
+        IEnumerable<string> entityList = new List<string>();
+        protected override async Task<TGetListInput> BeforeGetListAsync(TGetListInput input)
+        {
+            if (syncFrom)
+            {
+                var lSyncEntity = await GetListSyncAsync(input);
+                foreach (var iSyncEntity in lSyncEntity)
+                    await SyncFromAsync(iSyncEntity);
+            }
 
-//            await Repository.UpdateAsync(entity);
+            await UnitOfWorkManager.Current!.SaveChangesAsync();
 
-//            return await MapToGetOutputDtoAsync(entity);
-//        }
+            return input;
+        }
 
-//        public override async Task DeleteAsync(TKey id)
-//        {
-//            await CheckDeletePolicyAsync();
+        protected override async Task<List<TEntity>> AfterGetListAsync(List<TEntity> entityList)
+        {
+            foreach (var iEntity in entityList)
+                await SyncToAsync(iEntity);
 
-//            var entity = await Repository.GetAsync(id);
+            return entityList;
+        }
 
-//            if (entity.SyncId != null)
-//            {
-//                var eSync = await SyncRepository.FindAsync((TSyncKey)entity.SyncId);
-//                if (eSync == null)
-//                    throw new SyncException($"The Sync database don't have the code: {entity.SyncId}");
+        protected override async Task<TEntity> CheckCreateInsertedEntityAsync(TEntity insertedEntity, TCreateInput? input = null)
+        {
+            await SyncToAsync(insertedEntity);
+            return insertedEntity;
+        }
 
-//                await SyncRepository.DeleteAsync(eSync);
-//            }
+        protected override async Task<TEntity> CheckUpdateUpdatedEntityAsync(TEntity updatedEntity, TUpdateInput? input = null)
+        {
+            await SyncToAsync(updatedEntity);
+            return updatedEntity;
+        }
 
-//            await DeleteAsync(id);
-//        }
+        protected override async Task<TEntity> CheckDeleteDbEntityAsync(TEntity dbEntity)
+        {
+            var dbSyncEntity = await FindSyncByEntityAsync(dbEntity);
+            if (dbSyncEntity != null)
+                await SyncRepository.DeleteAsync(dbSyncEntity);
 
-//        public virtual async Task SyncFromSyncAsync()
-//        {
-//            await CheckSyncFromSyncPolicyAsync();
+            return dbEntity;
+        }
 
-//            var l = await Repository.GetListAsync();
-//            var lSync = await SyncRepository.GetListAsync();
+        protected virtual async Task SyncFromAsync(TSyncEntity syncEntity)
+        {
+            if (!syncFrom)
+                return;
 
-//            foreach (var iSync in lSync)
-//            {
-//                var e = l.Where(x => x.SyncId != null && x.SyncId.Equals(iSync.Id)).FirstOrDefault();
-//                if (e == null)
-//                {
-//                    e = ObjectMapper.Map<TSyncEntity, TEntity>(iSync);
-//                    await Repository.InsertAsync(e);
-//                }
-//                else
-//                {
-//                    e = ObjectMapper.Map(iSync, e);
-//                    await Repository.UpdateAsync(e!);
-//                }
-//            }
+            var dbEntity = await FindEntityBySyncAsync(syncEntity);
+            if (dbEntity == null)
+            {
+                var entity = ObjectMapper.Map<TSyncEntity, TEntity>(syncEntity);
+                await Repository.InsertAsync(entity);
+            }
+            else
+            {
+                if (!NeedSyncFrom(syncEntity, dbEntity))
+                    return;
 
-//            foreach (var iE in l.Where(x => !lSync.Any(y => y.Id.Equals(x.SyncId))))
-//                await Repository.DeleteAsync(iE.Id);
-//        }
+                var entity = ObjectMapper.Map(syncEntity, dbEntity);
+                await Repository.UpdateAsync(entity);
+            }
+        }
 
-//        public virtual async Task SyncToSyncAsync()
-//        {
-//            await CheckSyncToSyncPolicyAsync();
+        protected virtual async Task SyncToAsync(TEntity entity)
+        {
+            if (!syncTo)
+                return;
 
-//            var l = await Repository.GetListAsync();
-//            var lSync = await SyncRepository.GetListAsync();
+            var dbSyncEntity = await FindSyncByEntityAsync(entity);
+            if (dbSyncEntity == null)
+            {
+                var syncEntity = ObjectMapper.Map<TEntity, TSyncEntity>(entity);
+                await SyncRepository.InsertAsync(syncEntity);
+            }
+            else
+            {
+                if (!NeedSyncTo(entity, dbSyncEntity))
+                    return;
 
-//            foreach (var iE in l)
-//            {
-//                var eSync = lSync.Where(x => x.Id.Equals(iE.SyncId)).FirstOrDefault();
-//                if (eSync == null)
-//                {
-//                    eSync = ObjectMapper.Map<TEntity, TSyncEntity>(iE);
-//                    await SyncRepository.InsertAsync(eSync);
-//                }
-//                else
-//                {
-//                    eSync = ObjectMapper.Map(iE, eSync);
-//                    await SyncRepository.UpdateAsync(eSync!);
-//                }
-//            }
+                var syncEntity = ObjectMapper.Map(entity, dbSyncEntity);
+                await SyncRepository.UpdateAsync(syncEntity);
+            }
+        }
 
-//            foreach (var iSync in lSync.Where(x => !l.Any(y => y.SyncId != null && y.SyncId.Equals(x.Id))))
-//                await SyncRepository.DeleteAsync(iSync.Id);
-//        }
-
-//        #region Permission
-
-//        protected virtual string? SyncFromSyncPolicyName { get; set; }
-//        protected virtual async Task CheckSyncFromSyncPolicyAsync()
-//        {
-//            await CheckPolicyAsync(SyncFromSyncPolicyName);
-//        }
-
-//        protected virtual string? SyncToSyncPolicyName { get; set; }
-//        protected virtual async Task CheckSyncToSyncPolicyAsync()
-//        {
-//            await CheckPolicyAsync(SyncToSyncPolicyName);
-//        }
-
-//        #endregion
-//    }
-//}
+        protected abstract Task<TEntity?> FindEntityBySyncAsync(TSyncEntity entity);
+        protected abstract Task<TSyncEntity?> FindSyncByEntityAsync(TEntity entity);
+        protected abstract Task<List<TSyncEntity>> GetListSyncAsync(TGetListInput input);
+        protected abstract bool NeedSyncFrom(TSyncEntity syncEntity, TEntity entity);
+        protected abstract bool NeedSyncTo(TEntity entity, TSyncEntity syncEntity);
+    }
+}

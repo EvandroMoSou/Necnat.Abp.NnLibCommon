@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Localization;
 using Necnat.Abp.NnLibCommon.Dtos;
 using Necnat.Abp.NnLibCommon.Localization;
+using Necnat.Abp.NnLibCommon.Validators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,11 +17,12 @@ using Volo.Abp.Users;
 
 namespace Necnat.Abp.NnLibCommon.Services;
 
-public abstract class NecnatAppService<TEntity, TEntityDto, TKey, TRepository>
-    : NecnatAppService<TEntity, TEntityDto, TKey, OptionalPagedAndSortedResultRequestDto, TRepository>
+public abstract class NecnatAppService<TEntity, TEntityDto, TKey, TRepository, TValidator>
+    : NecnatAppService<TEntity, TEntityDto, TKey, OptionalPagedAndSortedResultRequestDto, TRepository, TValidator>
     where TEntity : class, IEntity<TKey>
     where TEntityDto : class, IEntityDto<TKey>
     where TRepository : IRepository<TEntity, TKey>
+    where TValidator : IValidator<TEntityDto>
 {
     protected NecnatAppService(
         ICurrentUser currentUser,
@@ -31,12 +33,13 @@ public abstract class NecnatAppService<TEntity, TEntityDto, TKey, TRepository>
     }
 }
 
-public abstract class NecnatAppService<TEntity, TEntityDto, TKey, TGetListInput, TRepository>
-    : NecnatAppService<TEntity, TEntityDto, TKey, TGetListInput, TEntityDto, TRepository>
+public abstract class NecnatAppService<TEntity, TEntityDto, TKey, TGetListInput, TRepository, TValidator>
+    : NecnatAppService<TEntity, TEntityDto, TKey, TGetListInput, TEntityDto, TRepository, TValidator>
     where TEntity : class, IEntity<TKey>
     where TEntityDto : class, IEntityDto<TKey>
     where TGetListInput : OptionalPagedAndSortedResultRequestDto
     where TRepository : IRepository<TEntity, TKey>
+    where TValidator : IValidator<TEntityDto, TGetListInput>
 {
     protected NecnatAppService(
         ICurrentUser currentUser,
@@ -47,12 +50,13 @@ public abstract class NecnatAppService<TEntity, TEntityDto, TKey, TGetListInput,
     }
 }
 
-public abstract class NecnatAppService<TEntity, TEntityDto, TKey, TGetListInput, TCreateInput, TRepository>
-    : NecnatAppService<TEntity, TEntityDto, TKey, TGetListInput, TCreateInput, TCreateInput, TRepository>
+public abstract class NecnatAppService<TEntity, TEntityDto, TKey, TGetListInput, TCreateInput, TRepository, TValidator>
+    : NecnatAppService<TEntity, TEntityDto, TKey, TGetListInput, TCreateInput, TCreateInput, TRepository, TValidator>
     where TEntity : class, IEntity<TKey>
     where TGetListInput : OptionalPagedAndSortedResultRequestDto
     where TCreateInput : class, IEntityDto<TKey>
     where TRepository : IRepository<TEntity, TKey>
+    where TValidator : IValidator<TCreateInput, TGetListInput>
 {
     protected NecnatAppService(
         ICurrentUser currentUser,
@@ -63,13 +67,14 @@ public abstract class NecnatAppService<TEntity, TEntityDto, TKey, TGetListInput,
     }
 }
 
-public abstract class NecnatAppService<TEntity, TEntityDto, TKey, TGetListInput, TCreateInput, TUpdateInput, TRepository>
-    : NecnatAppService<TEntity, TEntityDto, TEntityDto, TKey, TGetListInput, TCreateInput, TUpdateInput, TRepository>
+public abstract class NecnatAppService<TEntity, TEntityDto, TKey, TGetListInput, TCreateInput, TUpdateInput, TRepository, TValidator>
+    : NecnatAppService<TEntity, TEntityDto, TEntityDto, TKey, TGetListInput, TCreateInput, TUpdateInput, TRepository, TValidator>
     where TEntity : class, IEntity<TKey>
     where TGetListInput : OptionalPagedAndSortedResultRequestDto
     where TCreateInput : class, IEntityDto<TKey>
     where TUpdateInput : class, IEntityDto<TKey>    
     where TRepository : IRepository<TEntity, TKey>
+    where TValidator : IValidator<TCreateInput, TUpdateInput, TGetListInput>
 {
     protected NecnatAppService(
         ICurrentUser currentUser,
@@ -90,17 +95,17 @@ public abstract class NecnatAppService<TEntity, TEntityDto, TKey, TGetListInput,
     }
 }
 
-public abstract class NecnatAppService<TEntity, TGetOutputDto, TGetListOutputDto, TKey, TGetListInput, TCreateInput, TUpdateInput, TRepository>
+public abstract class NecnatAppService<TEntity, TGetOutputDto, TGetListOutputDto, TKey, TGetListInput, TCreateInput, TUpdateInput, TRepository, TValidator>
     : CrudAppService<TEntity, TGetOutputDto, TGetListOutputDto, TKey, TGetListInput, TCreateInput, TUpdateInput>
     where TEntity : class, IEntity<TKey>
     where TGetListInput : OptionalPagedAndSortedResultRequestDto
     where TCreateInput : class, IEntityDto<TKey>
     where TUpdateInput : class, IEntityDto<TKey>
     where TRepository : IRepository<TEntity, TKey>
+    where TValidator : IValidator<TCreateInput, TUpdateInput, TGetListInput>
 {
     protected readonly ICurrentUser _currentUser;
     protected readonly IStringLocalizer<NnLibCommonResource> _necnatLocalizer;
-
     protected new TRepository Repository { get; }
 
     protected NecnatAppService(
@@ -139,6 +144,8 @@ public abstract class NecnatAppService<TEntity, TGetOutputDto, TGetListOutputDto
     public override async Task<PagedResultDto<TGetListOutputDto>> GetListAsync(TGetListInput input)
     {
         await CheckGetListPolicyAsync();
+        ThrowIfIsNotNull(TValidator.Validate(input, new Dictionary<string, IStringLocalizer> { { ValidatorConsts.StringLocalizerNecnat, _necnatLocalizer }, { ValidatorConsts.StringLocalizerApp, L } }));
+
         input = await BeforeGetListAsync(input);
 
         var query = await CreateFilteredQueryAsync(input);
@@ -202,6 +209,7 @@ public abstract class NecnatAppService<TEntity, TGetOutputDto, TGetListOutputDto
 
     protected virtual Task<TCreateInput> CheckCreateInputAsync(TCreateInput input)
     {
+        ThrowIfIsNotNull(TValidator.ValidateCreate(input, new Dictionary<string, IStringLocalizer> { { ValidatorConsts.StringLocalizerNecnat, _necnatLocalizer }, { ValidatorConsts.StringLocalizerApp, L } }));
         return Task.FromResult(input);
     }
 
@@ -241,6 +249,7 @@ public abstract class NecnatAppService<TEntity, TGetOutputDto, TGetListOutputDto
 
     protected virtual Task<TUpdateInput> CheckUpdateInputAsync(TUpdateInput input)
     {
+        ThrowIfIsNotNull(TValidator.ValidateUpdate(input, new Dictionary<string, IStringLocalizer> { { ValidatorConsts.StringLocalizerNecnat, _necnatLocalizer }, { ValidatorConsts.StringLocalizerApp, L } }));
         return Task.FromResult(input);
     }
 
