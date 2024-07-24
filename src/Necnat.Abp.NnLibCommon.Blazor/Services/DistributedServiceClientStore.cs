@@ -23,7 +23,7 @@ namespace Necnat.Abp.NnLibCommon.Blazor.Services
 
             return l
                 .Where(x => (string.IsNullOrWhiteSpace(applicationName) || x.ApplicationName == applicationName)
-                    && (string.IsNullOrWhiteSpace(tag) || x.Tag.StartsWith(tag))
+                    && (string.IsNullOrWhiteSpace(tag) || (x.Tag != null && x.Tag.StartsWith(tag)))
                     && x.IsActive == isActive)
                 .Select(x => new DistributedServiceModel
                 {

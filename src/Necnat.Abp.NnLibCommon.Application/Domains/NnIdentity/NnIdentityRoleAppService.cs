@@ -4,12 +4,12 @@ using Necnat.Abp.NnLibCommon.Domains.DmDistributedService;
 using Necnat.Abp.NnLibCommon.Extensions;
 using Necnat.Abp.NnLibCommon.Localization;
 using Necnat.Abp.NnLibCommon.Services;
+using Necnat.Abp.NnLibCommon.Validators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
@@ -19,7 +19,7 @@ using Volo.Abp.Users;
 
 namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
 {
-    public class NnIdentityRoleAppService : NecnatAppService<IdentityRole, NnIdentityRoleDto, Guid, NnIdentityRoleResultRequestDto, INnIdentityRoleRepository>, INnIdentityRoleAppService
+    public class NnIdentityRoleAppService : NecnatAppService<IdentityRole, NnIdentityRoleDto, Guid, NnIdentityRoleResultRequestDto, INnIdentityRoleRepository, NullValidator<NnIdentityRoleDto, NnIdentityRoleResultRequestDto>>, INnIdentityRoleAppService
     {
         protected readonly IConfiguration _configuration;
         protected readonly IDistributedServiceStore _distributedServiceStore;

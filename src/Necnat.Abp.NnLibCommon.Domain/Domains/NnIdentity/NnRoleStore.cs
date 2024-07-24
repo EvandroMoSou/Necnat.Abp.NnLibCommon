@@ -30,7 +30,7 @@ namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
 
         public virtual async Task<string> GetNameByIdAsync(Guid id)
         {
-            return (await GetRoleNameCacheItemAsync(id)).RoleName;
+            return (await GetRoleNameCacheItemAsync(id)).RoleName!;
         }
 
         protected virtual async Task<RoleNameCacheItem> GetRoleNameCacheItemAsync(Guid id)

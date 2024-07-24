@@ -3,6 +3,7 @@
 @using Necnat.Abp.NnLibCommon.Blazor.Extensions
 @using Necnat.Abp.NnLibCommon.Domains
 @using Necnat.Abp.NnLibCommon.Localization
+@using Necnat.Abp.NnLibCommon.Validators
 @using Volo.Abp.AspNetCore.Components
 @using Volo.Abp.Identity
 @inherits AbpComponentBase
@@ -56,36 +57,37 @@
 
 @namespace Necnat.Abp.NnLibCommon.Blazor.Components
 @code {
-
     [Parameter]
     public DistributedServiceDto? Entity { get; set; }
 
     [Parameter]
     public EventCallback<DistributedServiceDto?> EntityChanged { get; set; }
 
+    protected Dictionary<string, IStringLocalizer> _stringLocalizerDict;
+
     public DistributedServiceWrapper()
     {
         LocalizationResource = typeof(NnLibCommonResource);
+        _stringLocalizerDict = new Dictionary<string, IStringLocalizer> { { ValidatorConsts.StringLocalizerNecnat, L } };
     }
 
     void ValidateApplicationName(ValidatorEventArgs e)
     {
-        e.WithError(DistributedServiceValidator.ValidateApplicationName((string?)e.Value, L));
+        e.WithError(DistributedServiceValidator.ValidateApplicationName((string?)e.Value, _stringLocalizerDict));
     }
 
     void ValidateTag(ValidatorEventArgs e)
     {
-        e.WithError(DistributedServiceValidator.ValidateTag((string?)e.Value, L));
+        e.WithError(DistributedServiceValidator.ValidateTag((string?)e.Value, _stringLocalizerDict));
     }
 
     void ValidateUrl(ValidatorEventArgs e)
     {
-        e.WithError(DistributedServiceValidator.ValidateUrl((string?)e.Value, L));
+        e.WithError(DistributedServiceValidator.ValidateUrl((string?)e.Value, _stringLocalizerDict));
     }
 
     void ValidateIsActive(ValidatorEventArgs e)
     {
-        e.WithError(DistributedServiceValidator.ValidateIsActive((bool?)e.Value, L));
+        e.WithError(DistributedServiceValidator.ValidateIsActive((bool?)e.Value, _stringLocalizerDict));
     }
-
 }

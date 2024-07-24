@@ -16,9 +16,9 @@ namespace Necnat.Abp.NnLibCommon.Repositories
             _primaryKeyValue = primaryKeyValue;
         }
 
-        protected override async Task<string> GetInsertStatementAsync(List<string> lColumn)
+        protected override Task<string> GetInsertStatementAsync(List<string> lColumn)
         {
-            return _dbStatement.GenerateInsertWithPrimaryKeyValueStatement(_tableName, _primaryKeyName, lColumn, _primaryKeyValue);
+            return Task.FromResult(_dbStatement.GenerateInsertWithPrimaryKeyValueStatement(_tableName, _primaryKeyName, lColumn, _primaryKeyValue));
         }
     }
 }

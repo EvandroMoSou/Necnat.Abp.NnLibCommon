@@ -15,7 +15,8 @@ namespace Necnat.Abp.NnLibCommon.Domains.DmNecnatEndpoint
             DistributedServiceDto,
             Guid,
             DistributedServiceResultRequestDto,
-            IDistributedServiceRepository>,
+            IDistributedServiceRepository,
+            DistributedServiceValidator>,
         IDistributedServiceDtoAppService
     {
         public DistributedServiceAppService(
@@ -32,8 +33,6 @@ namespace Necnat.Abp.NnLibCommon.Domains.DmNecnatEndpoint
 
         protected override async Task<IQueryable<DistributedService>> CreateFilteredQueryAsync(DistributedServiceResultRequestDto input)
         {
-            ThrowIfIsNotNull(DistributedServiceValidator.Validate(input, _necnatLocalizer));
-
             var q = await ReadOnlyRepository.GetQueryableAsync();
 
             if (!string.IsNullOrWhiteSpace(input.ApplicationNameContains))
@@ -49,18 +48,6 @@ namespace Necnat.Abp.NnLibCommon.Domains.DmNecnatEndpoint
                 q = q.Where(x => x.IsActive == input.IsActive);
 
             return q;
-        }
-
-        protected override Task<DistributedServiceDto> CheckCreateInputAsync(DistributedServiceDto input)
-        {
-            ThrowIfIsNotNull(DistributedServiceValidator.Validate(input, _necnatLocalizer));
-            return Task.FromResult(input);
-        }
-
-        protected override Task<DistributedServiceDto> CheckUpdateInputAsync(DistributedServiceDto input)
-        {
-            ThrowIfIsNotNull(DistributedServiceValidator.Validate(input, _necnatLocalizer));
-            return Task.FromResult(input);
         }
     }
 }

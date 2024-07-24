@@ -4,6 +4,7 @@ using Necnat.Abp.NnLibCommon.Domains.DmDistributedService;
 using Necnat.Abp.NnLibCommon.Extensions;
 using Necnat.Abp.NnLibCommon.Localization;
 using Necnat.Abp.NnLibCommon.Services;
+using Necnat.Abp.NnLibCommon.Validators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ using Volo.Abp.Users;
 
 namespace Necnat.Abp.NnLibCommon.Domains.NnIdentity
 {
-    public class NnIdentityUserAppService : NecnatAppService<IdentityUser, NnIdentityUserDto, Guid, NnIdentityUserResultRequestDto, INnIdentityUserRepository>, INnIdentityUserAppService
+    public class NnIdentityUserAppService : NecnatAppService<IdentityUser, NnIdentityUserDto, Guid, NnIdentityUserResultRequestDto, INnIdentityUserRepository, NullValidator<NnIdentityUserDto, NnIdentityUserResultRequestDto>>, INnIdentityUserAppService
     {
         protected readonly IConfiguration _configuration;
         protected readonly IDistributedServiceStore _distributedServiceStore;

@@ -294,14 +294,14 @@ namespace Necnat.Abp.NnLibCommon.Repositories
             return dict;
         }
 
-        public virtual async Task<TEntity> OnBeforeInsertAsync(TEntity entity)
+        public virtual Task<TEntity> OnBeforeInsertAsync(TEntity entity)
         {
-            return entity;
+            return Task.FromResult(entity);
         }
 
-        protected virtual async Task<string> GetInsertStatementAsync(List<string> lColumn)
+        protected virtual Task<string> GetInsertStatementAsync(List<string> lColumn)
         {
-            return _dbStatement.GenerateInsertStatement(_tableName, _primaryKeyName, lColumn);
+            return Task.FromResult(_dbStatement.GenerateInsertStatement(_tableName, _primaryKeyName, lColumn));
         }
 
         #endregion
@@ -374,9 +374,9 @@ namespace Necnat.Abp.NnLibCommon.Repositories
             return dict;
         }
 
-        public virtual async Task<TEntity> OnBeforeUpdateAsync(TEntity dbEntity, TEntity entity)
+        public virtual Task<TEntity> OnBeforeUpdateAsync(TEntity dbEntity, TEntity entity)
         {
-            return entity;
+            return Task.FromResult(entity);
         }
 
         #endregion
